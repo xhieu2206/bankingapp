@@ -1,11 +1,22 @@
 package fpt.banking.system.payload;
 
+import fpt.banking.system.model.User;
+
 public class JwtAuthenticationResponse {
 	private String accessToken;
     private String tokenType = "Bearer";
     private String roles;
+    private User user;
 
-    public JwtAuthenticationResponse(String accessToken) {
+    public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public JwtAuthenticationResponse(String accessToken) {
         this.accessToken = accessToken;
     }
     
