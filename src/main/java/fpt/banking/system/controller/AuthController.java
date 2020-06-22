@@ -29,7 +29,7 @@ import fpt.banking.system.repository.UserRepository;
 import fpt.banking.system.security.JwtTokenProvider;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/user/auth")
 public class AuthController {
 	@Autowired
     AuthenticationManager authenticationManager;

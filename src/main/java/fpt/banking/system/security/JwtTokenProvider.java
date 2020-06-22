@@ -29,7 +29,7 @@ public class JwtTokenProvider {
         String jwt = Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 864000000))
+                .setExpiration(new Date(System.currentTimeMillis() + 1800000))
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.JWT_SECRET)
                 .compact();
         JwtAuthenticationResponse response = new JwtAuthenticationResponse(jwt);
