@@ -49,17 +49,18 @@ public class Account {
 	private Date updatedAt;
 	
 	// Relationship ---------------------
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 	
 	@OneToMany(
-			fetch = FetchType.EAGER,
+			fetch = FetchType.LAZY,
 			mappedBy = "account",
 			cascade = { CascadeType.ALL })
 	private List<Transaction> transactions;
 	
 	@OneToOne(
+			fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL,
 			mappedBy = "account"
 			)

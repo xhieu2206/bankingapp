@@ -29,6 +29,7 @@ public class TransactionOffice {
 	
 	// Relationship
 	@ManyToOne(
+			fetch = FetchType.LAZY,
 			cascade = { 
 			CascadeType.PERSIST, 
 			CascadeType.MERGE,

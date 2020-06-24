@@ -26,10 +26,10 @@ public class Membership {
 	
 	// Relationship
 	@OneToMany(
-			fetch = FetchType.EAGER,
+			fetch = FetchType.LAZY,
 			mappedBy = "membership",
 			cascade = {
-				CascadeType.ALL
+				CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH
 			})
 	private List<User> users;
 	// ------------------------------
@@ -38,15 +38,13 @@ public class Membership {
 	public Membership() {
 	}
 
-	public Membership(String name, List<User> users) {
+	public Membership(String name) {
 		this.name = name;
-		this.users = users;
 	}
 
-	public Membership(Long id, String name, List<User> users) {
+	public Membership(Long id, String name) {
 		this.id = id;
 		this.name = name;
-		this.users = users;
 	}
 	// ------------------------------
 	

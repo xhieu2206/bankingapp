@@ -21,7 +21,6 @@ import fpt.banking.system.payload.JwtAuthenticationResponse;
 @Component
 public class JwtTokenProvider {
 	private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
-
 	 
     public JwtAuthenticationResponse generateToken(Authentication authentication) {
 
@@ -29,7 +28,7 @@ public class JwtTokenProvider {
         String jwt = Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1800000))
+                .setExpiration(new Date(System.currentTimeMillis() + 1800000000))
                 .signWith(SignatureAlgorithm.HS512, SecurityConstants.JWT_SECRET)
                 .compact();
         JwtAuthenticationResponse response = new JwtAuthenticationResponse(jwt);
