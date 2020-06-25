@@ -16,9 +16,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "card")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Card {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

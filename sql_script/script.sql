@@ -125,9 +125,9 @@ DROP TABLE IF EXISTS `card`;
 create table `card`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `card_number` varchar(15) NOT NULL,
-  `status` bool default 1,
+  `status` bool not null default 1,
   `account_id` int(11) not null,
-  `expired_date` date default null,
+  `expired_at` date default null,
   `created_at` date default null,
   
   constraint `FK_ACCOUNT_ID` foreign key (`account_id`)
@@ -138,12 +138,25 @@ create table `card`(
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 ########################################################
 
+#### TRANSACTION TYPE TABLE ############################
+DROP TABLE IF EXISTS `transaction_type`;
+
+create table `transaction_type`(
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255),
+  
+  unique key `UNIQUE_NAME_TRANSACTION_TYPE` (`name`),
+  primary key (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+########################################################
+  
 #### TRANSACTION TABLE #################################
 DROP TABLE IF EXISTS `transaction`;
 
 create table `transaction` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
     `account_id` int(11) not null,
+    `transaction_type_id` int(11) not null default 1,
     `amount` decimal not null,
     `amount_after_transaction` decimal not null,
     `description` text,
@@ -153,8 +166,11 @@ create table `transaction` (
     
     constraint `FK_ACCOUNT_ID_1` foreign key (`account_id`)
     references `account` (`id`)
-    ON DELETE NO ACTION ON UPDATE NO ACTION
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
     
+    constraint `FK_TRANSACTION_TYPE_ID` foreign key (`transaction_type_id`)
+    references `transaction_type` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION
     
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 ########################################################
@@ -255,3 +271,16 @@ VALUES
 (1000000, 444411111003, 1, '2020-10-10', '2020-10-10', '2025-10-10'), 
 (1000000, 444411111004, 1, '2020-10-10', '2020-10-10', '2025-10-10'), 
 (1000000, 444411111005, 1, '2020-10-10', '2020-10-10', '2025-10-10');
+
+insert into `transaction_type` (name)
+values
+('transfer_internal'),
+('transfer_external'),
+('receive_internal');
+
+insert into `card` (card_number, expired_at, created_at, account_id) values
+(555511111001, '2025-10-10', '2020-10-10', 1),
+(555511111002, '2025-10-10', '2020-10-10', 2),
+(555511111003, '2025-10-10', '2020-10-10', 3),
+(555511111004, '2025-10-10', '2020-10-10', 4),
+(555511111005, '2025-10-10', '2020-10-10', 5);

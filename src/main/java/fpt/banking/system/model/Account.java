@@ -20,9 +20,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "account")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Account implements Serializable {
 	
 	private static final long serialVersionUID = 8372487453190651199L;
@@ -54,6 +56,7 @@ public class Account implements Serializable {
 	// Relationship ---------------------
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User user;
 	
 	@OneToMany(
@@ -68,6 +71,7 @@ public class Account implements Serializable {
 			cascade = CascadeType.ALL,
 			mappedBy = "account"
 			)
+	@JsonIgnore
 	private Card card;
 	// ----------------------------------
 	

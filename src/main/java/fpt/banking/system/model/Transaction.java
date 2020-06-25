@@ -39,6 +39,10 @@ public class Transaction {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id")
 	private Account account;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "transaction_type_id")
+	private TransactionType transactionType;
 	// --------------------------------------
 
 	// Constructor --------------------------
@@ -108,6 +112,14 @@ public class Transaction {
 
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+
+	public TransactionType getTransactionType() {
+		return transactionType;
+	}
+
+	public void setTransactionType(TransactionType transactionType) {
+		this.transactionType = transactionType;
 	}
 	// --------------------------------------
 }
