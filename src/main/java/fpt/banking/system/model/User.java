@@ -1,5 +1,6 @@
 package fpt.banking.system.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements Serializable {
+	
+	private static final long serialVersionUID = 8372487913190651199L;
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +27,8 @@ public class User {
 	@Column(name = "email", length = 255, nullable = false)
 	private String email;
 
-	@JsonIgnore
 	@Column(name = "password", length = 255, nullable = false)
+	@JsonIgnore
 	private String password;
 
 	@Column(name = "fullname", length = 255, nullable = false)
@@ -60,8 +63,7 @@ public class User {
 	@Column(name = "updated_at", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date updatedAt;
-	
-	@JsonIgnore
+
 	@Column(name = "status", nullable = false)
 	private boolean status;
 	
@@ -74,18 +76,19 @@ public class User {
 	
 	@ManyToOne(
 			fetch = FetchType.LAZY,
-			cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })
+			cascade = { CascadeType.PERSIST,
+					CascadeType.MERGE,
+					CascadeType.REFRESH,
+					CascadeType.DETACH })
 	@JoinColumn(name = "transaction_office_id")
 	private TransactionOffice transactionOffice;
 	
-	@ManyToOne(fetch = FetchType.LAZY, 
-			cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })
-	@JoinColumn(name = "membership_id")
-	private Membership membership;
-	
 	@ManyToOne(
 			fetch = FetchType.LAZY,
-			cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })
+			cascade = { CascadeType.PERSIST,
+					CascadeType.MERGE,
+					CascadeType.REFRESH,
+					CascadeType.DETACH })
 	@JoinColumn(name = "branch_office_id")
 	private BranchOffice branchOffice;
 	
@@ -95,7 +98,15 @@ public class User {
 			cascade = {
 				CascadeType.ALL
 			})
+	@JsonIgnore
 	private List<Account> accounts;
+
+	@ManyToOne(cascade = { CascadeType.PERSIST,
+					CascadeType.MERGE,
+					CascadeType.REFRESH,
+					CascadeType.DETACH })
+	@JoinColumn(name = "membership_id")
+	private Membership membership;
 	// ---------------------------------------
 	
 	// Constructor 
@@ -302,6 +313,17 @@ public class User {
 
 	public void setAccounts(List<Account> accounts) {
 		this.accounts = accounts;
-	}	
+	}
 	// ---------------------------------------
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password
+				+ ", fullname=" + fullname + ", birthday=" + birthday + ", address=" + address + ", gender=" + gender
+				+ ", image=" + image + ", idCardNumber=" + idCardNumber + ", phone=" + phone + ", attempedLoginFailed="
+				+ attempedLoginFailed + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", status=" + status
+				+ "]";
+	}
+	
+	
 }

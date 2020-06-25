@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import fpt.banking.system.model.User;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -22,21 +23,50 @@ public class UserPrincipal implements UserDetails {
 
     private String username;
 
-    @JsonIgnore
     private String email;
 
-    @JsonIgnore
     private String password;
+    
+    private Date birthday;
+    
+    private String address;
+
+    private String gender;
+    
+    private String image;
+    
+    private String idCardNumber;
+    
+    private String phone;
+    
+    private Date createdAt;
+    
+    private Date updatedAt;
+    
+    private boolean status;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(Long id, String fullname, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Long id, 
+    		String fullname, String username, String email, String password, 
+    		Collection<? extends GrantedAuthority> authorities, Date birthday,
+    		String address, String gender, String image, String idCardNumber,
+    		String phone, Date createdAt, Date updatedAt, boolean status) {
         this.id = id;
         this.fullname = fullname;
         this.username = username;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.birthday = birthday;
+        this.address = address;
+        this.gender = gender;
+        this.image = image;
+        this.idCardNumber = idCardNumber;
+        this.phone = phone;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.status = status;
     }
 
     public static UserPrincipal create(User user) {
@@ -50,7 +80,16 @@ public class UserPrincipal implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities
+                authorities,
+                user.getBirthday(),
+                user.getAddress(),
+                user.getGender(),
+                user.getImage(),
+                user.getIdCardNumber(),
+                user.getPhone(),
+                user.getCreatedAt(),
+                user.getUpdatedAt(),
+                user.isStatus()
         );
     }
 
@@ -85,7 +124,47 @@ public class UserPrincipal implements UserDetails {
         return authorities;
     }
 
-    @Override
+    public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public String getIdCardNumber() {
+		return idCardNumber;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	@Override
     public boolean isAccountNonExpired() {
         return true;
     }
@@ -102,7 +181,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.status;
     }
 
     @Override

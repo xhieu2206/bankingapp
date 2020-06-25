@@ -212,17 +212,6 @@ create table `cheque`(
 ########################################################
 
 
-
-
-
-
-
-
-
-
-
-
-
 ############################################## INSERT DATA ##########################################################
 INSERT INTO `role` (name)
 VALUES 
@@ -249,7 +238,7 @@ VALUES
 
 INSERT INTO `user` (username,email,password,fullname,birthday,address,id_card_number,phone,membership_id)
 VALUES
-('username_1', 'username1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 1','1994-06-22','Ha Noi','123123123001','3333333001',2),
+('username_1', 'username1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 1','1994-06-22','Ha Noi','123123123001','3333333001',1),
 ('username_2', 'username2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 2','1994-06-22','Ha Noi','123123123002','3333333002',1),
 ('username_3', 'username3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 3','1994-06-22','Ha Noi','123123123003','3333333002',1);
 
@@ -258,3 +247,11 @@ VALUES
 (1, 1),
 (2, 1),
 (3, 1);
+
+INSERT INTO `account` (amount, account_number, user_id, created_at, updated_at, expired_date)
+VALUES
+(1000000, 444411111001, 1, '2020-10-10', '2020-10-10', '2025-10-10'), 
+(1000000, 444411111002, 1, '2020-10-10', '2020-10-10', '2025-10-10'), 
+(1000000, 444411111003, 1, '2020-10-10', '2020-10-10', '2025-10-10'), 
+(1000000, 444411111004, 1, '2020-10-10', '2020-10-10', '2025-10-10'), 
+(1000000, 444411111005, 1, '2020-10-10', '2020-10-10', '2025-10-10');

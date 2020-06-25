@@ -1,5 +1,6 @@
 package fpt.banking.system.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "account")
-public class Account {
+public class Account implements Serializable {
+	
+	private static final long serialVersionUID = 8372487453190651199L;
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +39,7 @@ public class Account {
 	@Column(name = "amount")
 	private int amount;
 	
-	@Column(name = "expired_at", nullable = true)
+	@Column(name = "expired_date", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date expiredAt;
 	
@@ -57,6 +60,7 @@ public class Account {
 			fetch = FetchType.LAZY,
 			mappedBy = "account",
 			cascade = { CascadeType.ALL })
+	@JsonIgnore
 	private List<Transaction> transactions;
 	
 	@OneToOne(

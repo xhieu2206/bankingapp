@@ -1,5 +1,6 @@
 package fpt.banking.system.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,8 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "membership")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Membership {
 
 	@Id
@@ -29,8 +34,12 @@ public class Membership {
 			fetch = FetchType.LAZY,
 			mappedBy = "membership",
 			cascade = {
-				CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH
+				CascadeType.PERSIST,
+				CascadeType.MERGE,
+				CascadeType.REFRESH,
+				CascadeType.DETACH
 			})
+	@JsonIgnore
 	private List<User> users;
 	// ------------------------------
 

@@ -1,5 +1,7 @@
 package fpt.banking.system.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,28 +9,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fpt.banking.system.model.User;
-import fpt.banking.system.service.UserService;
+import fpt.banking.system.model.Account;
+import fpt.banking.system.service.AccountService;
 
 @RestController
 @RequestMapping("/api/users")
-public class UserController {
-	
-	@Autowired
-	private UserService userService;
+public class AccountController {
 
-	@GetMapping("/test")
-	@PreAuthorize("hasRole('ROLE_USER')")
-    public String getMessage() {
-		System.out.println("SOMETHING");
-        return "Hello from USER API controller";
-    }
+	@Autowired
+	private AccountService accountService;
 	
-	@GetMapping("/{userId}")
+	@GetMapping("/{userId}/accounts")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public User getUser(@PathVariable int userId) {
-		User user = userService.getUser(userId);
-		System.out.println(user);
-		return user;
+	public List<Account> getAccounts(@PathVariable int userId) {
+		System.out.println(userId);
+		return accountService.getAccounts(userId);
 	}
 }

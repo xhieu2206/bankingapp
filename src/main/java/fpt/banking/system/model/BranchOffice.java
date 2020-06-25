@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.persistence.*;
 import javax.persistence.FetchType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.CascadeType;
 import fpt.banking.system.model.TransactionOffice;
 
@@ -49,6 +52,7 @@ public class BranchOffice {
 					CascadeType.MERGE,
 					CascadeType.REFRESH,
 					CascadeType.DETACH })
+	@JsonIgnore
 	private List<User> users;
 	// --------------------------------------
 	
