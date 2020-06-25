@@ -41,6 +41,9 @@ public class Account implements Serializable {
 	@Column(name = "amount")
 	private int amount;
 	
+	@Column(name = "account_number")
+	private String accountNumber;
+	
 	@Column(name = "expired_date", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date expiredAt;
@@ -71,25 +74,31 @@ public class Account implements Serializable {
 			cascade = CascadeType.ALL,
 			mappedBy = "account"
 			)
-	@JsonIgnore
 	private Card card;
 	// ----------------------------------
 	
 	// Constructor ----------------------
 	public Account() { }
 
-	public Account(Long id, boolean status, int amount, Date expiredAt, Date createdAt, Date updatedAt) {
+	public Account(Long id, boolean status, int amount,
+			Date expiredAt, Date createdAt, Date updatedAt,
+			String accountNumber) {
 		this.id = id;
 		this.status = status;
 		this.amount = amount;
+		this.accountNumber = accountNumber;
 		this.expiredAt = expiredAt;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}
 
-	public Account(boolean status, int amount, Date expiredAt, Date createdAt, Date updatedAt) {
+	public Account(boolean status, int amount,
+			Date expiredAt, Date createdAt, Date updatedAt,
+			String accountNumber) {
 		this.status = status;
 		this.amount = amount;
+		this.accountNumber = accountNumber;
+		this.accountNumber = accountNumber;
 		this.expiredAt = expiredAt;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
@@ -167,6 +176,14 @@ public class Account implements Serializable {
 
 	public void setCard(Card card) {
 		this.card = card;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 	// ----------------------------------
 }
