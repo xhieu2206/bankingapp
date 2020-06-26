@@ -3,8 +3,9 @@ package fpt.banking.system.service;
 import java.util.List;
 
 import fpt.banking.system.model.Transaction;
+import fpt.banking.system.payload.TransactionsResponse;
 
 public interface TransactionService {
 
-	public List<Transaction> getTransactions(int accountId, int page);
+	public TransactionsResponse getTransactions(int accountId, int page);
 }

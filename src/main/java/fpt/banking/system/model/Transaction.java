@@ -14,8 +14,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "transaction")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Transaction {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +42,7 @@ public class Transaction {
 	// Relationship -------------------------
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id")
+	@JsonIgnore
 	private Account account;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

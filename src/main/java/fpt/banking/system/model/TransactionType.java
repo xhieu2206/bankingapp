@@ -14,9 +14,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "transaction_type")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TransactionType implements Serializable {
 
 	private static final long serialVersionUID = 8372487913112651199L;
@@ -27,19 +29,19 @@ public class TransactionType implements Serializable {
     private Long id;
 	
 	@Column(name = "name", length = 255, nullable = false)
-	private String username;
+	private String name;
 
 	// Constructor
 	public TransactionType() {
 	}
 
-	public TransactionType(Long id, String username) {
+	public TransactionType(Long id, String name) {
 		this.id = id;
-		this.username = username;
+		this.name = name;
 	}
 
-	public TransactionType(String username) {
-		this.username = username;
+	public TransactionType(String name) {
+		this.name = name;
 	}
 	// ---------------------------------------
 	
@@ -63,12 +65,12 @@ public class TransactionType implements Serializable {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getName() {
+		return this.name;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<Transaction> getTransactions() {
