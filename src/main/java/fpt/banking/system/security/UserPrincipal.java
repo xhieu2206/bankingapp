@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import fpt.banking.system.model.Membership;
 import fpt.banking.system.model.User;
 
 import java.util.Collection;
@@ -25,6 +26,7 @@ public class UserPrincipal implements UserDetails {
 
     private String email;
 
+    @JsonIgnore
     private String password;
     
     private Date birthday;
@@ -44,6 +46,8 @@ public class UserPrincipal implements UserDetails {
     private Date updatedAt;
     
     private boolean status;
+    
+    private Membership membership;
 
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -51,7 +55,7 @@ public class UserPrincipal implements UserDetails {
     		String fullname, String username, String email, String password, 
     		Collection<? extends GrantedAuthority> authorities, Date birthday,
     		String address, String gender, String image, String idCardNumber,
-    		String phone, Date createdAt, Date updatedAt, boolean status) {
+    		String phone, Date createdAt, Date updatedAt, boolean status, Membership membership) {
         this.id = id;
         this.fullname = fullname;
         this.username = username;
@@ -67,6 +71,7 @@ public class UserPrincipal implements UserDetails {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.status = status;
+        this.membership = membership;
     }
 
     public static UserPrincipal create(User user) {
@@ -89,7 +94,8 @@ public class UserPrincipal implements UserDetails {
                 user.getPhone(),
                 user.getCreatedAt(),
                 user.getUpdatedAt(),
-                user.isStatus()
+                user.isStatus(),
+                user.getMembership()
         );
     }
 
@@ -158,6 +164,14 @@ public class UserPrincipal implements UserDetails {
 
 	public Date getUpdatedAt() {
 		return updatedAt;
+	}
+
+	public Membership getMembership() {
+		return membership;
+	}
+
+	public void setMembership(Membership membership) {
+		this.membership = membership;
 	}
 
 	public boolean isStatus() {

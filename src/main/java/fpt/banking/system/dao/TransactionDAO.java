@@ -7,5 +7,7 @@ import fpt.banking.system.payload.TransactionsResponse;
 
 public interface TransactionDAO {
 
-	public TransactionsResponse getTransactions(int accountId, int page);
+	public List<Transaction> getTransactions(int accountId, int page);
+	
+	public int getTotalTransactions(int accountId);
 }
