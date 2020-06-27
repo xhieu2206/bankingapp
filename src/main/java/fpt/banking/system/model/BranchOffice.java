@@ -9,12 +9,14 @@ import javax.persistence.*;
 import javax.persistence.FetchType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.CascadeType;
 import fpt.banking.system.model.TransactionOffice;
 
 @Entity
 @Table(name = "branch_office")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BranchOffice {
 
 	@Id

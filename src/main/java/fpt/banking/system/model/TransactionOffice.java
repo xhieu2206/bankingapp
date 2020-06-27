@@ -7,8 +7,11 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "transaction_office")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TransactionOffice {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

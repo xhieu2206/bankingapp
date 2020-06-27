@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fpt.banking.system.model.Transaction;
-import fpt.banking.system.payload.TransactionsResponse;
 
 @Repository
 public class TransactionDAOImpl implements TransactionDAO {

@@ -1,14 +1,14 @@
 package fpt.banking.system.dao;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fpt.banking.system.model.Account;
+import fpt.banking.system.model.Card;
 import fpt.banking.system.model.User;
 
 @Repository
@@ -24,18 +24,6 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public List<User> getUsers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void saveUser(User user) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public User getUser(int id) {
 		Session session = entityManager.unwrap(Session.class);
 		User user = session.get(User.class, Long.valueOf(id));
@@ -43,15 +31,54 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void deleteUser(int id) {
-		// TODO Auto-generated method stub
-
+	public User findByEmail(String email) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT u FROM User u "
+				+ "WHERE email = :email";
+		Query<User> query = session.createQuery(sql, User.class);
+		query.setParameter("email", email);
+		return query.getSingleResult();
 	}
 
 	@Override
-	public List<User> searchUsers(String term) {
-		// TODO Auto-generated method stub
-		return null;
+	public User findByUsername(String username) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT u FROM User u "
+				+ "WHERE username = :username";
+		Query<User> query = session.createQuery(sql, User.class);
+		query.setParameter("username", username);
+		return query.getSingleResult();
+	}
+
+	@Override
+	public User findByIdCardNumber(String idCardNumber) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT u FROM User u "
+				+ "WHERE id_card_number = :idCardNumber";
+		Query<User> query = session.createQuery(sql, User.class);
+		query.setParameter("idCardNumber", idCardNumber);
+		return query.getSingleResult();
+	}
+
+	@Override
+	public User findByAccountNumber(String accountNumber) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT a FROM Account a "
+				+ "WHERE account_number = :accountNumber";
+		Query<Account> query = session.createQuery(sql, Account.class);
+		query.setParameter("accountNumber", accountNumber);
+		Account account = query.getSingleResult();
+		return account.getUser();
+	}
+
+	@Override
+	public User findByCardNumber(String cardNumber) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT c FROM Card c"
+				+ "WHERE card_number = :cardNumber";
+		Query<Card> q = session.createQuery(sql, Card.class);
+		q.setParameter("cardNumber", cardNumber);
+		return q.getSingleResult().getAccount().getUser();
 	}
 
 }

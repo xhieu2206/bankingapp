@@ -1,18 +1,18 @@
 package fpt.banking.system.dao;
 
-import java.util.List;
-
 import fpt.banking.system.model.User;
 
 public interface UserDAO {
-
-	public List<User> getUsers();
-	
-	public void saveUser(User user);
 	
 	public User getUser(int id);
 	
-	public void deleteUser(int id);
+	public User findByEmail(String email);
 	
-	public List<User> searchUsers(String term);
+	public User findByUsername(String username);
+	
+	public User findByIdCardNumber(String idCardNumber);
+	
+	public User findByAccountNumber(String accountNumber);
+	
+	public User findByCardNumber(String cardNumber);
 }
