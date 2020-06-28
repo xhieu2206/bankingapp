@@ -8,6 +8,71 @@ import fpt.banking.system.exception.ErrorResponse;
 
 @ControllerAdvice
 public class RestExceptionHandler {
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(NullDescriptionException exc) {
+
+		// create CustomerErrorResponse
+
+		ErrorResponse error = new ErrorResponse(HttpStatus.LENGTH_REQUIRED.value(), exc.getMessage(),
+				System.currentTimeMillis());
+
+		// return ResponseEntity
+
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.LENGTH_REQUIRED);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(AccountIsNotActive exc) {
+
+		// create CustomerErrorResponse
+
+		ErrorResponse error = new ErrorResponse(HttpStatus.LOCKED.value(), exc.getMessage(),
+				System.currentTimeMillis());
+
+		// return ResponseEntity
+
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.LOCKED);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(PinCodeIncorrectedException exc) {
+
+		// create CustomerErrorResponse
+
+		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), exc.getMessage(),
+				System.currentTimeMillis());
+
+		// return ResponseEntity
+
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(AccountNotFound exc) {
+
+		// create CustomerErrorResponse
+
+		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
+				System.currentTimeMillis());
+
+		// return ResponseEntity
+
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(NotEnoughMoneyException exc) {
+
+		// create CustomerErrorResponse
+
+		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), exc.getMessage(),
+				System.currentTimeMillis());
+
+		// return ResponseEntity
+
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+	}
 
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(UserNotFoundException exc) {

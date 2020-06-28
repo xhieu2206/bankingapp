@@ -23,9 +23,12 @@ public class TransactionServiceImpl implements TransactionService {
 				new TransactionsResponse();
 		transactionResponse.setCurrentPage(page);
 		transactionResponse.setTotalTransaction(transactionDAO.getTotalTransactions(accountId));
-		int totalPage = (int) Math.ceil(transactionDAO.getTotalTransactions(accountId) / 10);
+		int totalPage = (int) Math.ceil(transactionDAO.getTotalTransactions(accountId) / 5);
+		if (transactionDAO.getTotalTransactions(accountId) % 5 > 0) {
+			totalPage ++;
+		}
 		transactionResponse.setTotalPage(totalPage);
-		transactionResponse.setTransactions(transactionDAO.getTransactions(accountId, totalPage));
+		transactionResponse.setTransactions(transactionDAO.getTransactions(accountId, page));
 		return transactionResponse;
 	}
 }

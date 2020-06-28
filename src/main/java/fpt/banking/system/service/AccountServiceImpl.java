@@ -29,4 +29,11 @@ public class AccountServiceImpl implements AccountService {
 		return accountDAO.getAccount(accountId);
 	}
 
+	@Override
+	@Transactional
+	public Account findByAccountNumber(String accountNumber) {
+		// TODO Auto-generated method stub
+		return accountDAO.findByAccountNumber(accountNumber);
+	}
+
 }

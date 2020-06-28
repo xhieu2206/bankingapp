@@ -27,7 +27,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 	}
 
 	@Override
-	public List<Transaction> getTransactions(int accountId, int page) {
+	public List<Transaction> getTransactions(long accountId, int page) {
 		Session session = entityManager.unwrap(Session.class);		
 		String sql = "SELECT t FROM Transaction t "
 				+ "WHERE account_id = :accountId";
@@ -38,7 +38,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 	}
 
 	@Override
-	public int getTotalTransactions(int accountId) {
+	public int getTotalTransactions(long accountId) {
 		Session session = entityManager.unwrap(Session.class);
 		String sql = "SELECT count(*) FROM Transaction transaction "
 				+ "WHERE account_id = :accountId";
@@ -49,12 +49,12 @@ public class TransactionDAOImpl implements TransactionDAO {
 	}
 
 	@Override
-	public void saveTransaction(int accountId, Long amount, Long amountAfterTransaction, int transactionTypeId,
+	public void saveTransaction(long accountId, Long amount, Long amountAfterTransaction, int transactionTypeId,
 			String description) {
 		Session session = entityManager.unwrap(Session.class);
 		Account account = session.get(Account.class, Long.valueOf(accountId));
 		LocalDate createdAt = LocalDate.now();
-		TransactionType transactionType = session.get(TransactionType.class, Long.valueOf(accountId));
+		TransactionType transactionType = session.get(TransactionType.class, Long.valueOf(transactionTypeId));
 		Transaction transaction = new Transaction();
 		transaction.setAccount(account);
 		transaction.setTransactionType(transactionType);

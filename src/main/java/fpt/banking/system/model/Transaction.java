@@ -54,19 +54,21 @@ public class Transaction {
 	public Transaction() {
 	}
 
-	public Transaction(Long id, long amount, long amountAfterTransaction, String description, Date createdAt) {
+	public Transaction(Long id, long amount, long amountAfterTransaction, String description, Date createdAt, TransactionType transactionType) {
 		this.id = id;
 		this.amount = amount;
 		this.amountAfterTransaction = amountAfterTransaction;
 		this.description = description;
 		this.createdAt = createdAt;
+		this.transactionType = transactionType;
 	}
 
-	public Transaction(long amount, long amountAfterTransaction, String description, Date createdAt) {
+	public Transaction(long amount, long amountAfterTransaction, String description, Date createdAt, TransactionType transactionType) {
 		this.amount = amount;
 		this.amountAfterTransaction = amountAfterTransaction;
 		this.description = description;
 		this.createdAt = createdAt;
+		this.transactionType = transactionType;
 	}
 	// --------------------------------------
 	

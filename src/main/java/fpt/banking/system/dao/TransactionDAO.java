@@ -7,11 +7,11 @@ import fpt.banking.system.payload.TransactionsResponse;
 
 public interface TransactionDAO {
 
-	public List<Transaction> getTransactions(int accountId, int page);
+	public List<Transaction> getTransactions(long accountId, int page);
 	
-	public int getTotalTransactions(int accountId);
+	public int getTotalTransactions(long accountId);
 	
-	public void saveTransaction(int accountId, Long amount, Long 
+	public void saveTransaction(long accountId, Long amount, Long 
 			amountAfterTransaction, int transactionTypeId,
 			String description);
 }

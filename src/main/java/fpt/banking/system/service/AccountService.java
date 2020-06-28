@@ -9,4 +9,6 @@ public interface AccountService {
 	public List<Account> getAccounts(int userId);
 	
 	public Account getAccount(int accountId);
+	
+	public Account findByAccountNumber(String accountNumber);
 }

@@ -41,6 +41,9 @@ public class Account implements Serializable {
 	@Column(name = "amount")
 	private long amount;
 	
+	@Column(name = "pin_code")
+	private String pinCode;
+	
 	@Column(name = "account_number")
 	private String accountNumber;
 	
@@ -80,24 +83,25 @@ public class Account implements Serializable {
 	// Constructor ----------------------
 	public Account() { }
 
-	public Account(Long id, boolean status, int amount,
+	public Account(Long id, boolean status, int amount, String pinCode,
 			Date expiredAt, Date createdAt, Date updatedAt,
 			String accountNumber) {
 		this.id = id;
 		this.status = status;
 		this.amount = amount;
+		this.pinCode = pinCode;
 		this.accountNumber = accountNumber;
 		this.expiredAt = expiredAt;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}
 
-	public Account(boolean status, int amount,
+	public Account(boolean status, int amount, String pinCode,
 			Date expiredAt, Date createdAt, Date updatedAt,
 			String accountNumber) {
 		this.status = status;
 		this.amount = amount;
-		this.accountNumber = accountNumber;
+		this.pinCode = pinCode;
 		this.accountNumber = accountNumber;
 		this.expiredAt = expiredAt;
 		this.createdAt = createdAt;
@@ -124,6 +128,14 @@ public class Account implements Serializable {
 
 	public long getAmount() {
 		return amount;
+	}
+
+	public String getPinCode() {
+		return pinCode;
+	}
+
+	public void setPinCode(String pinCode) {
+		this.pinCode = pinCode;
 	}
 
 	public void setAmount(long amount) {

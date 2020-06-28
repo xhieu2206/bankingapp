@@ -55,4 +55,10 @@ public class TranferInternalPayloadByAccountNumber {
 	public void setPin(String pin) {
 		this.pin = pin;
 	}
+
+	@Override
+	public String toString() {
+		return "TranferInternalPayloadByAccountNumber [accountNumber=" + accountNumber + ", amount=" + amount
+				+ ", fullName=" + fullName + ", pin=" + pin + ", description=" + description + "]";
+	}
 }

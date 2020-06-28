@@ -8,7 +8,9 @@ public interface AccountDAO {
 
 	public List<Account> getAccounts(int userId);
 
-	public void changeAmount(int accountId, Long amount);
+	public void changeAmount(long accountId, Long amount);
 	
-	public Account getAccount(int accountId);
+	public Account getAccount(long accountId);
+	
+	public Account findByAccountNumber(String accountNumber);
 }

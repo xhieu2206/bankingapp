@@ -5,8 +5,10 @@ import java.time.ZoneId;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -35,21 +37,34 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
-	public Account getAccount(int accountId) {
+	public Account getAccount(long accountId) {
 		Session session = entityManager.unwrap(Session.class);
 		Account account = session.get(Account.class, Long.valueOf(accountId));
 		return account;
 	}
 
 	@Override
-	public void changeAmount(int accountId, Long amount) {
+	public void changeAmount(long accountId, Long amount) {
 		Session session = entityManager.unwrap(Session.class);
 		Account account = session.get(Account.class, accountId);
-		Long newAmount = account.getAmount() + amount;
 		LocalDate updatedAt = LocalDate.now();
-		account.setAmount(newAmount);
+		account.setAmount(amount);
 		account.setUpdatedAt(java.sql.Date.valueOf(updatedAt));
 		session.saveOrUpdate(account);
+	}
+
+	@Override
+	public Account findByAccountNumber(String accountNumber) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT a FROM Account a "
+				+ "WHERE account_number = :accountNumber";
+		Query<Account> q = session.createQuery(sql, Account.class);
+		q.setParameter("accountNumber", accountNumber);
+		try {
+			return q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 }
