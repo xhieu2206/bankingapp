@@ -39,7 +39,7 @@ public class Account implements Serializable {
 	private boolean status;
 	
 	@Column(name = "amount")
-	private int amount;
+	private long amount;
 	
 	@Column(name = "account_number")
 	private String accountNumber;
@@ -122,11 +122,11 @@ public class Account implements Serializable {
 		this.status = status;
 	}
 
-	public int getAmount() {
+	public long getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(long amount) {
 		this.amount = amount;
 	}
 

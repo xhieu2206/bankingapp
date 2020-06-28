@@ -10,4 +10,8 @@ public interface TransactionDAO {
 	public List<Transaction> getTransactions(int accountId, int page);
 	
 	public int getTotalTransactions(int accountId);
+	
+	public void saveTransaction(int accountId, Long amount, Long 
+			amountAfterTransaction, int transactionTypeId,
+			String description);
 }

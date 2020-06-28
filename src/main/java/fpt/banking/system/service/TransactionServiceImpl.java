@@ -28,5 +28,4 @@ public class TransactionServiceImpl implements TransactionService {
 		transactionResponse.setTransactions(transactionDAO.getTransactions(accountId, totalPage));
 		return transactionResponse;
 	}
-
 }

@@ -27,10 +27,10 @@ public class Transaction {
     private Long id;
 	
 	@Column(name = "amount", nullable = false)
-	private int amount;
+	private long amount;
 	
 	@Column(name = "amount_after_transaction", nullable = false)
-	private int amountAfterTransaction;
+	private long amountAfterTransaction;
 	
 	@Column(name = "description", length = 500, nullable = false)
 	private String description;
@@ -54,7 +54,7 @@ public class Transaction {
 	public Transaction() {
 	}
 
-	public Transaction(Long id, int amount, int amountAfterTransaction, String description, Date createdAt) {
+	public Transaction(Long id, long amount, long amountAfterTransaction, String description, Date createdAt) {
 		this.id = id;
 		this.amount = amount;
 		this.amountAfterTransaction = amountAfterTransaction;
@@ -62,7 +62,7 @@ public class Transaction {
 		this.createdAt = createdAt;
 	}
 
-	public Transaction(int amount, int amountAfterTransaction, String description, Date createdAt) {
+	public Transaction(long amount, long amountAfterTransaction, String description, Date createdAt) {
 		this.amount = amount;
 		this.amountAfterTransaction = amountAfterTransaction;
 		this.description = description;
@@ -79,19 +79,19 @@ public class Transaction {
 		this.id = id;
 	}
 
-	public int getAmount() {
+	public long getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(long amount) {
 		this.amount = amount;
 	}
 
-	public int getAmountAfterTransaction() {
+	public long getAmountAfterTransaction() {
 		return amountAfterTransaction;
 	}
 
-	public void setAmountAfterTransaction(int amountAfterTransaction) {
+	public void setAmountAfterTransaction(long amountAfterTransaction) {
 		this.amountAfterTransaction = amountAfterTransaction;
 	}
 

@@ -7,4 +7,6 @@ import fpt.banking.system.model.Account;
 public interface AccountService {
 
 	public List<Account> getAccounts(int userId);
+	
+	public Account getAccount(int accountId);
 }

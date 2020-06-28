@@ -94,7 +94,6 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 ########################################################
 
-
 #### ACCOUNT TABLE #####################################
 DROP TABLE IF EXISTS `account`;
 

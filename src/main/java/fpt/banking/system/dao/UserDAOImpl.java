@@ -1,6 +1,7 @@
 package fpt.banking.system.dao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -37,7 +38,12 @@ public class UserDAOImpl implements UserDAO {
 				+ "WHERE email = :email";
 		Query<User> query = session.createQuery(sql, User.class);
 		query.setParameter("email", email);
-		return query.getSingleResult();
+		try {
+			return query.getSingleResult();
+		} catch (NoResultException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
 	}
 
 	@Override
@@ -47,7 +53,12 @@ public class UserDAOImpl implements UserDAO {
 				+ "WHERE username = :username";
 		Query<User> query = session.createQuery(sql, User.class);
 		query.setParameter("username", username);
-		return query.getSingleResult();
+		try {
+			return query.getSingleResult();
+		} catch (NoResultException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
 	}
 
 	@Override
@@ -57,7 +68,12 @@ public class UserDAOImpl implements UserDAO {
 				+ "WHERE id_card_number = :idCardNumber";
 		Query<User> query = session.createQuery(sql, User.class);
 		query.setParameter("idCardNumber", idCardNumber);
-		return query.getSingleResult();
+		try {
+			return query.getSingleResult();
+		} catch (NoResultException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
 	}
 
 	@Override
@@ -67,7 +83,13 @@ public class UserDAOImpl implements UserDAO {
 				+ "WHERE account_number = :accountNumber";
 		Query<Account> query = session.createQuery(sql, Account.class);
 		query.setParameter("accountNumber", accountNumber);
-		Account account = query.getSingleResult();
+		Account account;
+		try {
+			account = query.getSingleResult();
+		} catch (NoResultException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
 		return account.getUser();
 	}
 
@@ -78,7 +100,12 @@ public class UserDAOImpl implements UserDAO {
 				+ "WHERE card_number = :cardNumber";
 		Query<Card> q = session.createQuery(sql, Card.class);
 		q.setParameter("cardNumber", cardNumber);
-		return q.getSingleResult().getAccount().getUser();
+		try {
+			return q.getSingleResult().getAccount().getUser();
+		} catch (NoResultException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
 	}
 
 }

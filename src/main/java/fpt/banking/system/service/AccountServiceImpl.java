@@ -22,4 +22,11 @@ public class AccountServiceImpl implements AccountService {
 		return accountDAO.getAccounts(userId);
 	}
 
+	@Override
+	@Transactional
+	public Account getAccount(int accountId) {
+		// TODO Auto-generated method stub
+		return accountDAO.getAccount(accountId);
+	}
+
 }
