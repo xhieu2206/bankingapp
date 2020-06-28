@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import fpt.banking.system.model.Account;
+import fpt.banking.system.model.Card;
 import fpt.banking.system.model.User;
 
 @Repository
@@ -65,6 +66,22 @@ public class AccountDAOImpl implements AccountDAO {
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+	@Override
+	public Account findByCardNumber(String cardNumber) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT c FROM Card c "
+				+ "WHERE card_number = :cardNumber";
+		Query<Card> q = session.createQuery(sql, Card.class);
+		q.setParameter("cardNumber", cardNumber);
+		Card card;
+		try {
+			card = q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+		return card.getAccount();
 	}
 
 }

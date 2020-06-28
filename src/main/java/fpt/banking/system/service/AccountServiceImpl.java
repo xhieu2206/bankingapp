@@ -36,4 +36,11 @@ public class AccountServiceImpl implements AccountService {
 		return accountDAO.findByAccountNumber(accountNumber);
 	}
 
+	@Override
+	@Transactional
+	public Account findByCardNumber(String cardNumber) {
+		// TODO Auto-generated method stub
+		return accountDAO.findByCardNumber(cardNumber);
+	}
+
 }

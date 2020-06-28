@@ -19,7 +19,7 @@ public class TranferServiceImpl implements TranferService {
 
 	@Override
 	@Transactional
-	public void tranferInternalByAccountNumber(long tranferAccountId, long receiveAccountId, long amount,
+	public void tranferInternal(long tranferAccountId, long receiveAccountId, long amount,
 			String description) {
 		Account tranferAccount = accountDAO.getAccount(tranferAccountId);
 		Account receiveAccount = accountDAO.getAccount(receiveAccountId);

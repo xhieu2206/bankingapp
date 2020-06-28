@@ -16,21 +16,16 @@ import fpt.banking.system.exception.AuthorizedException;
 import fpt.banking.system.exception.NotEnoughMoneyException;
 import fpt.banking.system.exception.NullDescriptionException;
 import fpt.banking.system.exception.PinCodeIncorrectedException;
-import fpt.banking.system.model.User;
-import fpt.banking.system.payload.FindUserForTranferPayload;
 import fpt.banking.system.payload.TranferInternalPayloadByAccountNumber;
+import fpt.banking.system.payload.TranferInternalPayloadByCardNumber;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.AccountService;
 import fpt.banking.system.service.TranferService;
-import fpt.banking.system.service.UserService;
 import fpt.banking.system.util.MD5;
 
 @RestController
 @RequestMapping("/api/users")
 public class TranferController {
-	
-	@Autowired
-	private UserService userService;
 	
 	@Autowired
 	private TranferService tranferService;
@@ -47,7 +42,7 @@ public class TranferController {
 			throw new AuthorizedException("You don't have permission to access this resource");
 		}
 		if (tranferInternalPayloadByAccountNumber.getAmount() > accountService.getAccount(accountId).getAmount() - 50000) {
-			throw new NotEnoughMoneyException("You don't have enough money to tranfer, you must have atleast 50000vnd after transaction");
+			throw new NotEnoughMoneyException("You don't have enough money to tranfer, you must have at least 50000vnd after transaction");
 		}
 		if (accountService.findByAccountNumber(tranferInternalPayloadByAccountNumber.getAccountNumber()) == null ||
 			!accountService.findByAccountNumber(tranferInternalPayloadByAccountNumber.getAccountNumber()).getUser().getFullname().equals(tranferInternalPayloadByAccountNumber.getFullName())) {
@@ -63,11 +58,44 @@ public class TranferController {
 		if (tranferInternalPayloadByAccountNumber.getDescription() == null || tranferInternalPayloadByAccountNumber.getDescription().equals("")) {
 			throw new NullDescriptionException("Message cannot be empty");
 		}
-		tranferService.tranferInternalByAccountNumber(
+		tranferService.tranferInternal(
 				accountId,
 				accountService.findByAccountNumber(tranferInternalPayloadByAccountNumber.getAccountNumber()).getId(),
 				tranferInternalPayloadByAccountNumber.getAmount(),
 				tranferInternalPayloadByAccountNumber.getDescription());
+		return "Tranfer successfully";
+	}
+	
+	@PostMapping("/{userId}/accounts/{accountId}/tranferInternal/cardNumber")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public String tranferInternalByAccountNumber(@PathVariable int userId,
+			@PathVariable int accountId, @RequestBody TranferInternalPayloadByCardNumber
+			tranferInternalPayloadByCardNumber, @AuthenticationPrincipal UserPrincipal user) {
+		if (accountService.getAccount(accountId).getUser().getId() != user.getId()) {
+			throw new AuthorizedException("You don't have permission to access this resource");
+		}
+		if (tranferInternalPayloadByCardNumber.getAmount() > accountService.getAccount(accountId).getAmount() - 50000) {
+			throw new NotEnoughMoneyException("You don't have enough money to tranfer, you must have at least 50000vnd after transaction");
+		}
+		if (accountService.findByCardNumber(tranferInternalPayloadByCardNumber.getCardNumber()) == null ||
+			!accountService.findByCardNumber(tranferInternalPayloadByCardNumber.getCardNumber()).getUser().getFullname().equals(tranferInternalPayloadByCardNumber.getFullName())) {
+			throw new AccountNotFound("Account Not Found");
+		}
+		String pinCode = MD5.getMd5(tranferInternalPayloadByCardNumber.getPin());
+		if (!accountService.getAccount(accountId).getPinCode().equals(pinCode)) {
+			throw new PinCodeIncorrectedException("Your pin is incorrected");
+		}
+		if (accountService.getAccount(accountId).isStatus() == false) {
+			throw new AccountIsNotActive("Your account you want to send money to is locked, please contact the owner instead");
+		}
+		if (tranferInternalPayloadByCardNumber.getDescription() == null || tranferInternalPayloadByCardNumber.getDescription().equals("")) {
+			throw new NullDescriptionException("Message cannot be empty");
+		}
+		tranferService.tranferInternal(
+				accountId,
+				accountService.findByCardNumber(tranferInternalPayloadByCardNumber.getCardNumber()).getId(),
+				tranferInternalPayloadByCardNumber.getAmount(),
+				tranferInternalPayloadByCardNumber.getDescription());
 		return "Tranfer successfully";
 	}
 }

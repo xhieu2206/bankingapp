@@ -13,4 +13,6 @@ public interface AccountDAO {
 	public Account getAccount(long accountId);
 	
 	public Account findByAccountNumber(String accountNumber);
+	
+	public Account findByCardNumber(String cardNumber);
 }
