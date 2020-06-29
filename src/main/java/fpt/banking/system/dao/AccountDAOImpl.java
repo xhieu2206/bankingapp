@@ -38,6 +38,13 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
+	public List<Account> getAccounts(long userId) {
+		Session session = entityManager.unwrap(Session.class);
+		User user = session.get(User.class, userId);
+		return user.getAccounts();
+	}
+
+	@Override
 	public Account getAccount(long accountId) {
 		Session session = entityManager.unwrap(Session.class);
 		Account account = session.get(Account.class, Long.valueOf(accountId));

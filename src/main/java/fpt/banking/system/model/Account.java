@@ -71,13 +71,21 @@ public class Account implements Serializable {
 			cascade = { CascadeType.ALL })
 	@JsonIgnore
 	private List<Transaction> transactions;
-	
+
 	@OneToOne(
 			fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL,
 			mappedBy = "account"
 			)
 	private Card card;
+	
+	@OneToMany(
+			fetch = FetchType.LAZY,
+			mappedBy = "account",
+			cascade = CascadeType.ALL
+			)
+	@JsonIgnore
+	private List<Cheque> cheques;
 	// ----------------------------------
 	
 	// Constructor ----------------------
@@ -109,7 +117,7 @@ public class Account implements Serializable {
 	}
 	// ----------------------------------
 
-	// GETTER/SETTER
+	// GETTER/SETTER --------------------
 	public Long getId() {
 		return id;
 	}
@@ -196,6 +204,14 @@ public class Account implements Serializable {
 
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
+	}
+
+	public List<Cheque> getCheques() {
+		return cheques;
+	}
+
+	public void setCheques(List<Cheque> cheques) {
+		this.cheques = cheques;
 	}
 	// ----------------------------------
 }

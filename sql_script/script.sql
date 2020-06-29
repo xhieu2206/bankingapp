@@ -213,13 +213,13 @@ drop table if exists `cheque`;
 create table `cheque`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) NOT NULL,
+  `reciever_fullname` varchar(255) not null,
+  `reciever_id_card_number` varchar(50) not null,
+  `transaction_amount` decimal not null,
   `status` bool default 1,
   `canceled` bool not null,
   `created_at` date not null,
   `expired_date` date default null,
-  `transaction_amount` decimal not null,
-  `reciever_fullname` varchar(255) not null,
-  `reciever_id_card_number` varchar(50) not null,
   
   constraint `FK_ACCOUNT_CHEQUE` foreign key (`account_id`)
   references `account` (`id`)
@@ -254,7 +254,7 @@ VALUES
 ("Doi Can", "2222222221", "100 Doi Can", "1st Transaction Office", 1),
 ("Thanh Xuan", "2222222222", "Somewhere in Thanh Xuan", "1st Transaction Office", 1);
 
-INSERT INTO `user` (username,email,password,fullname,birthday,address,id_card_number,phone,membership_id, created_at, updated_at, status, locked)
+INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked)
 VALUES
 ('username_1', 'username1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 1','1994-06-22','Ha Noi','123123123001','3333333001',1,'2015-12-12','2015-12-12', 1, 0),
 ('username_2', 'username2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 2','1994-06-22','Ha Noi','123123123002','3333333002',1,'2015-12-12','2015-12-12', 1, 0),
@@ -313,25 +313,33 @@ insert into `card` (card_number, expired_at, created_at, account_id) values
 (555511113005, '2025-10-10', '2020-10-10', 15);
 
 insert into `transaction` (amount, amount_after_transaction, description, created_at, account_id, transaction_type_id) values
-(-100000, 1900000, 'test', '2020-6-25', 1, 1),
-(-100000, 1800000, 'test', '2020-6-25', 1, 1),
-(-100000, 1700000, 'test', '2020-6-25', 1, 1),
-(-100000, 1600000, 'test', '2020-6-25', 1, 1),
-(-100000, 1500000, 'test', '2020-6-25', 1, 1),
-(-100000, 1400000, 'test', '2020-6-25', 1, 1),
-(-100000, 1300000, 'test', '2020-6-25', 1, 1),
-(-100000, 1200000, 'test', '2020-6-25', 1, 1),
-(-100000, 1100000, 'test', '2020-6-25', 1, 1),
-(-100000, 1000000, 'test', '2020-6-25', 1, 1),
+(-100000, 1900000, 'test', '2020-06-25', 1, 1),
+(-100000, 1800000, 'test', '2020-06-25', 1, 1),
+(-100000, 1700000, 'test', '2020-06-25', 1, 1),
+(-100000, 1600000, 'test', '2020-06-25', 1, 1),
+(-100000, 1500000, 'test', '2020-06-25', 1, 1),
+(-100000, 1400000, 'test', '2020-06-25', 1, 1),
+(-100000, 1300000, 'test', '2020-06-25', 1, 1),
+(-100000, 1200000, 'test', '2020-06-25', 1, 1),
+(-100000, 1100000, 'test', '2020-06-25', 1, 1),
+(-100000, 1000000, 'test', '2020-06-25', 1, 1),
 
-(100000, 100000, 'test', '2020-6-25', 6, 3),
-(100000, 200000, 'test', '2020-6-25', 6, 3),
-(100000, 300000, 'test', '2020-6-25', 6, 3),
-(100000, 400000, 'test', '2020-6-25', 6, 3),
-(100000, 500000, 'test', '2020-6-25', 6, 3),
-(100000, 600000, 'test', '2020-6-25', 6, 3),
-(100000, 700000, 'test', '2020-6-25', 6, 3),
-(100000, 800000, 'test', '2020-6-25', 6, 3),
-(100000, 900000, 'test', '2020-6-25', 6, 3),
-(100000, 1000000, 'test', '2020-6-25', 6, 3);
+(100000, 100000, 'test', '2020-06-25', 6, 3),
+(100000, 200000, 'test', '2020-06-25', 6, 3),
+(100000, 300000, 'test', '2020-06-25', 6, 3),
+(100000, 400000, 'test', '2020-06-25', 6, 3),
+(100000, 500000, 'test', '2020-06-25', 6, 3),
+(100000, 600000, 'test', '2020-06-25', 6, 3),
+(100000, 700000, 'test', '2020-06-25', 6, 3),
+(100000, 800000, 'test', '2020-06-25', 6, 3),
+(100000, 900000, 'test', '2020-06-25', 6, 3),
+(100000, 1000000, 'test', '2020-06-25', 6, 3);
+
+insert into `cheque` (reciever_fullname, reciever_id_card_number, transaction_amount, status, canceled, created_at, expired_date, account_id)
+values
+("LE THI XUAN HOA", "123123124001", 100000, 0, 0, '2020-06-29', '2020-07-03', 1),
+("NGUYEN XUAN DONG", "123123124002", 100000, 0, 0, '2020-06-29', '2020-07-03', 1),
+("NGUYEN MINH DUC", "123123124003", 100000, 0, 0, '2020-06-29', '2020-07-03', 1),
+("NGUYEN VAN A", "123123124004", 100000, 0, 0, '2020-06-29', '2020-07-03', 1),
+("NGUYEN VAN B", "123123124005", 100000, 0, 0, '2020-06-29', '2020-07-03', 1);
 
