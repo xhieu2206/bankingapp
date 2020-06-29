@@ -32,6 +32,13 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
+	public User getUser(long id) {
+		Session session = entityManager.unwrap(Session.class);
+		User user = session.get(User.class, Long.valueOf(id));
+		return user;
+	}
+
+	@Override
 	public User findByEmail(String email) {
 		Session session = entityManager.unwrap(Session.class);
 		String sql = "SELECT u FROM User u "
@@ -108,4 +115,38 @@ public class UserDAOImpl implements UserDAO {
 		}
 	}
 
+	@Override
+	public int increaseAttemptedLoginFail(long userId) {
+		Session session = entityManager.unwrap(Session.class);
+		User user = session.get(User.class, userId);
+		user.setAttempedLoginFailed(user.getAttempedLoginFailed() + 1);
+		session.saveOrUpdate(user);
+		return user.getAttempedLoginFailed();
+	}
+
+	@Override
+	public void lockAnUser(long userId) {
+		Session session = entityManager.unwrap(Session.class);
+		User user = session.get(User.class, userId);
+		user.setLocked(true);
+		user.setAttempedLoginFailed(0);
+		session.saveOrUpdate(user);
+	}
+
+	@Override
+	public void unlockAnUser(long userId) {
+		Session session = entityManager.unwrap(Session.class);
+		User user = session.get(User.class, userId);
+		user.setLocked(false);
+		user.setAttempedLoginFailed(0);
+		session.saveOrUpdate(user);
+	}
+
+	@Override
+	public void resetAttemptedLoginFail(long userId) {
+		Session session = entityManager.unwrap(Session.class);
+		User user = session.get(User.class, userId);
+		user.setAttempedLoginFailed(0);
+		session.saveOrUpdate(user);
+	}
 }

@@ -68,7 +68,8 @@ CREATE TABLE `user` (
   `attemped_login_failed` tinyint(1) default 0,
   `created_at` date default null,
   `updated_at` date default null,
-  `status` bool default 1,
+  `status` bool not null,
+  `locked` bool not null,
 
   `transaction_office_id` int(11) default null,
   `branch_office_id` int(11) default null,
@@ -213,10 +214,12 @@ create table `cheque`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) NOT NULL,
   `status` bool default 1,
-  `canceled` bool default 0,
+  `canceled` bool not null,
   `created_at` date not null,
   `expired_date` date default null,
   `transaction_amount` decimal not null,
+  `reciever_fullname` varchar(255) not null,
+  `reciever_id_card_number` varchar(50) not null,
   
   constraint `FK_ACCOUNT_CHEQUE` foreign key (`account_id`)
   references `account` (`id`)
@@ -251,11 +254,11 @@ VALUES
 ("Doi Can", "2222222221", "100 Doi Can", "1st Transaction Office", 1),
 ("Thanh Xuan", "2222222222", "Somewhere in Thanh Xuan", "1st Transaction Office", 1);
 
-INSERT INTO `user` (username,email,password,fullname,birthday,address,id_card_number,phone,membership_id, created_at, updated_at)
+INSERT INTO `user` (username,email,password,fullname,birthday,address,id_card_number,phone,membership_id, created_at, updated_at, status, locked)
 VALUES
-('username_1', 'username1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 1','1994-06-22','Ha Noi','123123123001','3333333001',1,'2015-12-12','2015-12-12'),
-('username_2', 'username2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 2','1994-06-22','Ha Noi','123123123002','3333333002',1,'2015-12-12','2015-12-12'),
-('username_3', 'username3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 3','1994-06-22','Ha Noi','123123123003','3333333002',1,'2015-12-12','2015-12-12');
+('username_1', 'username1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 1','1994-06-22','Ha Noi','123123123001','3333333001',1,'2015-12-12','2015-12-12', 1, 0),
+('username_2', 'username2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 2','1994-06-22','Ha Noi','123123123002','3333333002',1,'2015-12-12','2015-12-12', 1, 0),
+('username_3', 'username3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 3','1994-06-22','Ha Noi','123123123003','3333333002',1,'2015-12-12','2015-12-12', 1, 0);
 
 INSERT INTO `users_roles` (user_id,role_id)
 VALUES 

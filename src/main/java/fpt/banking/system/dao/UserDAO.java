@@ -5,6 +5,8 @@ import fpt.banking.system.model.User;
 public interface UserDAO {
 	
 	public User getUser(int id);
+
+	public User getUser(long id);
 	
 	public User findByEmail(String email);
 	
@@ -15,4 +17,12 @@ public interface UserDAO {
 	public User findByAccountNumber(String accountNumber);
 	
 	public User findByCardNumber(String cardNumber);
+	
+	public int increaseAttemptedLoginFail(long userId);
+
+	public void lockAnUser(long userId);
+	
+	public void unlockAnUser(long userId);
+	
+	public void resetAttemptedLoginFail(long userId);
 }

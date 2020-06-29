@@ -23,6 +23,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
+	public User getUser(long id) {
+		return userDAO.getUser(id);
+	}
+
+	@Override
+	@Transactional
 	public User findUser(String term, String type) {
 		if (type.equals(SearchUserTypeEnum.IDCARDNUMBER.toString())) {
 			return userDAO.findByIdCardNumber(term);
@@ -37,5 +43,29 @@ public class UserServiceImpl implements UserService {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	@Transactional
+	public int increaseAttemptedLoginFail(long userId) {
+		return userDAO.increaseAttemptedLoginFail(userId);
+	}
+	
+	@Override
+	@Transactional
+	public void lockAnUser(long userId) {
+		userDAO.lockAnUser(userId);
+	}
+	
+	@Override
+	@Transactional
+	public void unlockAnUser(long userId) {
+		userDAO.unlockAnUser(userId);
+	}
+
+	@Override
+	@Transactional
+	public void resetAttemptedLoginFail(long userId) {
+		userDAO.resetAttemptedLoginFail(userId);
 	}
 }

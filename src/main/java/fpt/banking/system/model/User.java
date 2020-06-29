@@ -69,6 +69,9 @@ public class User implements Serializable {
 	@Column(name = "status", nullable = false)
 	private boolean status;
 	
+	@Column(name = "locked", nullable = false)
+	private boolean locked;
+	
 	// Relationship
 	@ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
@@ -116,7 +119,7 @@ public class User implements Serializable {
     
 	public User(String username, String email, String password, String fullname, Date birthday, String address,
 			String gender, String image, String idCardNumber, String phone, int attempedLoginFailed, Date createdAt,
-			Date updatedAt, boolean status) {
+			Date updatedAt, boolean status, boolean locked) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
@@ -131,11 +134,12 @@ public class User implements Serializable {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.status = status;
+		this.locked = locked;
 	}
 
 	public User(Long id, String username, String email, String password, String fullname, Date birthday, String address,
 			String gender, String image, String idCardNumber, String phone, int attempedLoginFailed, Date createdAt,
-			Date updatedAt, boolean status) {
+			Date updatedAt, boolean status, boolean locked) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
@@ -151,6 +155,7 @@ public class User implements Serializable {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.status = status;
+		this.locked = locked;
 	}
 	// ---------------------------------------
 
@@ -283,6 +288,14 @@ public class User implements Serializable {
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+
+	public boolean isLocked() {
+		return locked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
 	}
 
 	public TransactionOffice getTransactionOffice() {

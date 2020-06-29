@@ -47,6 +47,8 @@ public class UserPrincipal implements UserDetails {
     
     private boolean status;
     
+    private boolean locked;
+    
     private Membership membership;
 
     private Collection<? extends GrantedAuthority> authorities;
@@ -55,7 +57,7 @@ public class UserPrincipal implements UserDetails {
     		String fullname, String username, String email, String password, 
     		Collection<? extends GrantedAuthority> authorities, Date birthday,
     		String address, String gender, String image, String idCardNumber,
-    		String phone, Date createdAt, Date updatedAt, boolean status, Membership membership) {
+    		String phone, Date createdAt, Date updatedAt, boolean status, boolean locked, Membership membership) {
         this.id = id;
         this.fullname = fullname;
         this.username = username;
@@ -71,6 +73,7 @@ public class UserPrincipal implements UserDetails {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.status = status;
+        this.locked = locked;
         this.membership = membership;
     }
 
@@ -95,6 +98,7 @@ public class UserPrincipal implements UserDetails {
                 user.getCreatedAt(),
                 user.getUpdatedAt(),
                 user.isStatus(),
+                user.isLocked(),
                 user.getMembership()
         );
     }
@@ -178,6 +182,14 @@ public class UserPrincipal implements UserDetails {
 		return status;
 	}
 
+	public boolean isLocked() {
+		return locked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
+	}
+
 	@Override
     public boolean isAccountNonExpired() {
         return true;
@@ -185,7 +197,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !this.isLocked();
     }
 
     @Override

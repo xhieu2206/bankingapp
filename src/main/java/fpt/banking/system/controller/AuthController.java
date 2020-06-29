@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fpt.banking.system.exception.AppException;
+import fpt.banking.system.exception.ErrorResponse;
 import fpt.banking.system.model.Role;
 import fpt.banking.system.model.User;
 import fpt.banking.system.payload.ApiResponse;
@@ -27,6 +30,7 @@ import fpt.banking.system.payload.SignUpRequest;
 import fpt.banking.system.repository.RoleRepository;
 import fpt.banking.system.repository.UserRepository;
 import fpt.banking.system.security.JwtTokenProvider;
+import fpt.banking.system.service.UserService;
 
 @RestController
 @RequestMapping("/api/user/auth")
@@ -46,28 +50,85 @@ public class AuthController {
     @Autowired
     JwtTokenProvider tokenProvider;
     
+    @Autowired
+    private UserService userService;
+    
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsernameOrEmail(),
-                        loginRequest.getPassword()
-                )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        JwtAuthenticationResponse response = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(response);
+    	try {
+    		Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsernameOrEmail(),
+                            loginRequest.getPassword()
+                    )
+            );
+    		long id = 0;
+			if (userService.findUser(loginRequest.getUsernameOrEmail(), "EMAIL") != null) {
+				id = userService.findUser(loginRequest.getUsernameOrEmail(), "EMAIL").getId();
+			} else {
+				id = userService.findUser(loginRequest.getUsernameOrEmail(), "USERNAME").getId();
+			}
+			String role = "";
+			for (Role r: userService.getUser(id).getRoles()) {
+				role = r.getName();
+			}
+			if (!role.equals("ROLE_USER")) {
+				ErrorResponse error = new ErrorResponse(HttpStatus.FORBIDDEN.value(), "You are not an User",
+        				System.currentTimeMillis());
+        		return new ResponseEntity<ErrorResponse>(error, HttpStatus.FORBIDDEN);
+			}
+    		SecurityContextHolder.getContext().setAuthentication(authentication);
+            JwtAuthenticationResponse response = tokenProvider.generateToken(authentication);
+            
+			userService.resetAttemptedLoginFail(id);
+            return ResponseEntity.ok(response);
+    	} catch (LockedException e) {
+    		String mess = "Your account had been locked, please contact admin to unlock your account";
+    		ErrorResponse error = new ErrorResponse(HttpStatus.LOCKED.value(), mess,
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.LOCKED);
+    	} catch (BadCredentialsException e) {
+    		if (userService.findUser(loginRequest.getUsernameOrEmail(), "EMAIL") != null ||
+    				userService.findUser(loginRequest.getUsernameOrEmail(), "USERNAME") != null) {
+    			long id = 0;
+    			if (userService.findUser(loginRequest.getUsernameOrEmail(), "EMAIL") != null) {
+    				id = userService.findUser(loginRequest.getUsernameOrEmail(), "EMAIL").getId();
+    			} else {
+    				id = userService.findUser(loginRequest.getUsernameOrEmail(), "USERNAME").getId();
+    			}
+    			long attempedLoginFailed = userService.increaseAttemptedLoginFail(id);
+    			String mess = "";
+    			if (attempedLoginFailed == 1) {
+    				mess = "You have entered incorrected password 1 time, you have 2 times remaining before your account to be locked";
+    			} else if (attempedLoginFailed == 2) {
+    				mess = "You have entered incorrected password 2 times, you have 1 times remaining before your account to be locked";
+    			} else if (attempedLoginFailed == 3) {
+    				mess = "You have entered incorrected password 3 times, last tried before your account to be locked";
+    			} else {
+    				mess = "Your haved entered wrong password 4 times, your account is lock now, please contact admin to unlock your account";
+    				userService.lockAnUser(id);
+    				ErrorResponse error = new ErrorResponse(HttpStatus.LOCKED.value(), mess,
+            				System.currentTimeMillis());
+            		return new ResponseEntity<ErrorResponse>(error, HttpStatus.LOCKED);
+    			}
+    			ErrorResponse error = new ErrorResponse(HttpStatus.FORBIDDEN.value(), mess,
+        				System.currentTimeMillis());
+        		return new ResponseEntity<ErrorResponse>(error, HttpStatus.FORBIDDEN);
+    		}
+    		ErrorResponse error = new ErrorResponse(HttpStatus.FORBIDDEN.value(), "Wrong Username/Email or password",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.FORBIDDEN);
+    	}
     }
     
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-    	if(userRepository.existsByUsername(signUpRequest.getUsername())) {
+    	if (userService.findUser(signUpRequest.getUsername(), "USERNAME") != null) {
             return new ResponseEntity(new ApiResponse(false, "Username is already taken!"), HttpStatus.BAD_REQUEST);
         }
 
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userService.findUser(signUpRequest.getEmail(), "USERNAME") != null) {
             return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"), HttpStatus.BAD_REQUEST);
         }
         
