@@ -103,6 +103,7 @@ create table `account` (
   `account_number` varchar(50) not null,
   `user_id` int(11) not null,
   `status` bool default 1,
+  `otp_tranfer_enabled` boolean not null,
   `amount` bigint(20) default 20000000,
   `pin_code` varchar(100) not null default 'b59c67bf196a4758191e42f76670ceba',
   `expired_date` date default null,
@@ -175,7 +176,21 @@ create table `transaction` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 ########################################################
 
-########################################################
+#### TRANSACTION QUEUE TABLE #################################
+DROP TABLE IF EXISTS `transaction_queue_internal`;
+create table `transaction_queue_internal` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+    `otp_code` varchar(100) not null,
+    `tranfer_account_id` int(11) NOT NULL,
+    `receiver_account_id` int(11) NOT NULL,
+    `amount` decimal not null,
+    `expried_at` timestamp not null,
+    
+    primary key (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+##############################################################
+
+##############################################################
 #### ROLE ####
 DROP TABLE IF EXISTS `role`;
 
@@ -184,9 +199,9 @@ CREATE TABLE `role` (
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-########################################################
+##############################################################
 
-#### USERS_ROLES #######################################
+#### USERS_ROLES #############################################
 DROP TABLE IF EXISTS `users_roles`;
 
 CREATE TABLE `users_roles` (
@@ -205,9 +220,9 @@ CREATE TABLE `users_roles` (
   REFERENCES `role` (`id`) 
   ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-########################################################
+##############################################################
 
-#### CHEQUE TABLE ######################################
+#### CHEQUE TABLE ############################################
 drop table if exists `cheque`;
 
 create table `cheque`(
@@ -227,7 +242,7 @@ create table `cheque`(
 
   primary key (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-########################################################
+##############################################################
 
 
 ############################################## INSERT DATA ##########################################################
@@ -256,9 +271,9 @@ VALUES
 
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked)
 VALUES
-('username_1', 'username1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 1','1994-06-22','Ha Noi','123123123001','3333333001',1,'2015-12-12','2015-12-12', 1, 0),
-('username_2', 'username2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 2','1994-06-22','Ha Noi','123123123002','3333333002',1,'2015-12-12','2015-12-12', 1, 0),
-('username_3', 'username3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 3','1994-06-22','Ha Noi','123123123003','3333333003',1,'2015-12-12','2015-12-12', 1, 0);
+('xuanhieu_1', 'xuanhieu1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Nguyen Xuan Hieu','1994-06-22','Ha Noi','+84963558935','3333333001',1,'2015-12-12','2015-12-12', 1, 0),
+('minhduc_1', 'minhduc1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Nguyen Minh Duc','1994-06-22','Ha Noi','+84966423895','3333333002',1,'2015-12-12','2015-12-12', 1, 0),
+('hoanghung_1', 'hoanghung1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Hoang Van Hung','1994-06-22','Ha Noi','123123123003','3333333003',1,'2015-12-12','2015-12-12', 1, 0);
 
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, transaction_office_id)
 VALUES
@@ -275,26 +290,26 @@ VALUES
 (5, 2),
 (6, 2);
 
-INSERT INTO `account` (amount, account_number, user_id, created_at, updated_at, expired_date)
+INSERT INTO `account` (amount, account_number, user_id, created_at, updated_at, expired_date, otp_tranfer_enabled)
 VALUES
-# accounts of user 1
-(1000000, 444411111001, 1, '2020-10-10', '2020-10-10', '2025-10-10'), 
-(1000000, 444411111002, 1, '2020-10-10', '2020-10-10', '2025-10-10'), 
-(1000000, 444411111003, 1, '2020-10-10', '2020-10-10', '2025-10-10'), 
-(1000000, 444411111004, 1, '2020-10-10', '2020-10-10', '2025-10-10'), 
-(1000000, 444411111005, 1, '2020-10-10', '2020-10-10', '2025-10-10'),
-# accounts of user 2
-(1000000, 444411112001, 2, '2020-10-10', '2020-10-10', '2025-10-10'), 
-(1000000, 444411112002, 2, '2020-10-10', '2020-10-10', '2025-10-10'), 
-(1000000, 444411112003, 2, '2020-10-10', '2020-10-10', '2025-10-10'), 
-(1000000, 444411112004, 2, '2020-10-10', '2020-10-10', '2025-10-10'), 
-(1000000, 444411112005, 2, '2020-10-10', '2020-10-10', '2025-10-10'),
-# accounts of user 3
-(1000000, 444411113001, 3, '2020-10-10', '2020-10-10', '2025-10-10'), 
-(1000000, 444411113002, 3, '2020-10-10', '2020-10-10', '2025-10-10'), 
-(1000000, 444411113003, 3, '2020-10-10', '2020-10-10', '2025-10-10'), 
-(1000000, 444411113004, 3, '2020-10-10', '2020-10-10', '2025-10-10'), 
-(1000000, 444411113005, 3, '2020-10-10', '2020-10-10', '2025-10-10');
+# accounts of Xuan Hieu
+(1000000, 444411111001, 1, '2020-10-10', '2020-10-10', '2025-10-10', 1), 
+(1000000, 444411111002, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0), 
+(1000000, 444411111003, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0), 
+(1000000, 444411111004, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0), 
+(1000000, 444411111005, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0),
+# accounts of Minh Duc
+(1000000, 444411112001, 2, '2020-10-10', '2020-10-10', '2025-10-10', 1), 
+(1000000, 444411112002, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0), 
+(1000000, 444411112003, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0), 
+(1000000, 444411112004, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0), 
+(1000000, 444411112005, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0),
+# accounts of Hoang Hung
+(1000000, 444411113001, 3, '2020-10-10', '2020-10-10', '2025-10-10', 1), 
+(1000000, 444411113002, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0), 
+(1000000, 444411113003, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0), 
+(1000000, 444411113004, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0), 
+(1000000, 444411113005, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0);
 
 insert into `transaction_type` (name)
 values

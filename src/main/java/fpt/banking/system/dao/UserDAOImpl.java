@@ -103,7 +103,7 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User findByCardNumber(String cardNumber) {
 		Session session = entityManager.unwrap(Session.class);
-		String sql = "SELECT c FROM Card c"
+		String sql = "SELECT c FROM Card c "
 				+ "WHERE card_number = :cardNumber";
 		Query<Card> q = session.createQuery(sql, Card.class);
 		q.setParameter("cardNumber", cardNumber);

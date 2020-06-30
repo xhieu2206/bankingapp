@@ -38,6 +38,9 @@ public class Account implements Serializable {
 	@Column(name = "status", nullable = false)
 	private boolean status;
 	
+	@Column(name = "otp_tranfer_enabled")
+	private boolean otpTranferEnabled;
+	
 	@Column(name = "amount")
 	private long amount;
 	
@@ -91,11 +94,12 @@ public class Account implements Serializable {
 	// Constructor ----------------------
 	public Account() { }
 
-	public Account(Long id, boolean status, int amount, String pinCode,
+	public Account(Long id, boolean status, boolean otpTranferEnabled, int amount, String pinCode,
 			Date expiredAt, Date createdAt, Date updatedAt,
 			String accountNumber) {
 		this.id = id;
 		this.status = status;
+		this.otpTranferEnabled = otpTranferEnabled;
 		this.amount = amount;
 		this.pinCode = pinCode;
 		this.accountNumber = accountNumber;
@@ -104,11 +108,12 @@ public class Account implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public Account(boolean status, int amount, String pinCode,
+	public Account(boolean status, boolean otpTranferEnabled, int amount, String pinCode,
 			Date expiredAt, Date createdAt, Date updatedAt,
 			String accountNumber) {
 		this.status = status;
 		this.amount = amount;
+		this.otpTranferEnabled = otpTranferEnabled;
 		this.pinCode = pinCode;
 		this.accountNumber = accountNumber;
 		this.expiredAt = expiredAt;
@@ -128,6 +133,14 @@ public class Account implements Serializable {
 
 	public boolean isStatus() {
 		return status;
+	}
+
+	public boolean isOtpTranferEnabled() {
+		return otpTranferEnabled;
+	}
+
+	public void setOtpTranferEnabled(boolean otpTranferEnabled) {
+		this.otpTranferEnabled = otpTranferEnabled;
 	}
 
 	public void setStatus(boolean status) {
