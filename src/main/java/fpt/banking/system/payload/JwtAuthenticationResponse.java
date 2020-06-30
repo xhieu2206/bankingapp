@@ -6,15 +6,6 @@ public class JwtAuthenticationResponse {
 	private String accessToken;
     private String tokenType = "Bearer";
     private String roles;
-    private User user;
-
-    public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
 
 	public JwtAuthenticationResponse(String accessToken) {
         this.accessToken = accessToken;

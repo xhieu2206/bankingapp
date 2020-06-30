@@ -100,13 +100,13 @@ public class AuthController {
     			long attempedLoginFailed = userService.increaseAttemptedLoginFail(id);
     			String mess = "";
     			if (attempedLoginFailed == 1) {
-    				mess = "You have entered incorrected password 1 time, you have 2 times remaining before your account to be locked";
+    				mess = userService.getUser(id).getUsername() + " have entered incorrected password 1 time, you have 2 times remaining before your account to be locked";
     			} else if (attempedLoginFailed == 2) {
-    				mess = "You have entered incorrected password 2 times, you have 1 times remaining before your account to be locked";
+    				mess = userService.getUser(id).getUsername() + " have entered incorrected password 2 times, you have 1 times remaining before your account to be locked";
     			} else if (attempedLoginFailed == 3) {
-    				mess = "You have entered incorrected password 3 times, last tried before your account to be locked";
+    				mess = userService.getUser(id).getUsername() + " have entered incorrected password 3 times, last tried before your account to be locked";
     			} else {
-    				mess = "Your haved entered wrong password 4 times, your account is lock now, please contact admin to unlock your account";
+    				mess = userService.getUser(id).getUsername() + " haved entered wrong password 4 times, your account is lock now, please contact admin to unlock your account";
     				userService.lockAnUser(id);
     				ErrorResponse error = new ErrorResponse(HttpStatus.LOCKED.value(), mess,
             				System.currentTimeMillis());

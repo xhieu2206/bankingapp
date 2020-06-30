@@ -258,13 +258,22 @@ INSERT INTO `user` (username, email, password, fullname, birthday, address, id_c
 VALUES
 ('username_1', 'username1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 1','1994-06-22','Ha Noi','123123123001','3333333001',1,'2015-12-12','2015-12-12', 1, 0),
 ('username_2', 'username2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 2','1994-06-22','Ha Noi','123123123002','3333333002',1,'2015-12-12','2015-12-12', 1, 0),
-('username_3', 'username3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 3','1994-06-22','Ha Noi','123123123003','3333333002',1,'2015-12-12','2015-12-12', 1, 0);
+('username_3', 'username3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name 3','1994-06-22','Ha Noi','123123123003','3333333003',1,'2015-12-12','2015-12-12', 1, 0);
+
+INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, transaction_office_id)
+VALUES
+('employee_1', 'employee1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 1','1994-06-22','Ha Noi','123123123011','3333333011',4,'2015-12-12','2015-12-12', 1, 0, 1),
+('employee_2', 'employee2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 2','1994-06-22','Ha Noi','123123123012','3333333012',4,'2015-12-12','2015-12-12', 1, 0, 1),
+('employee_3', 'employee3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 3','1994-06-22','Ha Noi','123123123013','3333333013',4,'2015-12-12','2015-12-12', 1, 0, 1);
 
 INSERT INTO `users_roles` (user_id,role_id)
 VALUES 
 (1, 1),
 (2, 1),
-(3, 1);
+(3, 1),
+(4, 2),
+(5, 2),
+(6, 2);
 
 INSERT INTO `account` (amount, account_number, user_id, created_at, updated_at, expired_date)
 VALUES

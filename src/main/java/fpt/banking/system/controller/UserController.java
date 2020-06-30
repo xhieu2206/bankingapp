@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fpt.banking.system.exception.UserNotFoundException;
+import fpt.banking.system.model.Role;
 import fpt.banking.system.model.User;
 import fpt.banking.system.payload.FindUserForTranferPayload;
 import fpt.banking.system.security.UserPrincipal;
@@ -22,7 +23,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-
 	@PostMapping("/find")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public User find(@RequestBody FindUserForTranferPayload
@@ -42,8 +42,18 @@ public class UserController {
     }
 	
 	@GetMapping("/current")
-	@PreAuthorize("hasRole('ROLE_USER')")
-	public UserPrincipal getUser(@AuthenticationPrincipal UserPrincipal user) {
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE', 'ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
+	public UserPrincipal getCurrentUserLoggedIn(@AuthenticationPrincipal UserPrincipal user) {
 		return user;
+	}
+	
+	@GetMapping("/current/role")
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE', 'ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
+	public String getCurrentUserLoggedInRole(@AuthenticationPrincipal UserPrincipal user) {
+		String role = "";
+		for (Role r: userService.getUser(user.getId()).getRoles()) {
+			role = r.getName();
+		}
+		return role;
 	}
 }
