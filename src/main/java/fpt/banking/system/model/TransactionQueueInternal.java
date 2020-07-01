@@ -35,6 +35,9 @@ public class TransactionQueueInternal {
 	@Column(name = "amount")
 	private long amount;
 	
+	@Column(name = "description")
+	private String description;
+	
 	@Column(name = "expried_at", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private java.util.Date expriedAt;
@@ -42,22 +45,24 @@ public class TransactionQueueInternal {
 	public TransactionQueueInternal() {
 	}
 
-	public TransactionQueueInternal(Long id, String otpCode, Long tranferAccountId, Long receiverAccountId, long amount,
+	public TransactionQueueInternal(Long id, String otpCode, Long tranferAccountId, Long receiverAccountId, long amount, String description,
 			Date expriedAt) {
 		this.id = id;
 		this.otpCode = otpCode;
 		this.tranferAccountId = tranferAccountId;
 		this.receiverAccountId = receiverAccountId;
 		this.amount = amount;
+		this.description = description;
 		this.expriedAt = expriedAt;
 	}
 
-	public TransactionQueueInternal(String otpCode, Long tranferAccountId, Long receiverAccountId, long amount,
+	public TransactionQueueInternal(String otpCode, Long tranferAccountId, Long receiverAccountId, long amount, String description,
 			Date expriedAt) {
 		this.otpCode = otpCode;
 		this.tranferAccountId = tranferAccountId;
 		this.receiverAccountId = receiverAccountId;
 		this.amount = amount;
+		this.description = description;
 		this.expriedAt = expriedAt;
 	}
 
@@ -99,6 +104,14 @@ public class TransactionQueueInternal {
 
 	public void setAmount(long amount) {
 		this.amount = amount;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public java.util.Date getExpriedAt() {

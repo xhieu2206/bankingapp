@@ -184,6 +184,7 @@ create table `transaction_queue_internal` (
     `tranfer_account_id` int(11) NOT NULL,
     `receiver_account_id` int(11) NOT NULL,
     `amount` decimal not null,
+    `description` text not null,
     `expried_at` timestamp not null,
     
     primary key (`id`)
@@ -271,15 +272,15 @@ VALUES
 
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked)
 VALUES
-('xuanhieu_1', 'xuanhieu1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Nguyen Xuan Hieu','1994-06-22','Ha Noi','+84963558935','3333333001',1,'2015-12-12','2015-12-12', 1, 0),
-('minhduc_1', 'minhduc1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Nguyen Minh Duc','1994-06-22','Ha Noi','+84966423895','3333333002',1,'2015-12-12','2015-12-12', 1, 0),
+('xuanhieu_1', 'xuanhieu1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Nguyen Xuan Hieu','1994-06-22','Ha Noi','123123123001','+84963558935',1,'2015-12-12','2015-12-12', 1, 0),
+('minhduc_1', 'minhduc1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Nguyen Minh Duc','1994-06-22','Ha Noi','123123123002','+84966423895',1,'2015-12-12','2015-12-12', 1, 0),
 ('hoanghung_1', 'hoanghung1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Hoang Van Hung','1994-06-22','Ha Noi','123123123003','3333333003',1,'2015-12-12','2015-12-12', 1, 0);
 
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, transaction_office_id)
 VALUES
-('employee_1', 'employee1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 1','1994-06-22','Ha Noi','123123123011','3333333011',4,'2015-12-12','2015-12-12', 1, 0, 1),
-('employee_2', 'employee2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 2','1994-06-22','Ha Noi','123123123012','3333333012',4,'2015-12-12','2015-12-12', 1, 0, 1),
-('employee_3', 'employee3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 3','1994-06-22','Ha Noi','123123123013','3333333013',4,'2015-12-12','2015-12-12', 1, 0, 1);
+('employee_1', 'employee1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 1','1994-06-22','Ha Noi','123123123011','+8412312311',4,'2015-12-12','2015-12-12', 1, 0, 1),
+('employee_2', 'employee2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 2','1994-06-22','Ha Noi','123123123012','+8412312312',4,'2015-12-12','2015-12-12', 1, 0, 1),
+('employee_3', 'employee3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 3','1994-06-22','Ha Noi','123123123013','+8412312313',4,'2015-12-12','2015-12-12', 1, 0, 1);
 
 INSERT INTO `users_roles` (user_id,role_id)
 VALUES 

@@ -58,6 +58,14 @@ public class TranferController {
 		if (tranferInternalPayloadByAccountNumber.getDescription() == null || tranferInternalPayloadByAccountNumber.getDescription().equals("")) {
 			throw new NullDescriptionException("Message cannot be empty");
 		}
+		if (accountService.getAccount(Long.valueOf(accountId)).isOtpTranferEnabled()) {
+			String id = tranferService.saveTransactionQueueInternal(
+					accountId, 
+					accountService.findByAccountNumber(tranferInternalPayloadByAccountNumber.getAccountNumber()).getId(), 
+					tranferInternalPayloadByAccountNumber.getAmount(),
+					tranferInternalPayloadByAccountNumber.getDescription());
+			return id;
+		}
 		tranferService.tranferInternal(
 				accountId,
 				accountService.findByAccountNumber(tranferInternalPayloadByAccountNumber.getAccountNumber()).getId(),
@@ -90,6 +98,14 @@ public class TranferController {
 		}
 		if (tranferInternalPayloadByCardNumber.getDescription() == null || tranferInternalPayloadByCardNumber.getDescription().equals("")) {
 			throw new NullDescriptionException("Message cannot be empty");
+		}
+		if (accountService.getAccount(Long.valueOf(accountId)).isOtpTranferEnabled()) {
+			String id = tranferService.saveTransactionQueueInternal(
+					accountId, 
+					accountService.findByCardNumber(tranferInternalPayloadByCardNumber.getCardNumber()).getId(), 
+					tranferInternalPayloadByCardNumber.getAmount(),
+					tranferInternalPayloadByCardNumber.getDescription());
+			return id;
 		}
 		tranferService.tranferInternal(
 				accountId,

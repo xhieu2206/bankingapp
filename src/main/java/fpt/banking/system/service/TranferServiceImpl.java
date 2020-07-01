@@ -1,12 +1,21 @@
 package fpt.banking.system.service;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fpt.banking.system.dao.AccountDAO;
 import fpt.banking.system.dao.TransactionDAO;
+import fpt.banking.system.dao.TransactionQueueInternalDAO;
 import fpt.banking.system.model.Account;
+import fpt.banking.system.model.TransactionQueueInternal;
+import fpt.banking.system.util.MD5;
+import fpt.banking.system.util.RandomGenerator;
+import fpt.banking.system.constants.TimerConstants;
+import fpt.banking.system.util.SendSms;
 
 @Service
 public class TranferServiceImpl implements TranferService {
@@ -16,6 +25,9 @@ public class TranferServiceImpl implements TranferService {
 	
 	@Autowired
 	private AccountDAO accountDAO;
+	
+	@Autowired
+	private TransactionQueueInternalDAO transactionQueueInternalDAO;
 
 	@Override
 	@Transactional
@@ -29,4 +41,27 @@ public class TranferServiceImpl implements TranferService {
 		accountDAO.changeAmount(receiveAccountId, receiveAccount.getAmount() + amount);
 	}
 
+	@Override
+	@Transactional
+	public String saveTransactionQueueInternal(long tranferAccountId, long receiverAccountId, long amount, String description) {
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 300000 + TimerConstants.VIETNAM_TIMEZONE_TIMESTAMP);
+		String otpCode = RandomGenerator.generateOTP();
+		String phone = accountDAO.getAccount(tranferAccountId).getUser().getPhone();
+		System.out.println(phone);
+		SendSms.sendSms(phone, "OTP: " + otpCode);
+		String id = transactionQueueInternalDAO.saveTransactionQueueInternal(MD5.getMd5(otpCode), tranferAccountId, receiverAccountId, amount, new Date(timestamp.getTime()), description);
+		return id;
+	}
+
+	@Override
+	@Transactional
+	public void deleteTransactionQueueInternal(long transactionQueueInternalId) {
+		transactionQueueInternalDAO.deleteTransactionQueueInternal(transactionQueueInternalId);
+	}
+
+	@Override
+	@Transactional
+	public TransactionQueueInternal findTransactionQueueById(long id) {
+		return transactionQueueInternalDAO.findById(id);
+	}
 }

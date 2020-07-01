@@ -10,6 +10,8 @@ public interface AccountService {
 	
 	public Account getAccount(int accountId);
 	
+	public Account getAccount(long accountId);
+	
 	public Account findByAccountNumber(String accountNumber);
 	
 	public Account findByCardNumber(String cardNumber);

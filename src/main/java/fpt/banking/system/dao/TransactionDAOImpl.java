@@ -30,7 +30,8 @@ public class TransactionDAOImpl implements TransactionDAO {
 	public List<Transaction> getTransactions(long accountId, int page) {
 		Session session = entityManager.unwrap(Session.class);		
 		String sql = "SELECT t FROM Transaction t "
-				+ "WHERE account_id = :accountId";
+				+ "WHERE account_id = :accountId "
+				+ "ORDER BY t.id DESC";
 		Query<Transaction> query = session.createQuery(sql, Transaction.class).setFirstResult((page - 1) * 5).setMaxResults(5);
 		query.setParameter("accountId", accountId);
 		List<Transaction> trans = query.getResultList();

@@ -10,6 +10,32 @@ import fpt.banking.system.exception.ErrorResponse;
 public class RestExceptionHandler {
 	
 	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(WrongOTPCode exc) {
+
+		// create CustomerErrorResponse
+
+		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), exc.getMessage(),
+				System.currentTimeMillis());
+
+		// return ResponseEntity
+
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(ExpriedOTP exc) {
+
+		// create CustomerErrorResponse
+
+		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), exc.getMessage(),
+				System.currentTimeMillis());
+
+		// return ResponseEntity
+
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+	}
+	
+	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(NullDescriptionException exc) {
 
 		// create CustomerErrorResponse
