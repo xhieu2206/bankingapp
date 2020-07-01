@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fpt.banking.system.exception.AppException;
 import fpt.banking.system.exception.ErrorResponse;
+import fpt.banking.system.exception.ErrorResponseWithLoggedInFailed;
 import fpt.banking.system.model.Role;
 import fpt.banking.system.model.User;
 import fpt.banking.system.payload.ApiResponse;
@@ -99,12 +100,16 @@ public class AuthController {
     			}
     			long attempedLoginFailed = userService.increaseAttemptedLoginFail(id);
     			String mess = "";
+    			int time = 0;
     			if (attempedLoginFailed == 1) {
     				mess = userService.getUser(id).getUsername() + " have entered incorrected password 1 time, you have 2 times remaining before your account to be locked";
+    				time = 1;
     			} else if (attempedLoginFailed == 2) {
     				mess = userService.getUser(id).getUsername() + " have entered incorrected password 2 times, you have 1 times remaining before your account to be locked";
+    				time = 2;
     			} else if (attempedLoginFailed == 3) {
     				mess = userService.getUser(id).getUsername() + " have entered incorrected password 3 times, last tried before your account to be locked";
+    				time = 3;
     			} else {
     				mess = userService.getUser(id).getUsername() + " haved entered wrong password 4 times, your account is lock now, please contact admin to unlock your account";
     				userService.lockAnUser(id);
@@ -112,9 +117,9 @@ public class AuthController {
             				System.currentTimeMillis());
             		return new ResponseEntity<ErrorResponse>(error, HttpStatus.LOCKED);
     			}
-    			ErrorResponse error = new ErrorResponse(HttpStatus.FORBIDDEN.value(), mess,
-        				System.currentTimeMillis());
-        		return new ResponseEntity<ErrorResponse>(error, HttpStatus.FORBIDDEN);
+    			ErrorResponseWithLoggedInFailed error = new ErrorResponseWithLoggedInFailed(HttpStatus.FORBIDDEN.value(), mess,
+        				System.currentTimeMillis(), time);
+        		return new ResponseEntity<ErrorResponseWithLoggedInFailed>(error, HttpStatus.FORBIDDEN);
     		}
     		ErrorResponse error = new ErrorResponse(HttpStatus.FORBIDDEN.value(), "Wrong Username/Email or password",
     				System.currentTimeMillis());
