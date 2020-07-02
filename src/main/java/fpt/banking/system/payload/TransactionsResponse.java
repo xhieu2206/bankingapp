@@ -6,29 +6,29 @@ import fpt.banking.system.model.Transaction;
 
 public class TransactionsResponse {
 
-	private int totalTransaction;
+	private int totalCount;
 	private int totalPage;
-	private int currentPage;
-	private int itemsInPage;
-	private List<Transaction> transactions;
+	private int pageNumber;
+	private int pageSize;
+	private List<Transaction> items;
 
 	public TransactionsResponse() {
 	}
 
-	public TransactionsResponse(int totalTransaction, int totalPage, int currentPage, List<Transaction> transactions, int itemsInPage) {
-		this.totalTransaction = totalTransaction;
+	public TransactionsResponse(int totalCount, int totalPage, int pageNumber, int pageSize, List<Transaction> items) {
+		this.totalCount = totalCount;
 		this.totalPage = totalPage;
-		this.currentPage = currentPage;
-		this.transactions = transactions;
-		this.itemsInPage = itemsInPage;
+		this.pageNumber = pageNumber;
+		this.pageSize = pageSize;
+		this.items = items;
 	}
 
-	public int getTotalTransaction() {
-		return totalTransaction;
+	public int getTotalCount() {
+		return totalCount;
 	}
 
-	public void setTotalTransaction(int totalTransaction) {
-		this.totalTransaction = totalTransaction;
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
 	}
 
 	public int getTotalPage() {
@@ -39,27 +39,29 @@ public class TransactionsResponse {
 		this.totalPage = totalPage;
 	}
 
-	public int getCurrentPage() {
-		return currentPage;
+	public int getPageNumber() {
+		return pageNumber;
 	}
 
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
+	public void setPageNumber(int pageNumber) {
+		this.pageNumber = pageNumber;
 	}
 
-	public List<Transaction> getTransactions() {
-		return transactions;
+	public int getPageSize() {
+		return pageSize;
 	}
 
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
 	}
 
-	public int getItemsInPage() {
-		return itemsInPage;
+	public List<Transaction> getItems() {
+		return items;
 	}
 
-	public void setItemsInPage(int itemsInPage) {
-		this.itemsInPage = itemsInPage;
+	public void setItems(List<Transaction> items) {
+		this.items = items;
 	}
+
+	
 }

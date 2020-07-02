@@ -21,15 +21,15 @@ public class TransactionServiceImpl implements TransactionService {
 	public TransactionsResponse getTransactions(int accountId, int page) {
 		TransactionsResponse transactionResponse =
 				new TransactionsResponse();
-		transactionResponse.setCurrentPage(page);
-		transactionResponse.setTotalTransaction(transactionDAO.getTotalTransactions(accountId));
+		transactionResponse.setPageNumber(page);
+		transactionResponse.setTotalCount(transactionDAO.getTotalTransactions(accountId));
 		int totalPage = (int) Math.ceil(transactionDAO.getTotalTransactions(accountId) / 5);
 		if (transactionDAO.getTotalTransactions(accountId) % 5 > 0) {
 			totalPage ++;
 		}
 		transactionResponse.setTotalPage(totalPage);
-		transactionResponse.setTransactions(transactionDAO.getTransactions(accountId, page));
-		transactionResponse.setItemsInPage(transactionResponse.getTransactions().size());
+		transactionResponse.setItems(transactionDAO.getTransactions(accountId, page));
+		transactionResponse.setPageSize(transactionResponse.getItems().size());
 		return transactionResponse;
 	}
 }

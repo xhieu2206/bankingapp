@@ -245,6 +245,16 @@ create table `cheque`(
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ##############################################################
 
+#### LOAN INTEREST RATE TABLE ################################
+drop table if exists `loan_interest_rate`;
+
+-- create table `loan_interest_rate` (
+-- 	`id` int(11) NOT NULL AUTO_INCREMENT,
+--     `interest_rate` 
+--     primary key (`id`)
+-- )  ENGINE=InnoDB DEFAULT CHARSET=latin1;
+-- ##############################################################
+
 -- #### LOAN PROFILE TABLE TABLE ################################
 -- drop table if exists `loan_profile`;
 
@@ -271,11 +281,6 @@ create table `cheque`(
 -- ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- ##############################################################
 
--- #### LOAN INTEREST RATE TABLE ################################
--- drop table if exists `loan_interest_rate`;
-
--- create table ``
--- ##############################################################
 
 
 
