@@ -245,6 +245,59 @@ create table `cheque`(
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ##############################################################
 
+-- #### LOAN PROFILE TABLE TABLE ################################
+-- drop table if exists `loan_profile`;
+
+-- create table `loan_profile` (
+-- 	`id` int(11) NOT NULL AUTO_INCREMENT,
+--     `user_id` int(11) not null,
+--     `account_id` int(11) not null,
+--     `amount` bigint(20),
+--     `loan_interest_rate_id` int(11) not null,
+--     
+--     constraint `FK_USER_LOAN_PROFILE` foreign key (`user_id`)
+--     references `user` (`id`)
+--     ON DELETE NO ACTION ON UPDATE NO ACTION,
+--     
+--     constraint `FK_ACCOUNT_LOAN_PROFILE` foreign key (`account_id`)
+--     references `account` (`id`)
+--     ON DELETE NO ACTION ON UPDATE NO ACTION,
+--     
+--     constraint `FK_INTEREST_RATE_LOAN_PROFILE` foreign key (`loan_interest_rate_id`)
+--     references `loan_interest_rate` (`id`)
+--     ON DELETE NO ACTION ON UPDATE NO ACTION,
+--     
+--     primary key (`id`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+-- ##############################################################
+
+-- #### LOAN INTEREST RATE TABLE ################################
+-- drop table if exists `loan_interest_rate`;
+
+-- create table ``
+-- ##############################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ############################################## INSERT DATA ##########################################################
 INSERT INTO `role` (name)

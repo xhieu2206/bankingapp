@@ -2,6 +2,8 @@ package fpt.banking.system.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import fpt.banking.system.exception.NullDescriptionException;
 import fpt.banking.system.exception.PinCodeIncorrectedException;
 import fpt.banking.system.payload.TranferInternalPayloadByAccountNumber;
 import fpt.banking.system.payload.TranferInternalPayloadByCardNumber;
+import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.AccountService;
 import fpt.banking.system.service.TranferService;
@@ -35,7 +38,7 @@ public class TranferController {
 	
 	@PostMapping("/{userId}/accounts/{accountId}/tranferInternal/accountNumber")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public String tranferInternalByAccountNumber(@PathVariable int userId,
+	public ResponseEntity<?> tranferInternalByAccountNumber(@PathVariable int userId,
 			@PathVariable int accountId, @RequestBody TranferInternalPayloadByAccountNumber
 			tranferInternalPayloadByAccountNumber, @AuthenticationPrincipal UserPrincipal user) {
 		if (accountService.getAccount(accountId).getUser().getId() != user.getId()) {
@@ -64,19 +67,21 @@ public class TranferController {
 					accountService.findByAccountNumber(tranferInternalPayloadByAccountNumber.getAccountNumber()).getId(), 
 					tranferInternalPayloadByAccountNumber.getAmount(),
 					tranferInternalPayloadByAccountNumber.getDescription());
-			return id;
+			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), id.toString(), System.currentTimeMillis());
+			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 		}
 		tranferService.tranferInternal(
 				accountId,
 				accountService.findByAccountNumber(tranferInternalPayloadByAccountNumber.getAccountNumber()).getId(),
 				tranferInternalPayloadByAccountNumber.getAmount(),
 				tranferInternalPayloadByAccountNumber.getDescription());
-		return "Tranfer successfully";
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Tranfer successfully", System.currentTimeMillis());
+		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 	
 	@PostMapping("/{userId}/accounts/{accountId}/tranferInternal/cardNumber")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public String tranferInternalByAccountNumber(@PathVariable int userId,
+	public ResponseEntity<?> tranferInternalByAccountNumber(@PathVariable int userId,
 			@PathVariable int accountId, @RequestBody TranferInternalPayloadByCardNumber
 			tranferInternalPayloadByCardNumber, @AuthenticationPrincipal UserPrincipal user) {
 		if (accountService.getAccount(accountId).getUser().getId() != user.getId()) {
@@ -105,13 +110,15 @@ public class TranferController {
 					accountService.findByCardNumber(tranferInternalPayloadByCardNumber.getCardNumber()).getId(), 
 					tranferInternalPayloadByCardNumber.getAmount(),
 					tranferInternalPayloadByCardNumber.getDescription());
-			return id;
+			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), id.toString(), System.currentTimeMillis());
+			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 		}
 		tranferService.tranferInternal(
 				accountId,
 				accountService.findByCardNumber(tranferInternalPayloadByCardNumber.getCardNumber()).getId(),
 				tranferInternalPayloadByCardNumber.getAmount(),
 				tranferInternalPayloadByCardNumber.getDescription());
-		return "Tranfer successfully";
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Tranfer successfully", System.currentTimeMillis());
+		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 }

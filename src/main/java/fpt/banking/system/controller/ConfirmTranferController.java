@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import fpt.banking.system.exception.ExpriedOTP;
 import fpt.banking.system.exception.WrongOTPCode;
 import fpt.banking.system.model.TransactionQueueInternal;
 import fpt.banking.system.payload.ConfirmTranferPayload;
+import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.TranferService;
 import fpt.banking.system.util.MD5;
@@ -31,7 +34,7 @@ public class ConfirmTranferController {
 	
 	@PostMapping("/confirm")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public String confirm(
+	public ResponseEntity<?> confirm(
 			@RequestBody ConfirmTranferPayload confirmTranferPayload
 			, @AuthenticationPrincipal UserPrincipal user) {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 300000);
@@ -51,6 +54,7 @@ public class ConfirmTranferController {
 				transactionQueueInternal.getAmount(),
 				transactionQueueInternal.getDescription());
 		tranferService.deleteTransactionQueueInternal(confirmTranferPayload.getTransactionQueueId());
-		return "tranfer successful";
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Tranfer successfully", System.currentTimeMillis());
+		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 }
