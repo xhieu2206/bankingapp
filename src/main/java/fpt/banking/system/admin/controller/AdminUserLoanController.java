@@ -44,7 +44,7 @@ public class AdminUserLoanController {
 	@Autowired
 	private TransactionOfficeService transactionOfficeService;
 
-	@PostMapping("/admin/users/{userId}/loanprofile")
+	@PostMapping("/admin/users/{userId}/loanprofiles")
 	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
 	public ResponseEntity<?> addLoanProfile(@PathVariable long userId, @RequestBody LoanProfileRequestPayload payload, @AuthenticationPrincipal UserPrincipal user) {
 		User emp = userService.getUser(user.getId());
@@ -78,6 +78,8 @@ public class AdminUserLoanController {
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), String.valueOf(loanProfileId), System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
+	
+//	@PostMapping("/admin/users/{userId}/loanprofiles")
 	
 	@GetMapping("/loanInterestRates")
 	public List<LoanInterestRate> getAllLoanInterestRates() {
