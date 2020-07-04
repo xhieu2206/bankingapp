@@ -74,6 +74,11 @@ public class AdminUserLoanController {
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
+		if (accountService.getAccount(payload.getAccountId()).getLoanProfile() != null) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This account have been used for another loan profile, please choose another account",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
 		long loanProfileId = loanService.saveLoanProfile(payload.getAmount(), payload.getDescription(), accountService.getAccount(payload.getAccountId()), 
 				loanService.findLoanInterestRateById(payload.getLoanInterestRateId()), 
 				userService.getUser(userId), 
