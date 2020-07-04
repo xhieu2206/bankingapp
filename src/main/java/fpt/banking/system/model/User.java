@@ -112,6 +112,15 @@ public class User implements Serializable {
 					CascadeType.DETACH })
 	@JoinColumn(name = "membership_id")
 	private Membership membership;
+	
+	@OneToMany(
+			fetch = FetchType.LAZY,
+			mappedBy = "user",
+			cascade = {
+				CascadeType.ALL
+			})
+	@JsonIgnore
+	private List<LoanProfile> loanProfiles;
 	// ---------------------------------------
 	
 	// Constructor 
@@ -330,6 +339,14 @@ public class User implements Serializable {
 		this.accounts = accounts;
 	}
 	// ---------------------------------------
+
+	public List<LoanProfile> getLoanProfiles() {
+		return loanProfiles;
+	}
+
+	public void setLoanProfiles(List<LoanProfile> loanProfiles) {
+		this.loanProfiles = loanProfiles;
+	}
 
 	@Override
 	public String toString() {

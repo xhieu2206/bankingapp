@@ -48,7 +48,6 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			return query.getSingleResult();
 		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
 			return null;
 		}
 	}
@@ -63,7 +62,6 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			return query.getSingleResult();
 		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
 			return null;
 		}
 	}
@@ -78,7 +76,6 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			return query.getSingleResult();
 		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
 			return null;
 		}
 	}
@@ -94,7 +91,6 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			account = query.getSingleResult();
 		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
 			return null;
 		}
 		return account.getUser();
@@ -110,7 +106,20 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			return q.getSingleResult().getAccount().getUser();
 		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
+			return null;
+		}
+	}
+
+	@Override
+	public User findByPhoneNumber(String phone) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT u FROM User u "
+				+ "WHERE phone = :phone";
+		Query<User> query = session.createQuery(sql, User.class);
+		query.setParameter("phone", phone);
+		try {
+			return query.getSingleResult();
+		} catch (NoResultException e) {
 			return null;
 		}
 	}

@@ -89,6 +89,16 @@ public class Account implements Serializable {
 			)
 	@JsonIgnore
 	private List<Cheque> cheques;
+	
+	@OneToOne(
+			fetch = FetchType.LAZY,
+			cascade = { CascadeType.PERSIST,
+					CascadeType.MERGE,
+					CascadeType.REFRESH,
+					CascadeType.DETACH },
+			mappedBy = "account")
+	@JsonIgnore
+	private LoanProfile loanProfile;
 	// ----------------------------------
 	
 	// Constructor ----------------------
@@ -225,6 +235,14 @@ public class Account implements Serializable {
 
 	public void setCheques(List<Cheque> cheques) {
 		this.cheques = cheques;
+	}
+
+	public LoanProfile getLoanProfile() {
+		return loanProfile;
+	}
+
+	public void setLoanProfile(LoanProfile loanProfile) {
+		this.loanProfile = loanProfile;
 	}
 	// ----------------------------------
 }

@@ -18,6 +18,8 @@ public interface UserDAO {
 	
 	public User findByCardNumber(String cardNumber);
 	
+	public User findByPhoneNumber(String phone);
+	
 	public int increaseAttemptedLoginFail(long userId);
 
 	public void lockAnUser(long userId);

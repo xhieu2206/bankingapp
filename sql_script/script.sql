@@ -248,38 +248,85 @@ create table `cheque`(
 #### LOAN INTEREST RATE TABLE ################################
 drop table if exists `loan_interest_rate`;
 
--- create table `loan_interest_rate` (
--- 	`id` int(11) NOT NULL AUTO_INCREMENT,
---     `interest_rate` 
---     primary key (`id`)
--- )  ENGINE=InnoDB DEFAULT CHARSET=latin1;
--- ##############################################################
+create table `loan_interest_rate` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+    `interest_rate` decimal not null,
+    `months` int not null,
+    primary key (`id`)
+)  ENGINE=InnoDB DEFAULT CHARSET=latin1;
+##############################################################
 
--- #### LOAN PROFILE TABLE TABLE ################################
--- drop table if exists `loan_profile`;
+#### LOAN PROFILE TABLE TABLE ################################
+drop table if exists `loan_profile`;
 
--- create table `loan_profile` (
--- 	`id` int(11) NOT NULL AUTO_INCREMENT,
---     `user_id` int(11) not null,
---     `account_id` int(11) not null,
---     `amount` bigint(20),
---     `loan_interest_rate_id` int(11) not null,
---     
---     constraint `FK_USER_LOAN_PROFILE` foreign key (`user_id`)
---     references `user` (`id`)
---     ON DELETE NO ACTION ON UPDATE NO ACTION,
---     
---     constraint `FK_ACCOUNT_LOAN_PROFILE` foreign key (`account_id`)
---     references `account` (`id`)
---     ON DELETE NO ACTION ON UPDATE NO ACTION,
---     
---     constraint `FK_INTEREST_RATE_LOAN_PROFILE` foreign key (`loan_interest_rate_id`)
---     references `loan_interest_rate` (`id`)
---     ON DELETE NO ACTION ON UPDATE NO ACTION,
---     
---     primary key (`id`)
--- ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
--- ##############################################################
+create table `loan_profile` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+    `amount` bigint(20),
+    `confirmed` boolean not null,
+    `approved` boolean not null,
+    `rejected` boolean default false,
+    `rejected_reason` text default null,
+    `status` varchar(15) not null,
+    `created_at` date default null,
+
+    `loan_interest_rate_id` int(11) not null,
+    `account_id` int(11) not null,
+    `user_id` int(11) not null,
+    `transaction_office_id` int(11) default null,
+    
+    constraint `FK_USER_LOAN_PROFILE` foreign key (`user_id`)
+    references `user` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+    
+    constraint `FK_ACCOUNT_LOAN_PROFILE` foreign key (`account_id`)
+    references `account` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+    
+    constraint `FK_INTEREST_RATE_LOAN_PROFILE` foreign key (`loan_interest_rate_id`)
+    references `loan_interest_rate` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+    
+    constraint `FK_LOAN_PROFILE_TRANSACTION_OFFICE_ID` foreign key (`transaction_office_id`)
+    references `transaction_office` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+
+    primary key (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+##############################################################
+
+#### ASSET TABLE #############################################
+drop table if exists `asset`;
+
+create table `asset` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) NOT NULL,
+    `description` text not null,
+    `price` bigint(20) not null,
+    `loan_profile_id` int(11) NOT NULL,
+    
+    constraint `FK_ASSET_LOAN_PRIFILE` foreign key (`loan_profile_id`)
+    references `loan_profile` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+
+    primary key (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+##############################################################
+
+#### IMAGES ASSET TABLE #############################################
+drop table if exists `images_asset`;
+create table `images_asset` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+    `url` varchar(255) not null,
+    `asset_id` int(11) NOT NULL,
+    
+    constraint `FK_IMAGES_ASSET_ID` foreign key (`asset_id`)
+    references `asset` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+    
+    primary key (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+##############################################################
+
 
 
 
@@ -305,6 +352,9 @@ drop table if exists `loan_interest_rate`;
 
 
 ############################################## INSERT DATA ##########################################################
+insert into `loan_interest_rate` (interest_rate, months) values
+(5.5, 6), (6, 9), (6.5, 12), (7, 15), (7.5, 18), (8, 21), (8.5, 24);
+
 INSERT INTO `role` (name)
 VALUES 
 ('ROLE_USER'),
@@ -330,8 +380,8 @@ VALUES
 
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked)
 VALUES
-('xuanhieu_1', 'xuanhieu1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Nguyen Xuan Hieu','1994-06-22','Ha Noi','123123123001','+84963558935',1,'2015-12-12','2015-12-12', 1, 0),
-('minhduc_1', 'minhduc1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Nguyen Minh Duc','1994-06-22','Ha Noi','123123123002','+84966423895',1,'2015-12-12','2015-12-12', 1, 0),
+('xuanhieu_1', 'xuanhieu1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Nguyen Xuan Hieu','1994-06-22','Ha Noi','123123123001','0963558935',1,'2015-12-12','2015-12-12', 1, 0),
+('minhduc_1', 'minhduc1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Nguyen Minh Duc','1994-06-22','Ha Noi','123123123002','0966423895',1,'2015-12-12','2015-12-12', 1, 0),
 ('hoanghung_1', 'hoanghung1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Hoang Van Hung','1994-06-22','Ha Noi','123123123003','3333333003',1,'2015-12-12','2015-12-12', 1, 0);
 
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, transaction_office_id)

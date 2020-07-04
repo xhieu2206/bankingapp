@@ -40,6 +40,8 @@ public class UserServiceImpl implements UserService {
 			return userDAO.findByUsername(term);
 		} else if (type.equals(SearchUserTypeEnum.CARDNUMBER.toString())) {
 			return userDAO.findByCardNumber(term);
+		} else if (type.equals(SearchUserTypeEnum.PHONENUMBER.toString())) {
+			return userDAO.findByPhoneNumber(term);
 		} else {
 			return null;
 		}

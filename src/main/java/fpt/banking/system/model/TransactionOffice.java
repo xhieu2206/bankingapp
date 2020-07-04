@@ -50,6 +50,16 @@ public class TransactionOffice {
 					CascadeType.REFRESH,
 					CascadeType.DETACH })
 	private List<User> users;
+	
+	@OneToMany(
+			fetch = FetchType.LAZY,
+			mappedBy = "transactionOffice",
+			cascade = {
+					CascadeType.PERSIST,
+					CascadeType.MERGE,
+					CascadeType.REFRESH,
+					CascadeType.DETACH })
+	private List<LoanProfile> loanProfiles;
 	// -------------------------------------
 	
 	// Constructor --------------------------
@@ -125,5 +135,13 @@ public class TransactionOffice {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public List<LoanProfile> getLoanProfiles() {
+		return loanProfiles;
+	}
+
+	public void setLoanProfiles(List<LoanProfile> loanProfiles) {
+		this.loanProfiles = loanProfiles;
 	}
 }
