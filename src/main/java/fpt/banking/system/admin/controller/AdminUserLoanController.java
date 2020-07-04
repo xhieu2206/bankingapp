@@ -71,11 +71,11 @@ public class AdminUserLoanController {
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
-		loanService.saveLoanProfile(payload.getAmount(), payload.getDescription(), accountService.getAccount(payload.getAccountId()), 
+		long loanProfileId = loanService.saveLoanProfile(payload.getAmount(), payload.getDescription(), accountService.getAccount(payload.getAccountId()), 
 				loanService.findLoanInterestRateById(payload.getLoanInterestRateId()), 
 				userService.getUser(userId), 
 				transactionOfficeService.findTransactionOfficeById(emp.getTransactionOffice().getId()));
-		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Create loan profile successfully", System.currentTimeMillis());
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), String.valueOf(loanProfileId), System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 	

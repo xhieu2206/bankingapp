@@ -12,7 +12,7 @@ public interface LoanProfileDAO {
 
 	public LoanProfile findById(long id);
 	
-	public void saveLoanProfile(long amount, String description, Account account, LoanInterestRate loanInterestRate, User user, TransactionOffice transactionOffice);
+	public long saveLoanProfile(long amount, String description, Account account, LoanInterestRate loanInterestRate, User user, TransactionOffice transactionOffice);
 	
 	public List<LoanProfile> findLoanProfileByUser(User user);
 }

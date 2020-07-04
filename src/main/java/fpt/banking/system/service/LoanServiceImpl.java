@@ -24,9 +24,9 @@ public class LoanServiceImpl implements LoanService {
 	
 	@Override
 	@Transactional
-	public void saveLoanProfile(long amount, String description, Account account, LoanInterestRate loanInterestRate,
+	public long saveLoanProfile(long amount, String description, Account account, LoanInterestRate loanInterestRate,
 			User user, TransactionOffice transactionOffice) {
-		loanProfileDAO.saveLoanProfile(amount, description, account, loanInterestRate, user, transactionOffice);
+		return loanProfileDAO.saveLoanProfile(amount, description, account, loanInterestRate, user, transactionOffice);
 	}
 
 	@Override

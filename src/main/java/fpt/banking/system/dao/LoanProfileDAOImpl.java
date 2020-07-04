@@ -37,7 +37,7 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 	}
 
 	@Override
-	public void saveLoanProfile(long amount, String description, Account account, LoanInterestRate loanInterestRate, User user,
+	public long saveLoanProfile(long amount, String description, Account account, LoanInterestRate loanInterestRate, User user,
 			TransactionOffice transactionOffice) {
 		Session session = entityManager.unwrap(Session.class);
 		LocalDate createdAt = LocalDate.now();
@@ -56,6 +56,7 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 		loanProfile.setTransactionOffice(transactionOffice);
 		
 		session.saveOrUpdate(loanProfile);
+		return loanProfile.getId();
 	}
 
 	@Override
