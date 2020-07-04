@@ -47,7 +47,7 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 		loanProfile.setConfirmed(false);
 		loanProfile.setApproved(false);
 		loanProfile.setRejected(false);
-		loanProfile.setStatus("RECEIVED");
+		loanProfile.setStatus("CREATED");
 		loanProfile.setCreatedAt(java.sql.Date.valueOf(createdAt));
 		
 		loanProfile.setLoanInterestRate(loanInterestRate);
@@ -62,17 +62,16 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 	@Override
 	public List<LoanProfile> findLoanProfilesByUser(User user) {
 		Session session = entityManager.unwrap(Session.class);
+		System.out.println(user.getFullname());
 		String sql = "SELECT lp FROM LoanProfile lp " +
 					 "WHERE user_id = :user_id";
 		Query<LoanProfile> q = session.createQuery(sql, LoanProfile.class);
 		q.setParameter("user_id", user.getId());
-		List<LoanProfile> results;
 		try {
-			results = q.getResultList(); 
-		} catch (NoResultException e) {
+			return q.getResultList(); 
+		} catch (NullPointerException e) {
 			return null;
 		}
-		return results;
 	}
 
 }

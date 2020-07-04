@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -39,6 +40,7 @@ public class TransactionOffice {
 			CascadeType.REFRESH,
 			CascadeType.DETACH })
 	@JoinColumn(name = "branch_office_id")
+	@JsonIgnore
 	private BranchOffice branchOffice;
 	
 	@OneToMany(
@@ -49,6 +51,7 @@ public class TransactionOffice {
 					CascadeType.MERGE,
 					CascadeType.REFRESH,
 					CascadeType.DETACH })
+	@JsonIgnore
 	private List<User> users;
 	
 	@OneToMany(
@@ -59,6 +62,7 @@ public class TransactionOffice {
 					CascadeType.MERGE,
 					CascadeType.REFRESH,
 					CascadeType.DETACH })
+	@JsonIgnore
 	private List<LoanProfile> loanProfiles;
 	// -------------------------------------
 	

@@ -17,14 +17,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User getUser(int id) {
-		// TODO Auto-generated method stub
 		return userDAO.getUser(id);
 	}
 
 	@Override
 	@Transactional
 	public User getUser(long id) {
-		return userDAO.getUser(id);
+		System.out.println(id + " In SERVICE");
+		return userDAO.findById(id);
 	}
 
 	@Override

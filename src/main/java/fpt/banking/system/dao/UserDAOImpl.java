@@ -34,7 +34,14 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User getUser(long id) {
 		Session session = entityManager.unwrap(Session.class);
-		User user = session.get(User.class, Long.valueOf(id));
+		User user = session.get(User.class, id);
+		return user;
+	}
+
+	@Override
+	public User findById(long id) {
+		Session session = entityManager.unwrap(Session.class);
+		User user = session.get(User.class, id); 
 		return user;
 	}
 
