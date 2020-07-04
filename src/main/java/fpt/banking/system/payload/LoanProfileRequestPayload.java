@@ -1,6 +1,6 @@
 package fpt.banking.system.payload;
 
-public class LoanProfileRequest {
+public class LoanProfileRequestPayload {
 
 	private long amount;
 	private String description;
@@ -8,10 +8,10 @@ public class LoanProfileRequest {
 	private long accountId;
 
 
-	public LoanProfileRequest() {
+	public LoanProfileRequestPayload() {
 	}
 
-	public LoanProfileRequest(long amount, String description, long loanInterestRateId, long accountId) {
+	public LoanProfileRequestPayload(long amount, String description, long loanInterestRateId, long accountId) {
 		this.amount = amount;
 		this.description = description;
 		this.loanInterestRateId = loanInterestRateId;

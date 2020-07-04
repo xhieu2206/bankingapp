@@ -1,5 +1,9 @@
 package fpt.banking.system.admin.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -9,17 +13,67 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fpt.banking.system.payload.LoanProfileRequest;
+import fpt.banking.system.exception.AccountNotFound;
+import fpt.banking.system.exception.ErrorResponse;
+import fpt.banking.system.model.Account;
+import fpt.banking.system.model.User;
+import fpt.banking.system.payload.LoanProfileRequestPayload;
+import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
+import fpt.banking.system.service.AccountService;
+import fpt.banking.system.service.LoanService;
+import fpt.banking.system.service.TransactionOfficeService;
+import fpt.banking.system.service.TransactionService;
+import fpt.banking.system.service.UserService;
 
 @RestController
 @RequestMapping("/api/admin")
 public class AdminUserLoanController {
+	
+	@Autowired
+	private AccountService accountService;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private LoanService loanService;
+	
+	@Autowired
+	private TransactionOfficeService transactionOfficeService;
 
-	@PostMapping("/users/{user_id}/loanprofile")
+	@PostMapping("/users/{userId}/loanprofile")
 	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
-	public ResponseEntity<?> addLoanProfile(@PathVariable long user_id, @RequestBody LoanProfileRequest payload, @AuthenticationPrincipal UserPrincipal user) {
-		
-		return null;
+	public ResponseEntity<?> addLoanProfile(@PathVariable long userId, @RequestBody LoanProfileRequestPayload payload, @AuthenticationPrincipal UserPrincipal user) {
+		User emp = userService.getUser(user.getId());
+		if (userService.getUser(userId) == null) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+		}
+		if (accountService.getAccount(payload.getAccountId()) == null) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "This account doesn't existed",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+		}
+		boolean hasAccount = false;
+		List<Account> accounts = accountService.getUseableAccounts(userId);
+		for (Account account: accounts) {
+			if (account.getId() == payload.getAccountId()) {
+				hasAccount = true;
+				break;
+			}
+		}
+		if (hasAccount == false) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This account doesn't belong to this user or this account has been locked",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
+		loanService.saveLoanProfile(payload.getAmount(), payload.getDescription(), accountService.getAccount(payload.getAccountId()), 
+				loanService.findLoanInterestRateById(payload.getLoanInterestRateId()), 
+				userService.getUser(userId), 
+				transactionOfficeService.findTransactionOfficeById(emp.getTransactionOffice().getId()));
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Create loan profile successfully", System.currentTimeMillis());
+		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 }

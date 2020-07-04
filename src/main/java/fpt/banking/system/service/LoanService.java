@@ -8,4 +8,6 @@ import fpt.banking.system.model.User;
 public interface LoanService {
 
 	public void saveLoanProfile(long amount, String description, Account account, LoanInterestRate loanInterestRate, User user, TransactionOffice transactionOffice);
+	
+	public LoanInterestRate findLoanInterestRateById(long id);
 }
