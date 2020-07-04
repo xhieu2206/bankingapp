@@ -16,7 +16,6 @@ public class ImagesAssetDAOImpl implements ImagesAssetDAO {
 	private EntityManager entityManager;
 	
 	// set up constructor injection
-
 	@Autowired
 	public ImagesAssetDAOImpl(EntityManager theEntityManager) {
 		entityManager = theEntityManager;
@@ -28,7 +27,7 @@ public class ImagesAssetDAOImpl implements ImagesAssetDAO {
 		ImagesAsset imagesAsset = new ImagesAsset();
 		imagesAsset.setUrl(url);
 		imagesAsset.setAsset(asset);
-		session.saveOrUpdate(asset);
+		session.saveOrUpdate(imagesAsset);
 	}
 
 }

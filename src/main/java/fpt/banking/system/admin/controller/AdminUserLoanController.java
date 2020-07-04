@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import fpt.banking.system.exception.AccountNotFound;
 import fpt.banking.system.exception.ErrorResponse;
 import fpt.banking.system.model.Account;
+import fpt.banking.system.model.Asset;
 import fpt.banking.system.model.LoanInterestRate;
+import fpt.banking.system.model.LoanProfile;
 import fpt.banking.system.model.User;
+import fpt.banking.system.payload.AssetRequestPayload;
 import fpt.banking.system.payload.LoanProfileRequestPayload;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
@@ -79,7 +82,50 @@ public class AdminUserLoanController {
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 	
-//	@PostMapping("/admin/users/{userId}/loanprofiles")
+	@PostMapping("/admin/users/{userId}/loanprofiles/{loanProfileId}/assets")
+	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
+	public ResponseEntity<?> addAsset(
+			@PathVariable long userId,
+			@PathVariable long loanProfileId,
+			@RequestBody AssetRequestPayload payload,
+			@AuthenticationPrincipal UserPrincipal emp) {
+		User user = userService.getUser(userId);
+		if (userService.getUser(userId) == null) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+		}
+		if (loanService.findLoanProfileById(loanProfileId) == null) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "Loan profile not found",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+		}
+		boolean hasLoanProfile = false;
+		List<LoanProfile> loanProfiles = loanService.findLoanProfilesByUser(user);
+		for (LoanProfile loanProfile: loanProfiles) {
+			if (loanProfile.getId() == loanProfileId) {
+				hasLoanProfile = true;
+				break;
+			}
+		}
+		if (hasLoanProfile == false) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This loan profile doesn't belong to this user",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
+		LoanProfile loanProfile = loanService.findLoanProfileById(loanProfileId);
+		long assetId = loanService.saveAsset(
+				payload.getName(), 
+				payload.getDescription(), 
+				payload.getPrice(), 
+				loanProfile);
+		Asset asset = loanService.findAssetById(assetId);
+		for (String url: payload.getImages()) {
+			loanService.saveImagesAsset(url, asset);
+		}
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), String.valueOf(loanProfileId), System.currentTimeMillis());
+		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+	}
 	
 	@GetMapping("/loanInterestRates")
 	public List<LoanInterestRate> getAllLoanInterestRates() {

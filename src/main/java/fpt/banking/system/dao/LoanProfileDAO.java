@@ -14,5 +14,5 @@ public interface LoanProfileDAO {
 	
 	public long saveLoanProfile(long amount, String description, Account account, LoanInterestRate loanInterestRate, User user, TransactionOffice transactionOffice);
 	
-	public List<LoanProfile> findLoanProfileByUser(User user);
+	public List<LoanProfile> findLoanProfilesByUser(User user);
 }

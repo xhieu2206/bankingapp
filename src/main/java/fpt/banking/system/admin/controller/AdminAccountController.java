@@ -32,7 +32,7 @@ public class AdminAccountController {
 			throw new AccountNotFound("This user doesn't have any useable account");
 		}
 		for (Account account: accounts) {
-			AccountForAdminResponse result = new AccountForAdminResponse(account.getId(), account.getAmount(), account.isStatus(), account.getExpiredAt(), account.getCreatedAt(), account.getUpdatedAt());
+			AccountForAdminResponse result = new AccountForAdminResponse(account.getId(), account.getAccountNumber(), account.getAmount(), account.isStatus(), account.getExpiredAt(), account.getCreatedAt(), account.getUpdatedAt());
 			results.add(result);
 		}
 		return results;
@@ -48,7 +48,7 @@ public class AdminAccountController {
 			throw new AccountNotFound("This user doesn't have any useable account");
 		}
 		for (Account account: accounts) {
-			AccountForAdminResponse result = new AccountForAdminResponse(account.getId(), account.getAmount(), account.isStatus(), account.getExpiredAt(), account.getCreatedAt(), account.getUpdatedAt());
+			AccountForAdminResponse result = new AccountForAdminResponse(account.getId(), account.getAccountNumber(), account.getAmount(), account.isStatus(), account.getExpiredAt(), account.getCreatedAt(), account.getUpdatedAt());
 			results.add(result);
 		}
 		return results;

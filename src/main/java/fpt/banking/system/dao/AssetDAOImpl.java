@@ -21,7 +21,13 @@ public class AssetDAOImpl implements AssetDAO {
 	}
 
 	@Override
-	public void saveAsset(String name, String description, long price, LoanProfile loanProfile) {
+	public Asset findById(long id) {
+		Session session = entityManager.unwrap(Session.class);
+		return session.get(Asset.class, id);
+	}
+
+	@Override
+	public long saveAsset(String name, String description, long price, LoanProfile loanProfile) {
 		Session session = entityManager.unwrap(Session.class);
 		Asset asset = new Asset();
 		asset.setName(name);
@@ -29,6 +35,7 @@ public class AssetDAOImpl implements AssetDAO {
 		asset.setPrice(price);
 		asset.setLoanProfile(loanProfile);
 		session.saveOrUpdate(asset);
+		return asset.getId();
 	}
 
 }

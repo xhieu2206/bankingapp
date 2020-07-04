@@ -60,9 +60,9 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 	}
 
 	@Override
-	public List<LoanProfile> findLoanProfileByUser(User user) {
+	public List<LoanProfile> findLoanProfilesByUser(User user) {
 		Session session = entityManager.unwrap(Session.class);
-		String sql = "SELECT lp FROM LoanProfile " +
+		String sql = "SELECT lp FROM LoanProfile lp " +
 					 "WHERE user_id = :user_id";
 		Query<LoanProfile> q = session.createQuery(sql, LoanProfile.class);
 		q.setParameter("user_id", user.getId());

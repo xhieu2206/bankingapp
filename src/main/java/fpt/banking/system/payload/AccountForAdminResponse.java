@@ -9,6 +9,7 @@ import javax.persistence.TemporalType;
 public class AccountForAdminResponse {
 
 	private long id;
+	private String accountNumber;
 	private long amount;
 	private boolean status;
 	private Date expiredAt;
@@ -18,9 +19,10 @@ public class AccountForAdminResponse {
 	public AccountForAdminResponse() {
 	}
 
-	public AccountForAdminResponse(long id, long amount, boolean status, Date expiredAt, Date createdAt,
+	public AccountForAdminResponse(long id, String accountNumber, long amount, boolean status, Date expiredAt, Date createdAt,
 			Date updatedAt) {
 		this.id = id;
+		this.accountNumber = accountNumber;
 		this.amount = amount;
 		this.status = status;
 		this.expiredAt = expiredAt;
@@ -74,5 +76,13 @@ public class AccountForAdminResponse {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 }
