@@ -31,4 +31,14 @@ public class AccountController {
 		}
 		return accountService.getAccounts(userId);
 	}
+	
+	@GetMapping("/{userId}/useableAccounts")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public List<Account> getUseableAccounts(@PathVariable long userId,
+			@AuthenticationPrincipal UserPrincipal user) {
+		if (user.getId() != userId) {
+			throw new AuthorizedException("You don't have permission to access this resource");
+		}
+		return accountService.getUseableAccounts(userId);
+	}
 }

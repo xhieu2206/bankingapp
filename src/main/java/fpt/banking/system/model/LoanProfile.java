@@ -33,6 +33,9 @@ public class LoanProfile {
 	@Column(name = "amount")
 	private long amount;
 	
+	@Column(name = "description", length = 500, nullable = true)
+	private String description;
+	
 	@Column(name = "confirmed")
 	private boolean confirmed;
 	
@@ -46,7 +49,7 @@ public class LoanProfile {
 	private String rejectedReason;
 	
 	@Column(name = "status", nullable = false)
-	private boolean status;
+	private String status;
 
 	@Column(name = "created_at", nullable = true)
 	@Temporal(TemporalType.DATE)
@@ -102,10 +105,11 @@ public class LoanProfile {
 	public LoanProfile() {
 	}
 
-	public LoanProfile(Long id, long amount, boolean confirmed, boolean approved, boolean rejected,
-			String rejectedReason, boolean status, Date createdAt) {
+	public LoanProfile(Long id, long amount, String description, boolean confirmed, boolean approved, boolean rejected,
+			String rejectedReason, String status, Date createdAt) {
 		this.id = id;
 		this.amount = amount;
+		this.description = description;
 		this.confirmed = confirmed;
 		this.approved = approved;
 		this.rejected = rejected;
@@ -114,9 +118,10 @@ public class LoanProfile {
 		this.createdAt = createdAt;
 	}
 
-	public LoanProfile(long amount, boolean confirmed, boolean approved, boolean rejected, String rejectedReason,
-			boolean status, Date createdAt) {
+	public LoanProfile(long amount, String description, boolean confirmed, boolean approved, boolean rejected, String rejectedReason,
+			String status, Date createdAt) {
 		this.amount = amount;
+		this.description = description;
 		this.confirmed = confirmed;
 		this.approved = approved;
 		this.rejected = rejected;
@@ -141,6 +146,14 @@ public class LoanProfile {
 
 	public void setAmount(long amount) {
 		this.amount = amount;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public boolean isConfirmed() {
@@ -175,11 +188,11 @@ public class LoanProfile {
 		this.rejectedReason = rejectedReason;
 	}
 
-	public boolean isStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(boolean status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

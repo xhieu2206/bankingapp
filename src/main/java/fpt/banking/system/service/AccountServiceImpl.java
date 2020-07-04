@@ -28,8 +28,15 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
+	@Transactional
 	public Account getAccount(long accountId) {
 		return accountDAO.getAccount(accountId);
+	}
+
+	@Override
+	@Transactional
+	public List<Account> getUseableAccounts(long userId) {
+		return accountDAO.getUseableAccounts(userId);
 	}
 
 	@Override

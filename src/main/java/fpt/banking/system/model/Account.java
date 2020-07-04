@@ -34,7 +34,6 @@ public class Account implements Serializable {
 	@Column(name = "id")
     private Long id;
 	
-	@JsonIgnore
 	@Column(name = "status", nullable = false)
 	private boolean status;
 	

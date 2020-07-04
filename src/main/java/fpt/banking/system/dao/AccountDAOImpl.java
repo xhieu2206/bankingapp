@@ -43,6 +43,23 @@ public class AccountDAOImpl implements AccountDAO {
 		User user = session.get(User.class, userId);
 		return user.getAccounts();
 	}
+	
+	@Override
+	public List<Account> getUseableAccounts(long userId) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT a FROM Account a "
+				   + "WHERE user_id = :userId "
+				   + "AND status = 1 "
+				   + "AND expired_date > :date";
+		Query<Account> q = session.createQuery(sql, Account.class);
+		q.setParameter("userId", userId);
+		q.setDate("date",  new java.util.Date());
+		try {
+			return q.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 
 	@Override
 	public Account getAccount(long accountId) {
@@ -90,5 +107,4 @@ public class AccountDAOImpl implements AccountDAO {
 		}
 		return card.getAccount();
 	}
-
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -28,13 +29,19 @@ public class TransactionDAOImpl implements TransactionDAO {
 
 	@Override
 	public List<Transaction> getTransactions(long accountId, int page) {
-		Session session = entityManager.unwrap(Session.class);		
+		Session session = entityManager.unwrap(Session.class);
 		String sql = "SELECT t FROM Transaction t "
 				+ "WHERE account_id = :accountId "
 				+ "ORDER BY t.id DESC";
 		Query<Transaction> query = session.createQuery(sql, Transaction.class).setFirstResult((page - 1) * 5).setMaxResults(5);
 		query.setParameter("accountId", accountId);
-		List<Transaction> trans = query.getResultList();
+		List<Transaction> trans;
+		try {
+			trans = query.getResultList();
+		} catch (NoResultException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
 		return trans;
 	}
 

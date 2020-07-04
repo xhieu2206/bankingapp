@@ -8,6 +8,8 @@ public interface AccountService {
 
 	public List<Account> getAccounts(int userId);
 	
+	public List<Account> getUseableAccounts(long userId);
+	
 	public Account getAccount(int accountId);
 	
 	public Account getAccount(long accountId);
