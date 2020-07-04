@@ -17,7 +17,7 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Override
 	@Transactional
-	public List<Account> getAccounts(int userId) {
+	public List<Account> getAccounts(long userId) {
 		return accountDAO.getAccounts(userId);
 	}
 

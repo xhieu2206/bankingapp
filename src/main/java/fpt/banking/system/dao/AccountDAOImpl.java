@@ -54,6 +54,9 @@ public class AccountDAOImpl implements AccountDAO {
 		Query<Account> q = session.createQuery(sql, Account.class);
 		q.setParameter("userId", userId);
 		q.setDate("date",  new java.util.Date());
+		if (q.getResultList().size() == 0) {
+			return null;
+		}
 		try {
 			return q.getResultList();
 		} catch (NoResultException e) {
