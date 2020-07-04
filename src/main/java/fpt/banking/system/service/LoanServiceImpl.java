@@ -1,5 +1,7 @@
 package fpt.banking.system.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +21,7 @@ public class LoanServiceImpl implements LoanService {
 	
 	@Autowired
 	private LoanInterestRateDAO loanInterestRateDAO;
-
+	
 	@Override
 	@Transactional
 	public void saveLoanProfile(long amount, String description, Account account, LoanInterestRate loanInterestRate,
@@ -31,6 +33,12 @@ public class LoanServiceImpl implements LoanService {
 	@Transactional
 	public LoanInterestRate findLoanInterestRateById(long id) {
 		return loanInterestRateDAO.findById(id);
+	}
+
+	@Override
+	@Transactional
+	public List<LoanInterestRate> getAllLoanInterestRate() {
+		return loanInterestRateDAO.getAllLoanInterestRate();
 	}
 
 }

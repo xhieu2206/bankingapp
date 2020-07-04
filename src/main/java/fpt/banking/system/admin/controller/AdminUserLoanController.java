@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fpt.banking.system.exception.AccountNotFound;
 import fpt.banking.system.exception.ErrorResponse;
 import fpt.banking.system.model.Account;
+import fpt.banking.system.model.LoanInterestRate;
 import fpt.banking.system.model.User;
 import fpt.banking.system.payload.LoanProfileRequestPayload;
 import fpt.banking.system.response.SuccessfulResponse;
@@ -27,7 +29,7 @@ import fpt.banking.system.service.TransactionService;
 import fpt.banking.system.service.UserService;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api")
 public class AdminUserLoanController {
 	
 	@Autowired
@@ -42,7 +44,7 @@ public class AdminUserLoanController {
 	@Autowired
 	private TransactionOfficeService transactionOfficeService;
 
-	@PostMapping("/users/{userId}/loanprofile")
+	@PostMapping("/admin/users/{userId}/loanprofile")
 	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
 	public ResponseEntity<?> addLoanProfile(@PathVariable long userId, @RequestBody LoanProfileRequestPayload payload, @AuthenticationPrincipal UserPrincipal user) {
 		User emp = userService.getUser(user.getId());
@@ -76,4 +78,10 @@ public class AdminUserLoanController {
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Create loan profile successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
+	
+	@GetMapping("/loanInterestRates")
+	public List<LoanInterestRate> getAllLoanInterestRates() {
+		return loanService.getAllLoanInterestRate();
+	}
+	
 }
