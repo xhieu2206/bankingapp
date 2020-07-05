@@ -234,8 +234,9 @@ create table `cheque`(
   `transaction_amount` decimal not null,
   `status` bool default 1,
   `canceled` bool not null,
-  `created_at` date not null,
-  `expired_date` date default null,
+  `created_at` datetime not null,
+  `expired_date` datetime default null,
+  `withdraw_date` datetime default null,
   
   constraint `FK_ACCOUNT_CHEQUE` foreign key (`account_id`)
   references `account` (`id`)
@@ -436,8 +437,8 @@ VALUES
 (1000000, 444411113001, 3, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
 (1000000, 444411113002, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
 (1000000, 444411113003, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(1000000, 444411113004, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(1000000, 444411113005, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1);
+(1000000, 444411113004, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 0), 
+(1000000, 444411113005, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 0);
 
 
 insert into `transaction_type` (name)

@@ -43,11 +43,15 @@ public class Cheque {
 	private boolean canceled;
 	
 	@Column(name = "created_at", nullable = true)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 	
+	@Column(name = "withdraw_date", nullable = true)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date withdrawDate;
+	
 	@Column(name = "expired_date", nullable = true)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date expiredDate;
 
 	// Relationship ---------------------
@@ -61,7 +65,7 @@ public class Cheque {
 	public Cheque() { }
 	
 	public Cheque(Long id, String recieverFullname, String recieverIdCardNumber, long transactionAmount, boolean status,
-			boolean canceled, Date createdAt, Date expiredDate) {
+			boolean canceled, Date createdAt, Date expiredDate, Date withdrawDate) {
 		this.id = id;
 		this.recieverFullname = recieverFullname;
 		this.recieverIdCardNumber = recieverIdCardNumber;
@@ -70,10 +74,11 @@ public class Cheque {
 		this.canceled = canceled;
 		this.createdAt = createdAt;
 		this.expiredDate = expiredDate;
+		this.withdrawDate = withdrawDate;
 	}
 
 	public Cheque(String recieverFullname, String recieverIdCardNumber, long transactionAmount, boolean status,
-			boolean canceled, Date createdAt, Date expiredDate) {
+			boolean canceled, Date createdAt, Date expiredDate, Date withdrawDate) {
 		this.recieverFullname = recieverFullname;
 		this.recieverIdCardNumber = recieverIdCardNumber;
 		this.transactionAmount = transactionAmount;
@@ -81,6 +86,7 @@ public class Cheque {
 		this.canceled = canceled;
 		this.createdAt = createdAt;
 		this.expiredDate = expiredDate;
+		this.withdrawDate = withdrawDate;
 	}
 	// ----------------------------------
 	
@@ -156,5 +162,14 @@ public class Cheque {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
+
+	public Date getWithdrawDate() {
+		return withdrawDate;
+	}
+
+	public void setWithdrawDate(Date withdrawDate) {
+		this.withdrawDate = withdrawDate;
+	}
+	
 	// ----------------------------------
 }

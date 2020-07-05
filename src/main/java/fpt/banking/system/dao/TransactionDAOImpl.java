@@ -42,7 +42,6 @@ public class TransactionDAOImpl implements TransactionDAO {
 		try {
 			trans = query.getResultList();
 		} catch (NoResultException e) {
-			// TODO Auto-generated catch block
 			return null;
 		}
 		return trans;
