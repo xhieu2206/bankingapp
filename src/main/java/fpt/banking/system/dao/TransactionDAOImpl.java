@@ -1,6 +1,8 @@
 package fpt.banking.system.dao;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,6 +13,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fpt.banking.system.constants.TimerConstants;
 import fpt.banking.system.model.Account;
 import fpt.banking.system.model.Transaction;
 import fpt.banking.system.model.TransactionType;
@@ -61,14 +64,14 @@ public class TransactionDAOImpl implements TransactionDAO {
 			String description) {
 		Session session = entityManager.unwrap(Session.class);
 		Account account = session.get(Account.class, Long.valueOf(accountId));
-		LocalDate createdAt = LocalDate.now();
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + TimerConstants.VIETNAM_TIMEZONE_TIMESTAMP);
 		TransactionType transactionType = session.get(TransactionType.class, Long.valueOf(transactionTypeId));
 		Transaction transaction = new Transaction();
 		transaction.setAccount(account);
 		transaction.setTransactionType(transactionType);
 		transaction.setAmount(amount);
 		transaction.setAmountAfterTransaction(amountAfterTransaction);
-		transaction.setCreatedAt(java.sql.Date.valueOf(createdAt));
+		transaction.setCreatedAt(new Date(timestamp.getTime()));
 		transaction.setDescription(description);
 		session.saveOrUpdate(transaction);
 	}

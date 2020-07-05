@@ -50,7 +50,6 @@ public class TranferServiceImpl implements TranferService {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 300000 + TimerConstants.VIETNAM_TIMEZONE_TIMESTAMP);
 		String otpCode = RandomGenerator.generateOTP();
 		String phone = accountDAO.getAccount(tranferAccountId).getUser().getPhone();
-		System.out.println(MobilePhoneUtil.convertPhone(phone, "+84"));
 		SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
 		String id = transactionQueueInternalDAO.saveTransactionQueueInternal(MD5.getMd5(otpCode), tranferAccountId, receiverAccountId, amount, new Date(timestamp.getTime()), description);
 		return id;

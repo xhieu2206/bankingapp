@@ -161,7 +161,7 @@ create table `transaction` (
     `amount` decimal not null,
     `amount_after_transaction` decimal not null,
     `description` text not null,
-    `created_at` date not null,
+    `created_at` datetime not null,
     
     primary key (`id`),
     

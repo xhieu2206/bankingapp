@@ -33,7 +33,6 @@ public class TransactionQueueInternalDAOImpl implements TransactionQueueInternal
 			Date expriedAt, String description) {
 		Session session = entityManager.unwrap(Session.class);
 		TransactionQueueInternal transactionQueueInternal = new TransactionQueueInternal(otpCode, tranferAccountId, receiverAccountId, amount, description, expriedAt);
-		System.out.println(transactionQueueInternal.getExpriedAt());
 		session.saveOrUpdate(transactionQueueInternal);
 		return transactionQueueInternal.getId().toString();
 	}
