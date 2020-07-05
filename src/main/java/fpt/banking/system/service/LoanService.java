@@ -6,6 +6,7 @@ import fpt.banking.system.model.Account;
 import fpt.banking.system.model.Asset;
 import fpt.banking.system.model.LoanInterestRate;
 import fpt.banking.system.model.LoanProfile;
+import fpt.banking.system.model.LoanProfileQueue;
 import fpt.banking.system.model.TransactionOffice;
 import fpt.banking.system.model.User;
 
@@ -26,4 +27,12 @@ public interface LoanService {
 	public List<LoanProfile> findLoanProfilesByUser(User user);
 	
 	public void saveImagesAsset(String url, Asset asset);
+	
+	public LoanProfileQueue findLoanProfileQueueById(long id);
+	
+	public long saveLoanProfileQueue(long loanProfileId);
+	
+	public void confirmLoanProfile(long loanProfileId);
+	
+	public void deleteLoanProfileQueue(long loanProfileQueueId);
 }

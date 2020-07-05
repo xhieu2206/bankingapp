@@ -26,6 +26,7 @@ import fpt.banking.system.model.Role;
 import fpt.banking.system.model.TransactionOffice;
 import fpt.banking.system.model.User;
 import fpt.banking.system.payload.AssetRequestPayload;
+import fpt.banking.system.payload.LoanProfileIdConfirmPayload;
 import fpt.banking.system.payload.LoanProfileRequestPayload;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
@@ -164,9 +165,7 @@ public class AdminUserLoanController {
 			List<LoanProfile> loanProfiles = loanService.findLoanProfilesByUser(user);
 			for (LoanProfile loanProfile: loanProfiles) {
 				if (loanProfile.getTransactionOffice().getId() == admin.getTransactionOffice().getId()) {
-					System.out.println("VAO DAY");
 					results.add(loanProfile);
-					System.out.println(results.size());
 				}
 			}
 		} else if (role.equals("ROLE_BRANCHMANAGER")) {
@@ -178,5 +177,27 @@ public class AdminUserLoanController {
 			}
 		}
 		return results;
+	}
+	
+	@PostMapping("/admin/users/{userId}/loanprofiles/confirm")
+	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
+	public ResponseEntity<?> confirm(
+		@PathVariable long userId,
+		@RequestBody LoanProfileIdConfirmPayload payload
+			) {
+		LoanProfile loanProfile = loanService.findLoanProfileById(payload.getLoanProfileId());
+		if (loanProfile == null) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "This loan profile doesn't existed",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+		}
+		if (loanProfile.getUser().getId() != userId) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This loan profile doesn't belong to this user",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
+		long id  = loanService.saveLoanProfileQueue(payload.getLoanProfileId());
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), String.valueOf(id), System.currentTimeMillis());
+		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 }

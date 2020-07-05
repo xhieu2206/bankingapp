@@ -74,4 +74,16 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 		}
 	}
 
+	/**
+	 *
+	 */
+	@Override
+	public void confirmLoanProfile(long id) {
+		Session session = entityManager.unwrap(Session.class);
+		LoanProfile loanProfile = session.get(LoanProfile.class, id);
+		loanProfile.setConfirmed(true);
+		loanProfile.setStatus("CONFIRMED");
+		session.save(loanProfile);
+	}
+
 }

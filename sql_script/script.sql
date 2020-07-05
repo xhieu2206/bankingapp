@@ -347,6 +347,17 @@ create table `notification`(
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ##############################################################
 
+#### LOAN PROFILE QUEUE TABLE ################################
+drop table if exists `loan_profile_queue`;
+create table `loan_profile_queue`(
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+    `otp_code` varchar(100) not null,
+	`expried_at` timestamp not null,
+    `loan_profile_id` int(11) NOT NULL,
+     
+    primary key (`id`) 
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+##############################################################
 
 
 
