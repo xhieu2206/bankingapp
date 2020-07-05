@@ -33,6 +33,7 @@ import fpt.banking.system.payload.AssetRequestPayload;
 import fpt.banking.system.payload.LoanProfileIdConfirmPayload;
 import fpt.banking.system.payload.LoanProfileRequestPayload;
 import fpt.banking.system.payload.LoanProfilesResponsePayload;
+import fpt.banking.system.payload.RejectedLoanProfileRequestPayload;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.AccountService;
@@ -233,6 +234,14 @@ public class AdminUserLoanController {
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
 		}
+		if (loanProfile.isApproved() == true) {
+			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "This loan profile has already been approved", System.currentTimeMillis());
+			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+		}
+		if (loanProfile.isRejected() == true) {
+			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "This loan profile has already been rejected, cannot approved it again", System.currentTimeMillis());
+			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+		}
 		String role = "";
 		for (Role r: admin.getRoles()) {
 			role = r.getName();
@@ -254,6 +263,7 @@ public class AdminUserLoanController {
 			}
 			loanService.approvedLoanProfileByBranchManager(loanProfile.getId());
 			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "APPROVED BY BRANCH MANAGER", System.currentTimeMillis());
+			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 		}
 		return null;
 	}
@@ -278,5 +288,52 @@ public class AdminUserLoanController {
 			pageNumber = page.get();
 		}
 		return loanService.getLoanProfilesOfTransactionOffice(transactionOfficeId, pageNumber);
+	}
+	
+	@PostMapping("/admin/loan-profiles/rejected")
+	@PreAuthorize("hasAnyRole('ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER')")
+	public ResponseEntity<?> rejectedLoanProfile(
+			@RequestBody RejectedLoanProfileRequestPayload payload,
+			@AuthenticationPrincipal UserPrincipal currentAdmin) {
+		System.out.println(payload.getLoanProfileId());
+		User admin = userService.getUser(currentAdmin.getId());
+		LoanProfile loanProfile = loanService.findLoanProfileById(payload.getLoanProfileId());
+		if (loanProfile == null) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "Loan profile not found",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+		}
+		if (loanProfile.isApproved() == true) {
+			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "This loan profile has already been approved and cannot be rejected again", System.currentTimeMillis());
+			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+		}
+		if (loanProfile.isRejected() == true) {
+			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "This loan profile has already been rejected", System.currentTimeMillis());
+			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+		}
+		String role = "";
+		for (Role r: admin.getRoles()) {
+			role = r.getName();
+		}
+		if (role.equals("ROLE_TRANSACTIONMANAGER") == true) {
+			if (loanProfile.getTransactionOffice().getId() != admin.getTransactionOffice().getId()) {
+				ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "You don't have this permission",
+	    				System.currentTimeMillis());
+	    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.UNAUTHORIZED);
+			}
+			loanService.rejectLoanProffile(loanProfile.getId(), payload.getRejectedReason());
+			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "REJECTED BY TRANSACTION MANAGER", System.currentTimeMillis());
+			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+		} else if (role.equals("ROLE_BRANCHMANAGER") == true) {
+			if (loanProfile.getTransactionOffice().getBranchOffice().getId() != admin.getBranchOffice().getId()) {
+				ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "You don't have this permission",
+	    				System.currentTimeMillis());
+	    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.UNAUTHORIZED);
+			}
+			loanService.rejectLoanProffile(loanProfile.getId(), payload.getRejectedReason());
+			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "REJECTED", System.currentTimeMillis());
+			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+		}
+		return null;
 	}
 }
