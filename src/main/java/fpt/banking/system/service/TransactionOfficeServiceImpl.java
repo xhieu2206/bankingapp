@@ -1,5 +1,7 @@
 package fpt.banking.system.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,12 @@ public class TransactionOfficeServiceImpl implements TransactionOfficeService {
 	@Transactional
 	public TransactionOffice findTransactionOfficeById(long id) {
 		return transactionOfficeDAO.findById(id);
+	}
+
+	@Override
+	@Transactional
+	public List<TransactionOffice> findTransactionOfficesByBranchOfficeId(long branchOfficeId) {
+		return transactionOfficeDAO.findTransactionOfficesOfABranchOffice(branchOfficeId);
 	}
 
 }
