@@ -54,7 +54,7 @@ public class ChequeController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> createCheque(@PathVariable long accountId, @PathVariable long userId, @AuthenticationPrincipal UserPrincipal user,
 			@RequestBody ChequeRequestPayload payload) {
-		if (accountService.getAccount(accountId).getUser().getId() != user.getId()) {
+		if (accountService.getAccount(accountId).getUser().getId() != user.getId() || accountService.getAccount(accountId) == null) {
 			ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "You don't have permission to access this resource",
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.UNAUTHORIZED);
@@ -79,6 +79,41 @@ public class ChequeController {
 				payload.getRecieverIdCardNumber() + ", amount is " +
 				payload.getTransactionAmount(), account.getUser());
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Your cheque has been created successfully", System.currentTimeMillis());
+		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{userId}/accounts/{accountId}/cheques/{chequeId}/cancel")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<?> cancelCheque(@PathVariable long accountId, @PathVariable long userId, @PathVariable long chequeId,
+			@AuthenticationPrincipal UserPrincipal user) {
+		System.out.println(chequeId);
+		if (accountService.getAccount(accountId).getUser().getId() != user.getId() || accountService.getAccount(accountId) == null) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "You don't have permission to access this resource",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.UNAUTHORIZED);
+		}
+		if (userId != user.getId()) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "You don't have permission to access this resource",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.UNAUTHORIZED);
+		}
+		if (accountService.getAccount(accountId).isStatus() == false) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.LOCKED.value(), "Your account you choosing is locked, please contact your admin for more detail",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.LOCKED);
+		}
+		Cheque cheque = chequeService.getChequeById(chequeId);
+		System.out.println(cheque);
+		if (cheque == null || cheque.getAccount().getId() != accountId) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "You don't have permission to access this resource",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.UNAUTHORIZED);
+		}
+		chequeService.cancelCheque(chequeId);
+		notificationService.saveNotification("Your cheque for " + cheque.getRecieverFullname() + ", amount " + cheque.getTransactionAmount() + " VND has been canceled by"
+				+ " yourself",
+				cheque.getAccount().getUser());
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Your cheque has been canceled", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 }

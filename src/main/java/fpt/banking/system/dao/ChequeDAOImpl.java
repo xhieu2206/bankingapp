@@ -37,7 +37,12 @@ public class ChequeDAOImpl implements ChequeDAO {
 	@Override
 	public Cheque getChequeById(long chequeId) {
 		Session session = entityManager.unwrap(Session.class);
-		return session.get(Cheque.class, chequeId);
+		try {
+			Cheque cheque = session.get(Cheque.class, chequeId);
+			return cheque;
+		} catch (java.lang.NullPointerException e) {
+			return null;
+		}
 	}
 
 	@Override
@@ -57,6 +62,14 @@ public class ChequeDAOImpl implements ChequeDAO {
 		cheque.setStatus(false);
 		cheque.setCanceled(false);
 		
+		session.save(cheque);
+	}
+
+	@Override
+	public void cancelCheque(long chequeId) {
+		Session session = entityManager.unwrap(Session.class);
+		Cheque cheque = session.get(Cheque.class, chequeId);
+		cheque.setCanceled(true);
 		session.save(cheque);
 	}
 }

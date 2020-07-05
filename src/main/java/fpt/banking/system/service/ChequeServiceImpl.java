@@ -34,4 +34,10 @@ public class ChequeServiceImpl implements ChequeService {
 			long transactionAmount) {
 		chequeDAO.saveCheque(account, recieverFullname, recieverIdCardNumber, transactionAmount);
 	}
+
+	@Override
+	@Transactional
+	public void cancelCheque(long chequeId) {
+		chequeDAO.cancelCheque(chequeId);
+	}
 }
