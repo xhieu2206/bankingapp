@@ -218,4 +218,42 @@ public class AdminUserLoanController {
 		TransactionOffice transactionOffice = transactionManager.getTransactionOffice();
 		return loanService.getLoanProfilesOfTransactionOffice(transactionOffice.getId(), pageNumber);
 	}
+	
+	@PostMapping("/admin/loan-profiles/approved")
+	@PreAuthorize("hasAnyRole('ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER')")
+	public ResponseEntity<?> approvedLoanProfile(
+			@RequestBody LoanProfileIdConfirmPayload payload,
+			@AuthenticationPrincipal UserPrincipal currentAdmin) {
+		User admin = userService.getUser(currentAdmin.getId());
+		LoanProfile loanProfile = loanService.findLoanProfileById(payload.getLoanProfileId());
+		if (loanProfile == null) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "Loan profile not found",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+		}
+		String role = "";
+		for (Role r: admin.getRoles()) {
+			role = r.getName();
+		}
+		if (role.equals("ROLE_TRANSACTIONMANAGER") == true) {
+			if (loanProfile.getTransactionOffice().getId() != admin.getTransactionOffice().getId()) {
+				ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "You don't have this permission",
+	    				System.currentTimeMillis());
+	    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.UNAUTHORIZED);
+			}
+			loanService.approvedLoanProfileByTransactionManager(loanProfile.getId());
+			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "APPROVED BY TRANSACTION MANAGER", System.currentTimeMillis());
+			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+		} else if (role.equals("ROLE_BRANCHMANAGER") == true) {
+			if (loanProfile.getTransactionOffice().getBranchOffice().getId() != admin.getBranchOffice().getId()) {
+				ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "You don't have this permission",
+	    				System.currentTimeMillis());
+	    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.UNAUTHORIZED);
+			}
+			loanService.approvedLoanProfileByBranchManager(loanProfile.getId());
+			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "APPROVED BY BRANCH MANAGER", System.currentTimeMillis());
+		}
+		return null;
+	}
+	
 }
