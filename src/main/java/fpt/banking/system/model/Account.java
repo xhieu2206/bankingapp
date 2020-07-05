@@ -44,6 +44,7 @@ public class Account implements Serializable {
 	private long amount;
 	
 	@Column(name = "pin_code")
+	@JsonIgnore
 	private String pinCode;
 	
 	@Column(name = "account_number")

@@ -1,5 +1,6 @@
 package fpt.banking.system.admin.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fpt.banking.system.exception.AccountNotFound;
 import fpt.banking.system.exception.ErrorResponse;
+import fpt.banking.system.exception.UserNotFoundException;
 import fpt.banking.system.model.Account;
 import fpt.banking.system.model.Asset;
 import fpt.banking.system.model.LoanInterestRate;
 import fpt.banking.system.model.LoanProfile;
+import fpt.banking.system.model.Role;
+import fpt.banking.system.model.TransactionOffice;
 import fpt.banking.system.model.User;
 import fpt.banking.system.payload.AssetRequestPayload;
 import fpt.banking.system.payload.LoanProfileRequestPayload;
@@ -143,4 +147,36 @@ public class AdminUserLoanController {
 		return loanService.getAllLoanInterestRate();
 	}
 	
+	@GetMapping("/admin/users/{userId}/loanprofiles")
+	@PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
+	public List<LoanProfile> getLoanProfileOfAnUser(@PathVariable long userId, @AuthenticationPrincipal UserPrincipal currentAdmin) {
+		String role = "";
+		User admin = userService.getUser(currentAdmin.getId());
+		User user = userService.getUser(userId);
+		if (user == null) {
+			throw new UserNotFoundException("This user doesn't not existed");
+		}
+		for (Role r: userService.getUser(admin.getId()).getRoles()) {
+			role = r.getName();
+		}
+		List<LoanProfile> results = new ArrayList<LoanProfile>();
+		if (role.equals("ROLE_EMPLOYEE") || role.equals("ROLE_TRANSACTIONMANAGER")) {
+			List<LoanProfile> loanProfiles = loanService.findLoanProfilesByUser(user);
+			for (LoanProfile loanProfile: loanProfiles) {
+				if (loanProfile.getTransactionOffice().getId() == admin.getTransactionOffice().getId()) {
+					System.out.println("VAO DAY");
+					results.add(loanProfile);
+					System.out.println(results.size());
+				}
+			}
+		} else if (role.equals("ROLE_BRANCHMANAGER")) {
+			List<TransactionOffice> transactionOffices = new ArrayList<TransactionOffice>();
+			for (TransactionOffice transactionOffice: admin.getBranchOffice().getTransactionOffices()) {
+				for (LoanProfile loanProfile: transactionOffice.getLoanProfiles()) {
+					results.add(loanProfile);
+				}
+			}
+		}
+		return results;
+	}
 }

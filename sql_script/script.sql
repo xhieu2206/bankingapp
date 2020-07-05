@@ -407,8 +407,8 @@ VALUES
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, transaction_office_id)
 VALUES
 ('employee_1', 'employee1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 1','1994-06-22','Ha Noi','123123123011','+8412312311',4,'2015-12-12','2015-12-12', 1, 0, 1),
-('employee_2', 'employee2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 2','1994-06-22','Ha Noi','123123123012','+8412312312',4,'2015-12-12','2015-12-12', 1, 0, 1),
-('employee_3', 'employee3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 3','1994-06-22','Ha Noi','123123123013','+8412312313',4,'2015-12-12','2015-12-12', 1, 0, 1);
+('employee_2', 'employee2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 2','1994-06-22','Ha Noi','123123123012','+8412312312',4,'2015-12-12','2015-12-12', 1, 0, 2),
+('employee_3', 'employee3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 3','1994-06-22','Ha Noi','123123123013','+8412312313',4,'2015-12-12','2015-12-12', 1, 0, 3);
 
 INSERT INTO `users_roles` (user_id,role_id)
 VALUES 
