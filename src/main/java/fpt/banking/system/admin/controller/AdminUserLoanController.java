@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fpt.banking.system.exception.AccountNotFound;
+import fpt.banking.system.exception.AuthorizedException;
 import fpt.banking.system.exception.ErrorResponse;
+import fpt.banking.system.exception.NotFoundException;
 import fpt.banking.system.exception.UserNotFoundException;
 import fpt.banking.system.model.Account;
 import fpt.banking.system.model.Asset;
@@ -256,4 +258,25 @@ public class AdminUserLoanController {
 		return null;
 	}
 	
+	@GetMapping("admin/branch-office/transaction-offices/{transactionOfficeId}/loan-profiles")
+	@PreAuthorize("hasRole('ROLE_BRANCHMANAGER')")
+	public LoanProfilesResponsePayload getLoanProfilesForBranchManager(
+			@PathVariable long transactionOfficeId,
+			@RequestParam("page") Optional<Integer> page,
+			@AuthenticationPrincipal UserPrincipal currentBranchManager
+			) {
+		TransactionOffice transactionOffice = transactionOfficeService.findTransactionOfficeById(transactionOfficeId);
+		User branchManager = userService.getUser(currentBranchManager.getId());
+		if (transactionOffice == null) {
+			throw new NotFoundException("Transaction office not found");
+		}
+		if (transactionOffice.getBranchOffice().getId() != branchManager.getBranchOffice().getId()) {
+			throw new AuthorizedException("You don't have this permission");
+		}
+		int pageNumber = 1;
+		if (page.isPresent()) {
+			pageNumber = page.get();
+		}
+		return loanService.getLoanProfilesOfTransactionOffice(transactionOfficeId, pageNumber);
+	}
 }
