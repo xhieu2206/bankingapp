@@ -17,4 +17,6 @@ public interface AccountService {
 	public Account findByAccountNumber(String accountNumber);
 	
 	public Account findByCardNumber(String cardNumber);
+	
+	public void changeAmount(long accountId, Long amount);
 }

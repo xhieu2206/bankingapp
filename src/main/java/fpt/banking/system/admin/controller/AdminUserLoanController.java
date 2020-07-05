@@ -48,6 +48,9 @@ import fpt.banking.system.service.UserService;
 public class AdminUserLoanController {
 	
 	@Autowired
+	private TransactionService transactionService;
+	
+	@Autowired
 	private AccountService accountService;
 	
 	@Autowired
@@ -263,6 +266,17 @@ public class AdminUserLoanController {
 			}
 			loanService.approvedLoanProfileByBranchManager(loanProfile.getId());
 			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "APPROVED BY BRANCH MANAGER", System.currentTimeMillis());
+			notificationService.saveNotification(
+					"Your loan profile has been approved." +
+					" Please check account with account number " + loanProfile.getAccount().getAccountNumber() +
+					" for more detail", loanProfile.getUser());
+			transactionService.saveTransaction(
+					loanProfile.getAccount().getId(),
+					loanProfile.getAmount(),
+					loanProfile.getAccount().getAmount() + loanProfile.getAmount(),
+					4, 
+					"You has got " + loanProfile.getAmount() + " from your approved loaning");
+			accountService.changeAmount(loanProfile.getAccount().getId(), loanProfile.getAmount());
 			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 		}
 		return null;
@@ -323,6 +337,9 @@ public class AdminUserLoanController {
 			}
 			loanService.rejectLoanProffile(loanProfile.getId(), payload.getRejectedReason());
 			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "REJECTED BY TRANSACTION MANAGER", System.currentTimeMillis());
+			notificationService.saveNotification(
+					"Your loan profile has been rejected." +
+					" Please check your loan profile for more information", loanProfile.getUser());
 			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 		} else if (role.equals("ROLE_BRANCHMANAGER") == true) {
 			if (loanProfile.getTransactionOffice().getBranchOffice().getId() != admin.getBranchOffice().getId()) {
@@ -332,6 +349,9 @@ public class AdminUserLoanController {
 			}
 			loanService.rejectLoanProffile(loanProfile.getId(), payload.getRejectedReason());
 			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "REJECTED", System.currentTimeMillis());
+			notificationService.saveNotification(
+					"Your loan profile has been rejected." +
+					" Please check your loan profile for more information", loanProfile.getUser());
 			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 		}
 		return null;

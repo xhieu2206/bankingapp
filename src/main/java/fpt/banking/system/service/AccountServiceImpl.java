@@ -51,4 +51,10 @@ public class AccountServiceImpl implements AccountService {
 		return accountDAO.findByCardNumber(cardNumber);
 	}
 
+	@Override
+	@Transactional
+	public void changeAmount(long accountId, Long amount) {
+		accountDAO.changeAmount(accountId, amount);
+	}
+
 }
