@@ -7,6 +7,7 @@ import fpt.banking.system.model.LoanInterestRate;
 import fpt.banking.system.model.LoanProfile;
 import fpt.banking.system.model.TransactionOffice;
 import fpt.banking.system.model.User;
+import fpt.banking.system.payload.LoanProfilesResponsePayload;
 
 public interface LoanProfileDAO {
 
@@ -17,4 +18,14 @@ public interface LoanProfileDAO {
 	public List<LoanProfile> findLoanProfilesByUser(User user);
 	
 	public void confirmLoanProfile(long id);
+	
+	public long approvedLoanProfileByTransactionManager(long loanProfileId);
+	
+	public long approvedLoanProfileByBranchManager(long loanProfileId);
+	
+	public void rejectLoanProffile(long loanProfileId, String rejectedReason);
+	
+	public List<LoanProfile> getLoanProfilesByTransactionOffice(long transactionOfficeId, int page);
+	
+	public long getTotalLoanProfilesByTransactionOffice(long transactionOfficeId);
 }

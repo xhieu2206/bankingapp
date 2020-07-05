@@ -9,6 +9,7 @@ import fpt.banking.system.model.LoanProfile;
 import fpt.banking.system.model.LoanProfileQueue;
 import fpt.banking.system.model.TransactionOffice;
 import fpt.banking.system.model.User;
+import fpt.banking.system.payload.LoanProfilesResponsePayload;
 
 public interface LoanService {
 	
@@ -35,4 +36,18 @@ public interface LoanService {
 	public void confirmLoanProfile(long loanProfileId);
 	
 	public void deleteLoanProfileQueue(long loanProfileQueueId);
+	
+	public long approvedLoanProfileByTransactionManager(long loanProfileId);
+	
+	public long approvedLoanProfileByBranchManager(long loanProfileId);
+	
+	public void rejectLoanProffile(long loanProfileId, String rejectedReason);
+	
+	public long getTotalLoanProfilesOfTransactionOffice(long transactionOfficeId);
+	
+	public long getTotalLoanProfilesOfBranchOffice(long branchOfficeId);
+	
+	public LoanProfilesResponsePayload getLoanProfilesOfTransactionOffice(long transactionOfficeId, int page);
+	
+	public LoanProfilesResponsePayload getLoanProfilesOfBranchOffice(long transactionOfficeId, int page);
 }

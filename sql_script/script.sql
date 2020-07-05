@@ -268,7 +268,7 @@ create table `loan_profile` (
     `approved` boolean not null,
     `rejected` boolean default false,
     `rejected_reason` text default null,
-    `status` varchar(15) not null,
+    `status` varchar(100) not null,
     `created_at` date default null,
 
     `loan_interest_rate_id` int(11) not null,
@@ -401,56 +401,151 @@ INSERT INTO `branch_office` (name,phone,address,information)
 VALUES
 ('Ha Noi', "1111111110", "Ha Noi", "1st Branch Office"),
 ('Nghe An', "1111111111", "Nghe An", "2nd Branch Office"),
-('Ho Chi Minh', "1111111112", "Ho Chi Minh", "3rd Branch Office");
+('Ho Chi Minh', "1111111112", "Ho Chi Minh", "3rd Branch Office"),
+('Ninh Binh', "1111111113", "Ninh Binh", "4th Branch Office"),
+('Ha Nam', "1111111115", "Ninh Binh", "5th Branch Office"),
+('Ha Bac', "1111111116", "Ninh Bac", "6th Branch Office"),
+('Ha Tay', "1111111117", "Ha Tay", "6th Branch Office");
 
 INSERT INTO `transaction_office` (name,phone,address,information,branch_office_id)
 VALUES
 ("Chua Lang", "2222222220", "80 Chua Lang", "1st Transaction Office", 1),
-("Doi Can", "2222222221", "100 Doi Can", "1st Transaction Office", 1),
-("Thanh Xuan", "2222222222", "Somewhere in Thanh Xuan", "1st Transaction Office", 1);
+("Doi Can", "2222222221", "100 Doi Can", "2nd Transaction Office", 1),
+("Thanh Xuan", "2222222222", "Somewhere in Thanh Xuan", "3rd Transaction Office", 1),
+("Cua Nam", "2222222223", "Somewhere in Cua Nam", "4th Transaction Office", 1),
+("Thang Long", "2222222224", "Somewhere in Thang Long", "5th Transaction Office", 2),
+("Bach Dang", "2222222225", "Somewhere in Bach Dang", "6th Transaction Office", 2),
+("Thai Nguyen", "2222222226", "Somewhere in Thai Nguyen", "7th Transaction Office", 2);
 
+-- INSERT FOR USER
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked)
 VALUES
 ('xuanhieu_1', 'xuanhieu1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Nguyen Xuan Hieu','1994-06-22','Ha Noi','123123123001','0963558935',1,'2015-12-12','2015-12-12', 1, 0),
 ('minhduc_1', 'minhduc1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Nguyen Minh Duc','1994-06-22','Ha Noi','123123123002','0966423895',1,'2015-12-12','2015-12-12', 1, 0),
-('hoanghung_1', 'hoanghung1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Hoang Van Hung','1994-06-22','Ha Noi','123123123003','0325357329',1,'2015-12-12','2015-12-12', 1, 0);
+('hoanghung_1', 'hoanghung1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Hoang Van Hung','1994-06-22','Ha Noi','123123123003','0325357329',1,'2015-12-12','2015-12-12', 1, 0),
+('username_1', 'username1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name Mot','1994-06-22','Ha Noi','123123123004','0912311111',1,'2015-12-12','2015-12-12', 1, 0),
+('username_2', 'username2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name Hai','1994-06-22','Ha Noi','123123123005','0912311112',1,'2015-12-12','2015-12-12', 1, 0),
+('username_3', 'username3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name Ba','1994-06-22','Ha Noi','123123123006','0912311113',1,'2015-12-12','2015-12-12', 1, 0),
+('username_4', 'username4@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name Bon','1994-06-22','Ha Noi','123123123007','0912311114',1,'2015-12-12','2015-12-12', 1, 0),
+('username_5', 'username5@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name Nam','1994-06-22','Ha Noi','123123123008','0912311115',1,'2015-12-12','2015-12-12', 1, 0),
+('username_6', 'username6@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name Sau','1994-06-22','Ha Noi','123123123009','0912311116',1,'2015-12-12','2015-12-12', 1, 0),
+('username_7', 'username7@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'User Name Bay','1994-06-22','Ha Noi','123123123010','0912311117',1,'2015-12-12','2015-12-12', 1, 0);
 
+-- INSERT FOR EMPLOYEE
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, transaction_office_id)
 VALUES
-('employee_1', 'employee1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 1','1994-06-22','Ha Noi','123123123011','+8412312311',4,'2015-12-12','2015-12-12', 1, 0, 1),
-('employee_2', 'employee2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 2','1994-06-22','Ha Noi','123123123012','+8412312312',4,'2015-12-12','2015-12-12', 1, 0, 2),
-('employee_3', 'employee3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee 3','1994-06-22','Ha Noi','123123123013','+8412312313',4,'2015-12-12','2015-12-12', 1, 0, 3);
+('employee_1', 'employee1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee Mot','1995-06-21','Ha Noi','123123123011','0123123111',4,'2015-12-12','2015-12-12', 1, 0, 1),
+('employee_2', 'employee2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee Hai','1995-06-21','Ha Noi','123123123012','0123123112',4,'2015-12-12','2015-12-12', 1, 0, 1),
+('employee_3', 'employee3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee Ba','1995-06-21','Ha Noi','123123123013','0123123113',4,'2015-12-12','2015-12-12', 1, 0, 1),
+('employee_4', 'employee4@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee Bon','1995-06-21','Ha Noi','123123123014','0123123114',4,'2015-12-12','2015-12-12', 1, 0, 1),
+('employee_5', 'employee5@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee Nam','1995-06-21','Ha Noi','123123123015','0123123115',4,'2015-12-12','2015-12-12', 1, 0, 2),
+('employee_6', 'employee6@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee Sau','1995-06-21','Ha Noi','123123123016','0123123116',4,'2015-12-12','2015-12-12', 1, 0, 2),
+('employee_7', 'employee7@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Employee Bay','1995-06-21','Ha Noi','123123123017','0123123117',4,'2015-12-12','2015-12-12', 1, 0, 2);
 
-INSERT INTO `users_roles` (user_id,role_id)
-VALUES 
+-- INSERT FOR TRANSACTION OFFICE MANAGER ROLE
+INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, transaction_office_id) VALUES
+('transaction_manager_1', 'transactionM1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Transaction Mot', '1993-01-01', 'Ha Noi', '123123124011', '0123123211', 4, '2015-12-12','2015-12-12', 1, 0, 1),
+('transaction_manager_2', 'transactionM2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Transaction Hai', '1993-01-01', 'Ha Noi', '123123124012', '0123123212', 4, '2015-12-12','2015-12-12', 1, 0, 1),
+('transaction_manager_3', 'transactionM3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Transaction Ba', '1993-01-01', 'Ha Noi', '123123124013', '0123123213', 4, '2015-12-12','2015-12-12', 1, 0, 1),
+('transaction_manager_4', 'transactionM4@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Transaction Bon', '1993-01-01', 'Ha Noi', '123123124014', '0123123214', 4, '2015-12-12','2015-12-12', 1, 0, 1),
+('transaction_manager_5', 'transactionM5@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Transaction Nam', '1993-01-01', 'Ha Noi', '123123124015', '0123123215', 4, '2015-12-12','2015-12-12', 1, 0, 1),
+('transaction_manager_6', 'transactionM6@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Transaction Sau', '1993-01-01', 'Ha Noi', '123123124016', '0123123216', 4, '2015-12-12','2015-12-12', 1, 0, 1),
+('transaction_manager_7', 'transactionM7@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Transaction Bay', '1993-01-01', 'Ha Noi', '123123124017', '0123123217', 4, '2015-12-12','2015-12-12', 1, 0, 1);
+
+-- INSERT FOR BRANCH OFFICE MANAGER ROLE
+INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, branch_office_id) VALUES
+('branch_manager_1', 'branchmanager1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Branch Mot', '1990-01-01', 'Ha Noi', '123153124011', '0123153211', 4, '2015-12-12','2015-12-12', 1, 0, 1),
+('branch_manager_2', 'branchmanager2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Branch Hai', '1990-01-01', 'Ha Noi', '123153124012', '0123153212', 4, '2015-12-12','2015-12-12', 1, 0, 2);
+INSERT INTO `users_roles` (user_id,role_id) VALUES 
 (1, 1),
 (2, 1),
 (3, 1),
-(4, 2),
-(5, 2),
-(6, 2);
+(4, 1),
+(5, 1),
+(6, 1),
+(7, 1),
+(8, 1),
+(9, 1),
+(10, 1),
+(11, 2),
+(12, 2),
+(13, 2),
+(14, 2),
+(15, 2),
+(16, 2),
+(17, 2),
+(18, 3),
+(19, 3),
+(20, 3),
+(21, 3),
+(22, 3),
+(23, 3),
+(24, 3),
+(25, 4),
+(26, 4);
 
 INSERT INTO `account` (amount, account_number, user_id, created_at, updated_at, expired_date, otp_tranfer_enabled, status)
 VALUES
 # accounts of Xuan Hieu
 (1000000, 444411111001, 1, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(1000000, 444411111002, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(1000000, 444411111005, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
-(1000000, 444411111003, 1, '2013-10-10', '2013-10-10', '2022-10-10', 0, 1), 
-(1000000, 444411111004, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0, 0),
+(2000000, 444411111002, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(3000000, 444411111005, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444411111003, 1, '2013-10-10', '2013-10-10', '2022-10-10', 0, 1), 
+(5000000, 444411111004, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of Minh Duc
 (1000000, 444411112001, 2, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(1000000, 444411112002, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 0), 
-(1000000, 444411112003, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 0), 
-(1000000, 444411112004, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(1000000, 444411112005, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(2000000, 444411112002, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(3000000, 444411112003, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(4000000, 444411112004, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(5000000, 444411112005, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of Hoang Hung
 (1000000, 444411113001, 3, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(1000000, 444411113002, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(1000000, 444411113003, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(1000000, 444411113004, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 0), 
-(1000000, 444411113005, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 0);
-
+(2000000, 444411113002, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(3000000, 444411113003, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(4000000, 444411113004, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(5000000, 444411113005, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+# accounts of username_1
+(1000000, 444411114001, 4, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
+(2000000, 444411114002, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(3000000, 444411114003, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(4000000, 444411114004, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(5000000, 444411114005, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+# accounts of username_2
+(1000000, 444411115001, 5, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
+(2000000, 444411115002, 5, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(3000000, 444411115003, 5, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(4000000, 444411115004, 5, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(5000000, 444411115005, 5, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+# accounts of username_3
+(1000000, 444411116001, 6, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
+(2000000, 444411116002, 6, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(3000000, 444411116003, 6, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(4000000, 444411116004, 6, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(5000000, 444411116005, 6, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+# accounts of username_4
+(1000000, 444411117001, 7, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
+(2000000, 444411117002, 7, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(3000000, 444411117003, 7, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(4000000, 444411117004, 7, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(5000000, 444411117005, 7, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+# accounts of username_5
+(1000000, 444411118001, 8, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
+(2000000, 444411118002, 8, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(3000000, 444411118003, 8, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(4000000, 444411118004, 8, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(5000000, 444411118005, 8, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+# accounts of username_6
+(1000000, 444411119001, 9, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
+(2000000, 444411119002, 9, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(3000000, 444411119003, 9, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(4000000, 444411119004, 9, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(5000000, 444411119005, 9, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+# accounts of username_7
+(1000000, 444411111101, 4, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
+(2000000, 444411111102, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(3000000, 444411111103, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(4000000, 444411111104, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(5000000, 444411111105, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1);
 
 insert into `transaction_type` (name)
 values
@@ -508,3 +603,20 @@ values
 ("NGUYEN VAN A", "123123124004", 100000, 0, 0, '2020-06-29', '2020-07-03', 1),
 ("NGUYEN VAN B", "123123124005", 100000, 0, 0, '2020-06-29', '2020-07-03', 1);
 
+insert into `loan_profile` (amount, description, confirmed, approved, rejected, rejected_reason, status, created_at, loan_interest_rate_id, account_id, user_id, transaction_office_id) values
+(50000000, 'Test Description', true, false, false, '', 'CONFIRMED', '2020-06-28', 2, 11, 3, 1), -- 1
+(100000000, 'Test Description', true, false, false, '', 'CONFIRMED', '2020-06-28', 4, 12, 3, 1), -- 2
+(150000000, 'Test Description', true, false, false, '', 'CONFIRMED', '2020-06-28', 5, 13, 3, 1), -- 3
+(20000000, 'Test Description', true, false, false, '', 'CONFIRMED', '2020-06-28', 2, 14, 3, 1), -- 4
+(80000000, 'Test Description', false, false, false, '', 'CREATED', '2020-06-28', 6, 15, 3, 1), -- 5
+(90000000, 'Test Description', false, false, false, '', 'CREATED', '2020-06-28', 2, 16, 4, 1), -- 6
+(100000000, 'Test Description', false, false, false, '', 'CREATED', '2020-06-28', 2, 17, 4, 1), -- 7
+(70000000, 'Test Description', false, false, false, '', 'CREATED', '2020-06-28', 6, 18, 4, 1), -- 8
+(62000000, 'Test Description', true, false, false, '', 'APPROVED BY TRANSACTION MANAGER', '2020-06-28', 2, 19, 4, 1), -- 9
+(89000000, 'Test Description', true, false, true, 'Too much money', 'REJECTED', '2020-06-28', 2, 20, 4, 1), -- 10
+(15000000, 'Test Description', true, true, false, '', 'CONFIRMED', '2020-06-28', 4, 21, 5, 1), -- 11
+(100000000, 'Test Description', true, true, false, '', 'APPROVED', '2020-06-28', 4, 22, 5, 1), -- 12
+(70000000, 'Test Description', true, false, true, 'Too much money', 'REJECTED', '2020-06-28', 2, 23, 5, 1), -- 13
+(62000000, 'Test Description', true, true, false, '', 'APPROVED', '2020-06-28', 2, 24, 5, 1), -- 14
+(89000000, 'Test Description', true, false, false, 'Too much money', 'REJECTED', '2020-06-28', 3, 25, 5, 1), -- 15
+(15000000, 'Test Description', true, true, false, '', 'APPROVED', '2020-06-28', 1, 26, 6, 1); -- 16

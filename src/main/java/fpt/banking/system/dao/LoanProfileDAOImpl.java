@@ -74,9 +74,6 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 		}
 	}
 
-	/**
-	 *
-	 */
 	@Override
 	public void confirmLoanProfile(long id) {
 		Session session = entityManager.unwrap(Session.class);
@@ -84,6 +81,62 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 		loanProfile.setConfirmed(true);
 		loanProfile.setStatus("CONFIRMED");
 		session.save(loanProfile);
+	}
+
+	@Override
+	public long approvedLoanProfileByTransactionManager(long loanProfileId) {
+		Session session = entityManager.unwrap(Session.class);
+		LoanProfile loanProfile = session.get(LoanProfile.class, loanProfileId);
+		loanProfile.setStatus("APPROVED BY TRANSACTION MANAGER");
+		session.saveOrUpdate(loanProfile);
+		return loanProfile.getId();
+	}
+
+	@Override
+	public long approvedLoanProfileByBranchManager(long loanProfileId) {
+		Session session = entityManager.unwrap(Session.class);
+		LoanProfile loanProfile = session.get(LoanProfile.class, loanProfileId);
+		loanProfile.setStatus("APPROVED");
+		loanProfile.setApproved(true);
+		session.saveOrUpdate(loanProfile);
+		return loanProfile.getId();
+	}
+
+	@Override
+	public void rejectLoanProffile(long loanProfileId, String rejectedReason) {
+		Session session = entityManager.unwrap(Session.class);
+		LoanProfile loanProfile = session.get(LoanProfile.class, loanProfileId);
+		loanProfile.setRejected(true);
+		loanProfile.setRejectedReason(rejectedReason);
+	}
+
+	@Override
+	public List<LoanProfile> getLoanProfilesByTransactionOffice(long transactionOfficeId, int page) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT l FROM LoanProfile l " +
+					 "WHERE transaction_office_id = :transactionOfficeId " +
+					 "ORDER BY l.id DESC";
+		Query<LoanProfile> q = session.createQuery(sql, LoanProfile.class).setFirstResult((page - 1) * 5).setMaxResults(5);
+		q.setParameter("transactionOfficeId", transactionOfficeId);
+		List<LoanProfile> results;
+		try {
+			results = q.getResultList();
+			System.out.println(results.size());
+		} catch (NoResultException e) {
+			return null;
+		} 
+		return results;
+	}
+
+	@Override
+	public long getTotalLoanProfilesByTransactionOffice(long transactionOfficeId) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT COUNT(*) FROM LoanProfile l " +
+					 "WHERE transaction_office_id = :transactionOfficeId";
+		Query q = session.createQuery(sql);
+		q.setParameter("transactionOfficeId", transactionOfficeId);
+		long total = (Long) q.uniqueResult();
+		return total;
 	}
 
 }

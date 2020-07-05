@@ -2,6 +2,7 @@ package fpt.banking.system.admin.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fpt.banking.system.exception.AccountNotFound;
@@ -28,6 +30,7 @@ import fpt.banking.system.model.User;
 import fpt.banking.system.payload.AssetRequestPayload;
 import fpt.banking.system.payload.LoanProfileIdConfirmPayload;
 import fpt.banking.system.payload.LoanProfileRequestPayload;
+import fpt.banking.system.payload.LoanProfilesResponsePayload;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.AccountService;
@@ -199,5 +202,20 @@ public class AdminUserLoanController {
 		long id  = loanService.saveLoanProfileQueue(payload.getLoanProfileId());
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), String.valueOf(id), System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+	}
+	
+	@GetMapping("/admin/transaction-office/loan-profiles")
+	@PreAuthorize("hasRole('ROLE_TRANSACTIONMANAGER')")
+	public LoanProfilesResponsePayload getLoanProfilesForTransactionManager(
+			@RequestParam("page") Optional<Integer> page,
+			@AuthenticationPrincipal UserPrincipal currentTransactionManager
+			) {
+		int pageNumber = 1;
+		if (page.isPresent()) {
+			pageNumber = page.get();
+		}
+		User transactionManager = userService.getUser(currentTransactionManager.getId());
+		TransactionOffice transactionOffice = transactionManager.getTransactionOffice();
+		return loanService.getLoanProfilesOfTransactionOffice(transactionOffice.getId(), pageNumber);
 	}
 }

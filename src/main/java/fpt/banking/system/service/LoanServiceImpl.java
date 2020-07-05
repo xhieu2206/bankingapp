@@ -21,6 +21,7 @@ import fpt.banking.system.model.LoanProfile;
 import fpt.banking.system.model.LoanProfileQueue;
 import fpt.banking.system.model.TransactionOffice;
 import fpt.banking.system.model.User;
+import fpt.banking.system.payload.LoanProfilesResponsePayload;
 import fpt.banking.system.util.MD5;
 import fpt.banking.system.util.MobilePhoneUtil;
 import fpt.banking.system.util.RandomGenerator;
@@ -119,5 +120,58 @@ public class LoanServiceImpl implements LoanService {
 	@Transactional
 	public void deleteLoanProfileQueue(long loanProfileQueueId) {
 		loanProfileQueueDAO.deleteLoanProfileQueue(loanProfileQueueId);
+	}
+
+	@Override
+	@Transactional
+	public long approvedLoanProfileByTransactionManager(long loanProfileId) {
+		return loanProfileDAO.approvedLoanProfileByTransactionManager(loanProfileId);
+	}
+
+	@Override
+	@Transactional
+	public long approvedLoanProfileByBranchManager(long loanProfileId) {
+		return loanProfileDAO.approvedLoanProfileByTransactionManager(loanProfileId);
+	}
+
+	@Override
+	@Transactional
+	public void rejectLoanProffile(long loanProfileId, String rejectedReason) {
+		loanProfileDAO.rejectLoanProffile(loanProfileId, rejectedReason);
+	}
+
+	@Override
+	@Transactional
+	public long getTotalLoanProfilesOfTransactionOffice(long transactionOfficeId) {
+		return 0;
+	}
+
+	@Override
+	@Transactional
+	public long getTotalLoanProfilesOfBranchOffice(long branchOfficeId) {
+		return 0;
+	}
+
+	@Override
+	@Transactional
+	public LoanProfilesResponsePayload getLoanProfilesOfTransactionOffice(long transactionOfficeId, int page) {
+		LoanProfilesResponsePayload results = new LoanProfilesResponsePayload();
+		results.setPageNumber(page);
+		results.setTotalCount(loanProfileDAO.getTotalLoanProfilesByTransactionOffice(transactionOfficeId));
+		int totalPage = (int) Math.ceil(loanProfileDAO.getTotalLoanProfilesByTransactionOffice(transactionOfficeId) / 5);
+		if (loanProfileDAO.getTotalLoanProfilesByTransactionOffice(transactionOfficeId) % 5 > 0) {
+			totalPage ++;
+		}
+		results.setTotalPage(totalPage);
+		results.setItems(loanProfileDAO.getLoanProfilesByTransactionOffice(transactionOfficeId, page));
+		results.setPageSize(results.getItems().size());
+		return results;
+	}
+
+	@Override
+	@Transactional
+	public LoanProfilesResponsePayload getLoanProfilesOfBranchOffice(long transactionOfficeId, int page) {
+		LoanProfilesResponsePayload results = new LoanProfilesResponsePayload();
+		return results;
 	}
 }
