@@ -328,6 +328,24 @@ create table `images_asset` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ##############################################################
 
+#### NOTIFICATION TABLE TABLE ################################
+drop table if exists `notification`;
+create table `notification`(
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+    `message` varchar(1000) not null,
+    `created_at` datetime not null,
+    `is_read` boolean default 0,
+    
+    `user_id` int(11) NOT NULL,
+    
+    constraint `FK_NOTIFICATION_USER_ID` foreign key (`user_id`)
+    references `user` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+
+    primary key (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+##############################################################
+
 
 
 

@@ -19,16 +19,24 @@ import fpt.banking.system.exception.AccountNotFound;
 import fpt.banking.system.exception.ExpriedOTP;
 import fpt.banking.system.exception.WrongOTPCode;
 import fpt.banking.system.model.TransactionQueueInternal;
+import fpt.banking.system.model.User;
 import fpt.banking.system.payload.ConfirmTranferPayload;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
+import fpt.banking.system.service.AccountService;
+import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.TranferService;
 import fpt.banking.system.util.MD5;
 
 @RestController
 @RequestMapping("/api/tranfer")
 public class ConfirmTranferController {
-
+	@Autowired
+	private NotificationService notificationService;
+	
+	@Autowired
+	private AccountService accountService;
+	
 	@Autowired
 	private TranferService tranferService;
 	
@@ -53,7 +61,15 @@ public class ConfirmTranferController {
 				transactionQueueInternal.getReceiverAccountId(),
 				transactionQueueInternal.getAmount(),
 				transactionQueueInternal.getDescription());
+		User tranferUser = accountService.getAccount(transactionQueueInternal.getTranferAccountId()).getUser();
+		User reveiverUser = accountService.getAccount(transactionQueueInternal.getReceiverAccountId()).getUser();
 		tranferService.deleteTransactionQueueInternal(confirmTranferPayload.getTransactionQueueId());
+		notificationService.saveNotification(
+				"You have tranfered " + transactionQueueInternal.getAmount() + " to account with card number is " +
+				accountService.getAccount(transactionQueueInternal.getReceiverAccountId()).getAccountNumber(), tranferUser);
+		notificationService.saveNotification(
+				"You have revieved " + transactionQueueInternal.getAmount() + " from account with card number is " +
+				accountService.getAccount(transactionQueueInternal.getTranferAccountId()).getAccountNumber(), reveiverUser);
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Tranfer successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}

@@ -27,6 +27,7 @@ import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.AccountService;
 import fpt.banking.system.service.LoanService;
+import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.TransactionOfficeService;
 import fpt.banking.system.service.TransactionService;
 import fpt.banking.system.service.UserService;
@@ -46,6 +47,9 @@ public class AdminUserLoanController {
 	
 	@Autowired
 	private TransactionOfficeService transactionOfficeService;
+	
+	@Autowired
+	private NotificationService notificationService;
 
 	@PostMapping("/admin/users/{userId}/loanprofiles")
 	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
@@ -83,7 +87,9 @@ public class AdminUserLoanController {
 				loanService.findLoanInterestRateById(payload.getLoanInterestRateId()), 
 				userService.getUser(userId), 
 				transactionOfficeService.findTransactionOfficeById(emp.getTransactionOffice().getId()));
+		
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), String.valueOf(loanProfileId), System.currentTimeMillis());
+		notificationService.saveNotification("You have create a new loan profile, please contact your admin for more info or checking in our banking application", userService.getUser(userId));
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 	

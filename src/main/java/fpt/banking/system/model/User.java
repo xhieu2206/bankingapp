@@ -121,6 +121,15 @@ public class User implements Serializable {
 			})
 	@JsonIgnore
 	private List<LoanProfile> loanProfiles;
+	
+	@OneToMany(
+			fetch = FetchType.LAZY,
+			mappedBy = "user",
+			cascade = {
+				CascadeType.ALL
+			})
+	@JsonIgnore
+	private List<Notification> notifications;
 	// ---------------------------------------
 	
 	// Constructor 
@@ -346,6 +355,14 @@ public class User implements Serializable {
 
 	public void setLoanProfiles(List<LoanProfile> loanProfiles) {
 		this.loanProfiles = loanProfiles;
+	}
+
+	public List<Notification> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(List<Notification> notifications) {
+		this.notifications = notifications;
 	}
 
 	@Override

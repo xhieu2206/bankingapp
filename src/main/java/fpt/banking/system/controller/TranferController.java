@@ -18,12 +18,15 @@ import fpt.banking.system.exception.AuthorizedException;
 import fpt.banking.system.exception.NotEnoughMoneyException;
 import fpt.banking.system.exception.NullDescriptionException;
 import fpt.banking.system.exception.PinCodeIncorrectedException;
+import fpt.banking.system.model.User;
 import fpt.banking.system.payload.TranferInternalPayloadByAccountNumber;
 import fpt.banking.system.payload.TranferInternalPayloadByCardNumber;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.AccountService;
+import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.TranferService;
+import fpt.banking.system.service.UserService;
 import fpt.banking.system.util.MD5;
 
 @RestController
@@ -35,6 +38,12 @@ public class TranferController {
 	
 	@Autowired
 	private AccountService accountService;
+	
+	@Autowired
+	private NotificationService notificationService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@PostMapping("/{userId}/accounts/{accountId}/tranferInternal/accountNumber")
 	@PreAuthorize("hasRole('ROLE_USER')")
@@ -75,6 +84,14 @@ public class TranferController {
 				accountService.findByAccountNumber(tranferInternalPayloadByAccountNumber.getAccountNumber()).getId(),
 				tranferInternalPayloadByAccountNumber.getAmount(),
 				tranferInternalPayloadByAccountNumber.getDescription());
+		User tranferUser = accountService.getAccount(accountId).getUser();
+		User revieverUser = accountService.findByAccountNumber(tranferInternalPayloadByAccountNumber.getAccountNumber()).getUser();
+		notificationService.saveNotification(
+				"You have tranfered " + tranferInternalPayloadByAccountNumber.getAmount().toString() + " to account with account number is " +
+				tranferInternalPayloadByAccountNumber.getAccountNumber(), tranferUser);
+		notificationService.saveNotification(
+				"You have revieved " + tranferInternalPayloadByAccountNumber.getAmount().toString() + " from account with account number is " +
+				accountService.getAccount(accountId).getAccountNumber(), revieverUser);
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Tranfer successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
@@ -119,6 +136,14 @@ public class TranferController {
 				tranferInternalPayloadByCardNumber.getAmount(),
 				tranferInternalPayloadByCardNumber.getDescription());
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Tranfer successfully", System.currentTimeMillis());
+		User tranferUser = accountService.getAccount(accountId).getUser();
+		User revieverUser = accountService.findByCardNumber(tranferInternalPayloadByCardNumber.getCardNumber()).getUser();
+		notificationService.saveNotification(
+				"You have tranfered " + tranferInternalPayloadByCardNumber.getAmount().toString() + " to account with card number is " +
+						tranferInternalPayloadByCardNumber.getCardNumber(), tranferUser);
+		notificationService.saveNotification(
+				"You have revieved " + tranferInternalPayloadByCardNumber.getAmount().toString() + " from account with card number is " +
+				accountService.getAccount(accountId).getAccountNumber(), revieverUser);
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 }
