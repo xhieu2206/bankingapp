@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fpt.banking.system.exception.AccountNotFound;
 import fpt.banking.system.exception.ExpriedOTP;
 import fpt.banking.system.exception.WrongOTPCode;
+import fpt.banking.system.model.LoanProfileQueue;
 import fpt.banking.system.model.User;
 import fpt.banking.system.payload.ConfirmLoanProfilePayload;
 import fpt.banking.system.payload.LoanProfileRequestPayload;
@@ -40,19 +41,20 @@ public class AdminConfirmLoanProfileController {
 			@AuthenticationPrincipal UserPrincipal currentEmp
 			) {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 300000);
-		if (loanService.findLoanProfileQueueById(payload.getLoanProfileId()).getExpriedAt().getTime() < timestamp.getTime()) {
+		LoanProfileQueue loanProfileQueue = loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId());
+		if (loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId()).getExpriedAt().getTime() < timestamp.getTime()) {
 			throw new ExpriedOTP("Your OTP Code have been expried");
 		}
-		if (!loanService.findLoanProfileQueueById(payload.getLoanProfileId()).getOtpCode().equals(MD5.getMd5(payload.getOtpCode()))) {
+		if (!loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId()).getOtpCode().equals(MD5.getMd5(payload.getOtpCode()))) {
 			throw new WrongOTPCode("Your OTP code you input was wrong");
 		}
-		if (loanService.findLoanProfileQueueById(payload.getLoanProfileId()) == null) {
+		if (loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId()) == null) {
 			throw new AccountNotFound("Loan profile not found");
 		}
 		loanService.confirmLoanProfile(payload.getLoanProfileId());
 		User user = loanService.findLoanProfileById(payload.getLoanProfileId()).getUser();
 		notificationService.saveNotification("Your Loan profile has been confirmed", user);
-		loanService.deleteLoanProfileQueue(payload.getLoanProfileId());
+		loanService.deleteLoanProfileQueue(loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId()).getId());
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "This loan profile has been confirmed", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}

@@ -26,6 +26,7 @@ import fpt.banking.system.model.Account;
 import fpt.banking.system.model.Asset;
 import fpt.banking.system.model.LoanInterestRate;
 import fpt.banking.system.model.LoanProfile;
+import fpt.banking.system.model.LoanProfileQueue;
 import fpt.banking.system.model.Role;
 import fpt.banking.system.model.TransactionOffice;
 import fpt.banking.system.model.User;
@@ -205,8 +206,10 @@ public class AdminUserLoanController {
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
-		long id  = loanService.saveLoanProfileQueue(payload.getLoanProfileId());
-		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), String.valueOf(id), System.currentTimeMillis());
+		long id = loanService.saveLoanProfileQueue(payload.getLoanProfileId());
+		LoanProfileQueue loanProfileQueue = loanService.findLoanProfileQueueById(id);
+		long loanProfileId = loanProfileQueue.getLoanProfileId();
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), String.valueOf(loanProfileId), System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 	

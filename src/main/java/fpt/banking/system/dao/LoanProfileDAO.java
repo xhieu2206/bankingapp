@@ -5,6 +5,7 @@ import java.util.List;
 import fpt.banking.system.model.Account;
 import fpt.banking.system.model.LoanInterestRate;
 import fpt.banking.system.model.LoanProfile;
+import fpt.banking.system.model.LoanProfileQueue;
 import fpt.banking.system.model.TransactionOffice;
 import fpt.banking.system.model.User;
 import fpt.banking.system.payload.LoanProfilesResponsePayload;

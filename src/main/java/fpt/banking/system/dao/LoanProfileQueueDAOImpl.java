@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +42,17 @@ public class LoanProfileQueueDAOImpl implements LoanProfileQueueDAO {
 		Session session = entityManager.unwrap(Session.class);
 		LoanProfileQueue loanProfileQueue = session.get(LoanProfileQueue.class, id);
 		session.remove(loanProfileQueue);
+	}
+
+	@Override
+	public LoanProfileQueue findLoanProfileQueueByLoanProfileId(long loanProfileId) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT l FROM LoanProfileQueue l " +
+					 "WHERE loan_profile_id = :loanProfileId " +
+					 "ORDER BY l.id DESC";
+		Query<LoanProfileQueue> q = session.createQuery(sql, LoanProfileQueue.class);
+		q.setParameter("loanProfileId", loanProfileId);
+		return q.getSingleResult();
 	}
 
 }

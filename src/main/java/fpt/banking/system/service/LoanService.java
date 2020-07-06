@@ -50,4 +50,6 @@ public interface LoanService {
 	public LoanProfilesResponsePayload getLoanProfilesOfTransactionOffice(long transactionOfficeId, int page);
 	
 	public LoanProfilesResponsePayload getLoanProfilesOfBranchOffice(long transactionOfficeId, int page);
+	
+	public LoanProfileQueue findLoanProfileQueueByLoanProfileId(long loanProfileId);
 }

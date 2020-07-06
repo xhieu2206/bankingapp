@@ -9,4 +9,6 @@ public interface LoanProfileQueueDAO {
 	public long saveLoanProfileQueue(String otpCode, long loanProfileId, java.util.Date expriedAt);
 	
 	public void deleteLoanProfileQueue(long id);
+	
+	public LoanProfileQueue findLoanProfileQueueByLoanProfileId(long loanProfileId);
 }

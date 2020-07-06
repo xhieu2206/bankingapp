@@ -174,4 +174,11 @@ public class LoanServiceImpl implements LoanService {
 		LoanProfilesResponsePayload results = new LoanProfilesResponsePayload();
 		return results;
 	}
+
+	@Override
+	@Transactional
+	public LoanProfileQueue findLoanProfileQueueByLoanProfileId(long loanProfileId) {
+		// TODO Auto-generated method stub
+		return loanProfileQueueDAO.findLoanProfileQueueByLoanProfileId(loanProfileId);
+	}
 }

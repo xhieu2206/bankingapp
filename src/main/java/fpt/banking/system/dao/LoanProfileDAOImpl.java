@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import fpt.banking.system.model.Account;
 import fpt.banking.system.model.LoanInterestRate;
 import fpt.banking.system.model.LoanProfile;
+import fpt.banking.system.model.LoanProfileQueue;
 import fpt.banking.system.model.TransactionOffice;
 import fpt.banking.system.model.User;
 
@@ -138,5 +139,4 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 		long total = (Long) q.uniqueResult();
 		return total;
 	}
-
 }
