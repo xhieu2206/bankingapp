@@ -1,5 +1,8 @@
 package fpt.banking.system.dao;
 
+import java.util.Date;
+
+import fpt.banking.system.model.Membership;
 import fpt.banking.system.model.User;
 
 public interface UserDAO {
@@ -31,4 +34,17 @@ public interface UserDAO {
 	public void resetAttemptedLoginFail(long userId);
 	
 	public void changePassword(long userId, String passwordEncoder);
+	
+	public long saveUser(
+		String username,
+		String email,
+		String passwordEncoderString,
+		String fullName,
+		Date birthday,
+		String address,
+		String gender,
+		String idCardNumber,
+		String phone,
+		Membership membership,
+		String image);
 }

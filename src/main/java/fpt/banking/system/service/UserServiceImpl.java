@@ -1,16 +1,35 @@
 package fpt.banking.system.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fpt.banking.system.dao.AccountDAO;
+import fpt.banking.system.dao.CardDAO;
+import fpt.banking.system.dao.MembershipDAO;
 import fpt.banking.system.dao.UserDAO;
+import fpt.banking.system.model.Account;
+import fpt.banking.system.model.Membership;
 import fpt.banking.system.model.User;
+import fpt.banking.system.util.MD5;
+import fpt.banking.system.util.MobilePhoneUtil;
+import fpt.banking.system.util.RandomGenerator;
+import fpt.banking.system.util.SendSms;
 import fpt.banking.system.enums.SearchUserTypeEnum;
 
 @Service
 public class UserServiceImpl implements UserService {
+	@Autowired
+	private CardDAO cardDAO;
+	
+	@Autowired
+	private AccountDAO accountDAO;
+	
+	@Autowired
+	private MembershipDAO membershipDAO;
 
 	@Autowired
 	private UserDAO userDAO;
@@ -80,5 +99,24 @@ public class UserServiceImpl implements UserService {
 	public void changePassword(long userId, String password) {
 		String passwordEncodeString = passwordEncoder.encode(password);
 		userDAO.changePassword(userId, passwordEncodeString);
+	}
+
+	@Override
+	@Transactional
+	public long saveUser(String username, String email, String fullName, Date birthday, String address,
+			String gender, String idCardNumber, String phone, long membershipId, String image) {
+		Membership membership = membershipDAO.findMembershipById(membershipId);
+		String accountNumber = RandomGenerator.generateAccountNumber();
+		String cardNumber = RandomGenerator.generateCardNumber();
+		String password = RandomGenerator.generatePassword();
+		String otpCode = RandomGenerator.generateOTP();
+		long userId = userDAO.saveUser(username, email, passwordEncoder.encode(password), fullName, birthday, address, gender, idCardNumber, phone, membership, image);
+		SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "You have created a credential in our banking app with username: " + username + " and password is: " + password
+				+ ", please login into our application to see your new account detail and card detail");
+		User user = userDAO.findById(userId);
+		long accountId = accountDAO.saveAccount(accountNumber, user, 100000, MD5.getMd5(otpCode));
+		Account account = accountDAO.getAccount(accountId);
+		long cardId = cardDAO.saveCard(cardNumber, account);
+		return accountId;
 	}
 }

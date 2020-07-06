@@ -1,5 +1,9 @@
 package fpt.banking.system.dao;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
@@ -26,6 +30,22 @@ public class CardDAOImpl implements CardDAO {
 		Session session = entityManager.unwrap(Session.class);
 		Account account = session.get(Account.class, Long.valueOf(accountId));
 		return account.getCard();
+	}
+
+	@Override
+	public long saveCard(String cardNumber, Account account) {
+		Session session = entityManager.unwrap(Session.class);
+		Card card = new Card();
+		LocalDate createdAt = LocalDate.now();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.YEAR, 5);
+		Date expiredDate = cal.getTime();
+		card.setAccount(account);
+		card.setCardNumber(cardNumber);
+		card.setCreatedAt(java.sql.Date.valueOf(createdAt));
+		card.setExpiredAt(expiredDate);
+		session.saveOrUpdate(card);
+		return card.getId();
 	}
 
 }

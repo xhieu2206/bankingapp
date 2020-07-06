@@ -1,5 +1,8 @@
 package fpt.banking.system.dao;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import fpt.banking.system.model.Account;
 import fpt.banking.system.model.Card;
+import fpt.banking.system.model.Membership;
 import fpt.banking.system.model.User;
 
 @Repository
@@ -172,5 +176,32 @@ public class UserDAOImpl implements UserDAO {
 		User user = session.get(User.class, userId);
 		user.setPassword(passwordEncoder);
 		session.saveOrUpdate(user);
+	}
+
+	@Override
+	public long saveUser(String username, String email, 
+			String passwordEncoderString, String fullName, Date birthday,
+			String address, String gender, String idCardNumber, 
+			String phone, Membership membership, String image) {
+		Session session = entityManager.unwrap(Session.class);
+		LocalDate createdAt = LocalDate.now();
+		User user = new User();
+		user.setUsername(username);
+		user.setEmail(email);
+		user.setPassword(passwordEncoderString);
+		user.setFullname(fullName);
+		user.setBirthday(birthday);
+		user.setAddress(address);
+		user.setGender(gender);
+		user.setIdCardNumber(idCardNumber);
+		user.setPhone(phone);
+		user.setMembership(membership);
+		user.setImage(image);
+		user.setCreatedAt(java.sql.Date.valueOf(createdAt));
+		user.setUpdatedAt(java.sql.Date.valueOf(createdAt));
+		user.setLocked(false);
+		user.setStatus(true);
+		session.saveOrUpdate(user);
+		return user.getId();
 	}
 }

@@ -3,6 +3,7 @@ package fpt.banking.system.dao;
 import java.util.List;
 
 import fpt.banking.system.model.Account;
+import fpt.banking.system.model.User;
 
 public interface AccountDAO {
 
@@ -19,4 +20,6 @@ public interface AccountDAO {
 	public Account findByAccountNumber(String accountNumber);
 	
 	public Account findByCardNumber(String cardNumber);
+	
+	public long saveAccount(String accountNumber, User user, long amount, String pinCodeEncoderString);
 }

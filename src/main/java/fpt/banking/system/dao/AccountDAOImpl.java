@@ -2,6 +2,8 @@ package fpt.banking.system.dao;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -109,5 +111,25 @@ public class AccountDAOImpl implements AccountDAO {
 			return null;
 		}
 		return card.getAccount();
+	}
+
+	@Override
+	public long saveAccount(String accountNumber, User user, long amount, String pinCodeEncoderString) {
+		Session session = entityManager.unwrap(Session.class);
+		LocalDate createdAt = LocalDate.now();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.YEAR, 5);
+		Date expiredDate = cal.getTime();
+		Account account = new Account();
+		account.setAccountNumber(accountNumber);
+		account.setUser(user);
+		account.setAmount(amount);
+		account.setPinCode(pinCodeEncoderString);
+		account.setCreatedAt(java.sql.Date.valueOf(createdAt));
+		account.setUpdatedAt(java.sql.Date.valueOf(createdAt));
+		account.setExpiredAt(expiredDate);
+		account.setStatus(true);
+		session.saveOrUpdate(account);
+		return account.getId();
 	}
 }
