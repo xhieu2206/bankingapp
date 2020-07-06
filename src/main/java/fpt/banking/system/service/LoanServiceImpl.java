@@ -178,7 +178,6 @@ public class LoanServiceImpl implements LoanService {
 	@Override
 	@Transactional
 	public LoanProfileQueue findLoanProfileQueueByLoanProfileId(long loanProfileId) {
-		// TODO Auto-generated method stub
 		return loanProfileQueueDAO.findLoanProfileQueueByLoanProfileId(loanProfileId);
 	}
 }

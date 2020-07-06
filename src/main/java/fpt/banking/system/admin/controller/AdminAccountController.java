@@ -22,6 +22,7 @@ import fpt.banking.system.model.Account;
 import fpt.banking.system.model.User;
 import fpt.banking.system.payload.AccountForAdminResponse;
 import fpt.banking.system.payload.DepositRequestPayload;
+import fpt.banking.system.payload.WithdrawRequestPayload;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.AccountService;
@@ -101,8 +102,51 @@ public class AdminAccountController {
 		transactionService.saveTransaction(payload.getAccountId(), payload.getAmount(), 
 				account.getAmount() + payload.getAmount(), 5, "Deposit " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName());
 		notificationService.saveNotification("Deposit " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName(), user);
-		accountService.changeAmount(payload.getAccountId(), payload.getAmount());
+		accountService.changeAmount(payload.getAccountId(), account.getAmount() + payload.getAmount());
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Deposit successfully", System.currentTimeMillis());
+		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+	}
+	
+	@PostMapping("/account/withdraw")
+	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
+	public ResponseEntity<?> withdraw(
+			@RequestBody WithdrawRequestPayload payload,
+			@AuthenticationPrincipal UserPrincipal emp) {
+		User user = userService.getUser(payload.getUserId());
+		Account account = accountService.getAccount(payload.getAccountId());
+		long amount = payload.getAmount();
+		if (user == null || account == null) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User or Account not found",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+		}
+		User employee = userService.getUser(emp.getId());
+		if (account.getUser().getId() != user.getId()) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This account doesn't belong to this user",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
+		if (account.isStatus() == false) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.LOCKED.value(), "This account has been locked",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.LOCKED);
+		}
+		if (user.getMembership().getName() == "GOLD") {
+			amount = amount + 10000;
+		} else if (user.getMembership().getName() == "PLATINUM") {
+			amount = amount + 5000;
+		}
+		if (amount > account.getAmount()) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This account doesn't have enough money for this transaction",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
+		notificationService.saveNotification(
+				"Withdraw " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName(), 
+				user);
+		transactionService.saveTransaction(account.getId(), amount * -1, account.getAmount() - amount, 6, "Withdraw " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName());
+		accountService.changeAmount(account.getId(), account.getAmount() - amount);
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Withdraw successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 }

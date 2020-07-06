@@ -23,6 +23,7 @@ import fpt.banking.system.payload.FindUserForTranferPayload;
 import fpt.banking.system.payload.RegisterUserRequestPayload;
 import fpt.banking.system.payload.SearchByIdCardNumberRequest;
 import fpt.banking.system.payload.SearchByPhoneNumberRequest;
+import fpt.banking.system.payload.UserIdRequestPayload;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.AccountService;
@@ -111,6 +112,37 @@ public class AdminUserController {
 				payload.getImage());
 		notificationService.saveNotification("You have created a credential in our banking app", accountService.getAccount(accountId).getUser());
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Create user successfully", System.currentTimeMillis());
+		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+	}
+	
+	@PostMapping("/admin/user/unlock")
+	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
+	public ResponseEntity<?> unlockUser(@RequestBody UserIdRequestPayload payload) {
+		User user = userService.getUser(payload.getUserId());
+		if (user == null) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+		}
+		if (user.isLocked() == false) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This user is not locked",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
+		String role = "";
+		for (Role r: user.getRoles()) {
+			role = r.getName();
+		}
+		if (!role.equals("ROLE_USER")) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This user is not an user",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
+		userService.unlockAnUser(user.getId());
+		notificationService.saveNotification(
+				"Your account is unlock now"
+				, user);
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Unlock user successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 }

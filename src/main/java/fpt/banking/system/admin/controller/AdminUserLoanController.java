@@ -102,7 +102,6 @@ public class AdminUserLoanController {
 				loanService.findLoanInterestRateById(payload.getLoanInterestRateId()), 
 				userService.getUser(userId), 
 				transactionOfficeService.findTransactionOfficeById(emp.getTransactionOffice().getId()));
-		
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), String.valueOf(loanProfileId), System.currentTimeMillis());
 		notificationService.saveNotification("You have create a new loan profile, please contact your admin for more info or checking in our banking application", userService.getUser(userId));
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
@@ -279,7 +278,7 @@ public class AdminUserLoanController {
 					loanProfile.getAccount().getAmount() + loanProfile.getAmount(),
 					4, 
 					"You has got " + loanProfile.getAmount() + " from your approved loaning");
-			accountService.changeAmount(loanProfile.getAccount().getId(), loanProfile.getAmount());
+			accountService.changeAmount(loanProfile.getAccount().getId(), loanProfile.getAmount() + loanProfile.getAccount().getAmount());
 			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 		}
 		return null;
