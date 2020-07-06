@@ -649,19 +649,19 @@ values
 ("NGUYEN VAN B", "123123124005", 100000, 0, 0, '2020-06-29', '2020-07-03', 1);
 
 insert into `loan_profile` (amount, description, confirmed, approved, rejected, rejected_reason, status, created_at, loan_interest_rate_id, account_id, user_id, transaction_office_id) values
-(50000000, 'Test Description', true, false, false, '', 'CONFIRMED', '2020-06-28', 2, 11, 3, 1), -- 1
-(100000000, 'Test Description', true, false, false, '', 'CONFIRMED', '2020-06-28', 4, 12, 3, 1), -- 2
-(150000000, 'Test Description', true, false, false, '', 'CONFIRMED', '2020-06-28', 5, 13, 3, 1), -- 3
-(20000000, 'Test Description', true, false, false, '', 'CONFIRMED', '2020-06-28', 2, 14, 3, 1), -- 4
-(80000000, 'Test Description', false, false, false, '', 'CREATED', '2020-06-28', 6, 15, 3, 1), -- 5
-(90000000, 'Test Description', false, false, false, '', 'CREATED', '2020-06-28', 2, 16, 4, 1), -- 6
-(100000000, 'Test Description', false, false, false, '', 'CREATED', '2020-06-28', 2, 17, 4, 1), -- 7
-(70000000, 'Test Description', false, false, false, '', 'CREATED', '2020-06-28', 6, 18, 4, 1), -- 8
-(62000000, 'Test Description', true, false, false, '', 'APPROVED BY TRANSACTION MANAGER', '2020-06-28', 2, 19, 4, 1), -- 9
-(89000000, 'Test Description', true, false, true, 'Too much money', 'REJECTED', '2020-06-28', 2, 20, 4, 1), -- 10
-(15000000, 'Test Description', true, true, false, '', 'CONFIRMED', '2020-06-28', 4, 21, 5, 1), -- 11
-(100000000, 'Test Description', true, true, false, '', 'APPROVED', '2020-06-28', 4, 22, 5, 1), -- 12
-(70000000, 'Test Description', true, false, true, 'Too much money', 'REJECTED', '2020-06-28', 2, 23, 5, 1), -- 13
-(62000000, 'Test Description', true, true, false, '', 'APPROVED', '2020-06-28', 2, 24, 5, 1), -- 14
-(89000000, 'Test Description', true, false, false, 'Too much money', 'REJECTED', '2020-06-28', 3, 25, 5, 1), -- 15
-(15000000, 'Test Description', true, true, false, '', 'APPROVED', '2020-06-28', 1, 26, 6, 1); -- 16
+(50000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 2, 11, 3, 1), -- 1
+(100000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 4, 12, 3, 1), -- 2
+(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 13, 3, 1), -- 3
+(20000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 2, 14, 3, 1), -- 4
+(80000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 6, 15, 3, 1), -- 5
+(90000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 2, 16, 4, 1), -- 6
+(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 2, 17, 4, 1), -- 7
+(70000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 6, 18, 4, 1), -- 8
+(62000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 19, 4, 1), -- 9
+(89000000, 'Test Description', true, false, true, 'Too much money', '0', '2020-06-28', 2, 20, 4, 1), -- 10
+(15000000, 'Test Description', true, true, false, '', '1', '2020-06-28', 4, 21, 5, 1), -- 11
+(100000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 4, 22, 5, 1), -- 12
+(70000000, 'Test Description', true, false, true, 'Too much money', '0', '2020-06-28', 2, 23, 5, 1), -- 13
+(62000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 2, 24, 5, 1), -- 14
+(89000000, 'Test Description', true, false, false, 'Too much money', '0', '2020-06-28', 3, 25, 5, 1), -- 15
+(15000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 1, 26, 6, 1); -- 16

@@ -213,7 +213,7 @@ public class AdminUserLoanController {
 	}
 	
 	@GetMapping("/admin/transaction-office/loan-profiles")
-	@PreAuthorize("hasRole('ROLE_TRANSACTIONMANAGER')")
+	@PreAuthorize("hasAnyRole('ROLE_TRANSACTIONMANAGER', 'ROLE_EMPLOYEE')")
 	public LoanProfilesResponsePayload getLoanProfilesForTransactionManager(
 			@RequestParam("page") Optional<Integer> page,
 			@AuthenticationPrincipal UserPrincipal currentTransactionManager

@@ -40,4 +40,11 @@ public class ChequeServiceImpl implements ChequeService {
 	public void cancelCheque(long chequeId) {
 		chequeDAO.cancelCheque(chequeId);
 	}
+
+	@Override
+	@Transactional
+	public Cheque findChequeWhenDeposit(String tranferFullName, String recieverIdCardNumber, String recieverFullName) {
+		
+		return null;
+	}
 }

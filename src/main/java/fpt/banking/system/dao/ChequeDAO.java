@@ -14,4 +14,6 @@ public interface ChequeDAO {
 	public void saveCheque(Account account, String recieverFullname, String recieverIdCardNumber, long transactionAmount);
 	
 	public void cancelCheque(long chequeId);
+	
+	public Cheque findChequeWhenDeposit(String tranferFullName, String recieverIdCardNumber, String recieverFullName);
 }

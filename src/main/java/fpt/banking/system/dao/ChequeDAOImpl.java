@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -71,5 +73,26 @@ public class ChequeDAOImpl implements ChequeDAO {
 		Cheque cheque = session.get(Cheque.class, chequeId);
 		cheque.setCanceled(true);
 		session.save(cheque);
+	}
+
+	@Override
+	public Cheque findChequeWhenDeposit(String tranferFullName, String recieverIdCardNumber, String recieverFullName) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT c FROM Cheque " +
+					 "WHERE reciever_fullname = :recieverFullName " +
+					 "AND reciever_id_card_number = :recieverIdCardNumber " +
+					 "AND canceled = 1 " +
+					 "AND status = 0";
+		Query<Cheque> query = session.createQuery(sql, Cheque.class);
+		query.setParameter("recieverFullName", recieverFullName);
+		query.setParameter("recieverIdCardNumber", recieverIdCardNumber);
+		Cheque cheque;
+		try {
+			cheque = query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+//		if (cheque.getAccount().getUser().getFullname() 
+		return null;
 	}
 }
