@@ -17,4 +17,6 @@ public interface UserService {
 	public void unlockAnUser(long userId);
 	
 	public void resetAttemptedLoginFail(long userId);
+	
+	public void changePassword(long userId, String password);
 }

@@ -29,4 +29,6 @@ public interface UserDAO {
 	public void unlockAnUser(long userId);
 	
 	public void resetAttemptedLoginFail(long userId);
+	
+	public void changePassword(long userId, String passwordEncoder);
 }

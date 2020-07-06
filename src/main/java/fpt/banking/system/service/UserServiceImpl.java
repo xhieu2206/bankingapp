@@ -1,6 +1,7 @@
 package fpt.banking.system.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserDAO userDAO;
+	
+	@Autowired
+    private PasswordEncoder passwordEncoder;
 
 	@Override
 	@Transactional
@@ -69,5 +73,12 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void resetAttemptedLoginFail(long userId) {
 		userDAO.resetAttemptedLoginFail(userId);
+	}
+
+	@Override
+	@Transactional
+	public void changePassword(long userId, String password) {
+		String passwordEncodeString = passwordEncoder.encode(password);
+		userDAO.changePassword(userId, passwordEncodeString);
 	}
 }

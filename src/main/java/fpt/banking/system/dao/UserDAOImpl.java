@@ -165,4 +165,12 @@ public class UserDAOImpl implements UserDAO {
 		user.setAttempedLoginFailed(0);
 		session.saveOrUpdate(user);
 	}
+
+	@Override
+	public void changePassword(long userId, String passwordEncoder) {
+		Session session = entityManager.unwrap(Session.class);
+		User user = session.get(User.class, userId);
+		user.setPassword(passwordEncoder);
+		session.saveOrUpdate(user);
+	}
 }

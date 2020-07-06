@@ -46,4 +46,5 @@ public class AdminUserController {
 		return new UserForAdmin(result.getId(), result.getFullname(), result.getBirthday(), result.getAddress(), result.getGender(), 
 				result.getImage(), result.getIdCardNumber(), result.getPhone(), result.isLocked());
 	}
+	
 }
