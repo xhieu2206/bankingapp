@@ -553,7 +553,8 @@ values
 ('transfer_external'),
 ('receive_internal'),
 ('receive_from_loaning'),
-('deposit');
+('deposit'),
+('withdraw');
 
 insert into `card` (card_number, expired_at, created_at, account_id) values
 (555511111001, '2025-10-10', '2020-10-10', 1),
