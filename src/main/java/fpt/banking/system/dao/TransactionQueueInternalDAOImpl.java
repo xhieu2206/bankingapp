@@ -29,10 +29,10 @@ public class TransactionQueueInternalDAOImpl implements TransactionQueueInternal
 	}
 
 	@Override
-	public String saveTransactionQueueInternal(String otpCode, long tranferAccountId, long receiverAccountId, long amount,
+	public String saveTransactionQueueInternal(String otpCode, long transferAccountId, long receiverAccountId, long amount,
 			Date expriedAt, String description) {
 		Session session = entityManager.unwrap(Session.class);
-		TransactionQueueInternal transactionQueueInternal = new TransactionQueueInternal(otpCode, tranferAccountId, receiverAccountId, amount, description, expriedAt);
+		TransactionQueueInternal transactionQueueInternal = new TransactionQueueInternal(otpCode, transferAccountId, receiverAccountId, amount, description, expriedAt);
 		session.saveOrUpdate(transactionQueueInternal);
 		return transactionQueueInternal.getId().toString();
 	}

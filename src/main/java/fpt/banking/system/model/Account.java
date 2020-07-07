@@ -37,8 +37,8 @@ public class Account implements Serializable {
 	@Column(name = "status", nullable = false)
 	private boolean status;
 	
-	@Column(name = "otp_tranfer_enabled")
-	private boolean otpTranferEnabled;
+	@Column(name = "otp_transfer_enabled")
+	private boolean otpTransferEnabled;
 	
 	@Column(name = "amount")
 	private long amount;
@@ -104,12 +104,12 @@ public class Account implements Serializable {
 	// Constructor ----------------------
 	public Account() { }
 
-	public Account(Long id, boolean status, boolean otpTranferEnabled, int amount, String pinCode,
+	public Account(Long id, boolean status, boolean otpTransferEnabled, int amount, String pinCode,
 			Date expiredAt, Date createdAt, Date updatedAt,
 			String accountNumber) {
 		this.id = id;
 		this.status = status;
-		this.otpTranferEnabled = otpTranferEnabled;
+		this.otpTransferEnabled = otpTransferEnabled;
 		this.amount = amount;
 		this.pinCode = pinCode;
 		this.accountNumber = accountNumber;
@@ -118,12 +118,12 @@ public class Account implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public Account(boolean status, boolean otpTranferEnabled, int amount, String pinCode,
+	public Account(boolean status, boolean otpTransferEnabled, int amount, String pinCode,
 			Date expiredAt, Date createdAt, Date updatedAt,
 			String accountNumber) {
 		this.status = status;
 		this.amount = amount;
-		this.otpTranferEnabled = otpTranferEnabled;
+		this.otpTransferEnabled = otpTransferEnabled;
 		this.pinCode = pinCode;
 		this.accountNumber = accountNumber;
 		this.expiredAt = expiredAt;
@@ -145,12 +145,12 @@ public class Account implements Serializable {
 		return status;
 	}
 
-	public boolean isOtpTranferEnabled() {
-		return otpTranferEnabled;
+	public boolean isOtpTransferEnabled() {
+		return otpTransferEnabled;
 	}
 
-	public void setOtpTranferEnabled(boolean otpTranferEnabled) {
-		this.otpTranferEnabled = otpTranferEnabled;
+	public void setOtpTransferEnabled(boolean otpTransferEnabled) {
+		this.otpTransferEnabled = otpTransferEnabled;
 	}
 
 	public void setStatus(boolean status) {

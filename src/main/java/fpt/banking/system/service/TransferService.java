@@ -2,12 +2,12 @@ package fpt.banking.system.service;
 
 import fpt.banking.system.model.TransactionQueueInternal;
 
-public interface TranferService {
+public interface TransferService {
 
-	public void tranferInternal(long tranferAccountId, long receiveAccountId,
+	public void transferInternal(long transferAccountId, long receiveAccountId,
 			long amount, String description);
 	
-	public String saveTransactionQueueInternal(long tranferAccountId, long receiverAccountId, long amount, String description);
+	public String saveTransactionQueueInternal(long transferAccountId, long receiverAccountId, long amount, String description);
 	
 	public void deleteTransactionQueueInternal(long transactionQueueInternalId);
 	

@@ -21,7 +21,7 @@ import fpt.banking.system.constants.TimerConstants;
 import fpt.banking.system.util.SendSms;
 
 @Service
-public class TranferServiceImpl implements TranferService {
+public class TransferServiceImpl implements TransferService {
 	
 	@Autowired
 	private TransactionDAO transactionDAO;
@@ -34,24 +34,24 @@ public class TranferServiceImpl implements TranferService {
 
 	@Override
 	@Transactional
-	public void tranferInternal(long tranferAccountId, long receiveAccountId, long amount,
+	public void transferInternal(long transferAccountId, long receiveAccountId, long amount,
 			String description) {
-		Account tranferAccount = accountDAO.getAccount(tranferAccountId);
+		Account transferAccount = accountDAO.getAccount(transferAccountId);
 		Account receiveAccount = accountDAO.getAccount(receiveAccountId);
-		transactionDAO.saveTransaction(tranferAccountId, amount * (-1), tranferAccount.getAmount() - amount, 1, description);
+		transactionDAO.saveTransaction(transferAccountId, amount * (-1), transferAccount.getAmount() - amount, 1, description);
 		transactionDAO.saveTransaction(receiveAccountId, amount, receiveAccount.getAmount() + amount, 3, description);
-		accountDAO.changeAmount(tranferAccountId, tranferAccount.getAmount() - amount);
+		accountDAO.changeAmount(transferAccountId, transferAccount.getAmount() - amount);
 		accountDAO.changeAmount(receiveAccountId, receiveAccount.getAmount() + amount);
 	}
 
 	@Override
 	@Transactional
-	public String saveTransactionQueueInternal(long tranferAccountId, long receiverAccountId, long amount, String description) {
+	public String saveTransactionQueueInternal(long transferAccountId, long receiverAccountId, long amount, String description) {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 300000 + TimerConstants.VIETNAM_TIMEZONE_TIMESTAMP);
 		String otpCode = RandomGenerator.generateOTP();
-		String phone = accountDAO.getAccount(tranferAccountId).getUser().getPhone();
+		String phone = accountDAO.getAccount(transferAccountId).getUser().getPhone();
 		SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
-		String id = transactionQueueInternalDAO.saveTransactionQueueInternal(MD5.getMd5(otpCode), tranferAccountId, receiverAccountId, amount, new Date(timestamp.getTime()), description);
+		String id = transactionQueueInternalDAO.saveTransactionQueueInternal(MD5.getMd5(otpCode), transferAccountId, receiverAccountId, amount, new Date(timestamp.getTime()), description);
 		return id;
 	}
 

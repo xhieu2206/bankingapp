@@ -2,12 +2,12 @@ package fpt.banking.system.payload;
 
 import javax.validation.constraints.*;
 
-public class FindUserForTranferPayload {
+public class FindUserForTransferPayload {
 
 	private String term;
 	private String type;
 	
-	public FindUserForTranferPayload(String term, String type) {
+	public FindUserForTransferPayload(String term, String type) {
 		this.term = term;
 		this.type = type;
 	}

@@ -48,7 +48,7 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 		loanProfile.setConfirmed(false);
 		loanProfile.setApproved(false);
 		loanProfile.setRejected(false);
-		loanProfile.setStatus("CREATED");
+		loanProfile.setStatus("1");
 		loanProfile.setCreatedAt(java.sql.Date.valueOf(createdAt));
 		
 		loanProfile.setLoanInterestRate(loanInterestRate);
@@ -79,7 +79,7 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 		Session session = entityManager.unwrap(Session.class);
 		LoanProfile loanProfile = session.get(LoanProfile.class, id);
 		loanProfile.setConfirmed(true);
-		loanProfile.setStatus("CONFIRMED");
+		loanProfile.setStatus("2");
 		session.save(loanProfile);
 	}
 
@@ -87,7 +87,7 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 	public long approvedLoanProfileByTransactionManager(long loanProfileId) {
 		Session session = entityManager.unwrap(Session.class);
 		LoanProfile loanProfile = session.get(LoanProfile.class, loanProfileId);
-		loanProfile.setStatus("APPROVED BY TRANSACTION MANAGER");
+		loanProfile.setStatus("3");
 		session.saveOrUpdate(loanProfile);
 		return loanProfile.getId();
 	}
@@ -96,7 +96,7 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 	public long approvedLoanProfileByBranchManager(long loanProfileId) {
 		Session session = entityManager.unwrap(Session.class);
 		LoanProfile loanProfile = session.get(LoanProfile.class, loanProfileId);
-		loanProfile.setStatus("APPROVED");
+		loanProfile.setStatus("4");
 		loanProfile.setApproved(true);
 		session.saveOrUpdate(loanProfile);
 		return loanProfile.getId();
@@ -106,6 +106,7 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 	public void rejectLoanProffile(long loanProfileId, String rejectedReason) {
 		Session session = entityManager.unwrap(Session.class);
 		LoanProfile loanProfile = session.get(LoanProfile.class, loanProfileId);
+		loanProfile.setStatus("0");
 		loanProfile.setRejected(true);
 		loanProfile.setRejectedReason(rejectedReason);
 	}
@@ -121,7 +122,6 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 		List<LoanProfile> results;
 		try {
 			results = q.getResultList();
-			System.out.println(results.size());
 		} catch (NoResultException e) {
 			return null;
 		} 

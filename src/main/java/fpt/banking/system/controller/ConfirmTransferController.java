@@ -20,17 +20,17 @@ import fpt.banking.system.exception.ExpriedOTP;
 import fpt.banking.system.exception.WrongOTPCode;
 import fpt.banking.system.model.TransactionQueueInternal;
 import fpt.banking.system.model.User;
-import fpt.banking.system.payload.ConfirmTranferPayload;
+import fpt.banking.system.payload.ConfirmTransferPayload;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.AccountService;
 import fpt.banking.system.service.NotificationService;
-import fpt.banking.system.service.TranferService;
+import fpt.banking.system.service.TransferService;
 import fpt.banking.system.util.MD5;
 
 @RestController
-@RequestMapping("/api/tranfer")
-public class ConfirmTranferController {
+@RequestMapping("/api/transfer")
+public class ConfirmTransferController {
 	@Autowired
 	private NotificationService notificationService;
 	
@@ -38,39 +38,39 @@ public class ConfirmTranferController {
 	private AccountService accountService;
 	
 	@Autowired
-	private TranferService tranferService;
+	private TransferService transferService;
 	
 	@PostMapping("/confirm")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> confirm(
-			@RequestBody ConfirmTranferPayload confirmTranferPayload
+			@RequestBody ConfirmTransferPayload confirmTransferPayload
 			, @AuthenticationPrincipal UserPrincipal user) {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 300000);
-		if (tranferService.findTransactionQueueById(confirmTranferPayload.getTransactionQueueId()).getExpriedAt().getTime() < timestamp.getTime()) {
+		if (transferService.findTransactionQueueById(confirmTransferPayload.getTransactionQueueId()).getExpriedAt().getTime() < timestamp.getTime()) {
 			throw new ExpriedOTP("Your OTP Code have been expried");
 		}
-		if (!tranferService.findTransactionQueueById(confirmTranferPayload.getTransactionQueueId()).getOtpCode().equals(MD5.getMd5(confirmTranferPayload.getOtpCode()))) {
+		if (!transferService.findTransactionQueueById(confirmTransferPayload.getTransactionQueueId()).getOtpCode().equals(MD5.getMd5(confirmTransferPayload.getOtpCode()))) {
 			throw new WrongOTPCode("Your OTP code you input was wrong");
 		}
-		if (tranferService.findTransactionQueueById(confirmTranferPayload.getTransactionQueueId()) == null) {
+		if (transferService.findTransactionQueueById(confirmTransferPayload.getTransactionQueueId()) == null) {
 			throw new AccountNotFound("Transaction not found");
 		}
-		TransactionQueueInternal transactionQueueInternal = tranferService.findTransactionQueueById(confirmTranferPayload.getTransactionQueueId());
-		tranferService.tranferInternal(
-				transactionQueueInternal.getTranferAccountId(),
+		TransactionQueueInternal transactionQueueInternal = transferService.findTransactionQueueById(confirmTransferPayload.getTransactionQueueId());
+		transferService.transferInternal(
+				transactionQueueInternal.getTransferAccountId(),
 				transactionQueueInternal.getReceiverAccountId(),
 				transactionQueueInternal.getAmount(),
 				transactionQueueInternal.getDescription());
-		User tranferUser = accountService.getAccount(transactionQueueInternal.getTranferAccountId()).getUser();
+		User transferUser = accountService.getAccount(transactionQueueInternal.getTransferAccountId()).getUser();
 		User reveiverUser = accountService.getAccount(transactionQueueInternal.getReceiverAccountId()).getUser();
-		tranferService.deleteTransactionQueueInternal(confirmTranferPayload.getTransactionQueueId());
+		transferService.deleteTransactionQueueInternal(confirmTransferPayload.getTransactionQueueId());
 		notificationService.saveNotification(
-				"You have tranfered " + transactionQueueInternal.getAmount() + " to account with card number is " +
-				accountService.getAccount(transactionQueueInternal.getReceiverAccountId()).getAccountNumber(), tranferUser);
+				"You have transfered " + transactionQueueInternal.getAmount() + " to account with card number is " +
+				accountService.getAccount(transactionQueueInternal.getReceiverAccountId()).getAccountNumber(), transferUser);
 		notificationService.saveNotification(
 				"You have revieved " + transactionQueueInternal.getAmount() + " from account with card number is " +
-				accountService.getAccount(transactionQueueInternal.getTranferAccountId()).getAccountNumber(), reveiverUser);
-		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Tranfer successfully", System.currentTimeMillis());
+				accountService.getAccount(transactionQueueInternal.getTransferAccountId()).getAccountNumber(), reveiverUser);
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Transfer successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 }

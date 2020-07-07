@@ -103,7 +103,7 @@ create table `account` (
   `account_number` varchar(50) not null,
   `user_id` int(11) not null,
   `status` bool default 1,
-  `otp_tranfer_enabled` boolean not null,
+  `otp_transfer_enabled` boolean not null,
   `amount` bigint(20) default 20000000,
   `pin_code` varchar(100) not null default 'b59c67bf196a4758191e42f76670ceba',
   `expired_date` date default null,
@@ -181,7 +181,7 @@ DROP TABLE IF EXISTS `transaction_queue_internal`;
 create table `transaction_queue_internal` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
     `otp_code` varchar(100) not null,
-    `tranfer_account_id` int(11) NOT NULL,
+    `transfer_account_id` int(11) NOT NULL,
     `receiver_account_id` int(11) NOT NULL,
     `amount` decimal not null,
     `description` text not null,
@@ -484,7 +484,7 @@ INSERT INTO `users_roles` (user_id,role_id) VALUES
 (25, 4),
 (26, 4);
 
-INSERT INTO `account` (amount, account_number, user_id, created_at, updated_at, expired_date, otp_tranfer_enabled, status)
+INSERT INTO `account` (amount, account_number, user_id, created_at, updated_at, expired_date, otp_transfer_enabled, status)
 VALUES
 # accounts of Xuan Hieu
 (1000000, 444411111001, 1, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 

@@ -15,7 +15,7 @@ import fpt.banking.system.exception.ErrorResponse;
 import fpt.banking.system.exception.UserNotFoundException;
 import fpt.banking.system.model.Role;
 import fpt.banking.system.model.User;
-import fpt.banking.system.payload.FindUserForTranferPayload;
+import fpt.banking.system.payload.FindUserForTransferPayload;
 import fpt.banking.system.payload.PasswordRequestPayload;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
@@ -33,14 +33,14 @@ public class UserController {
 	
 	@PostMapping("/find")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public User find(@RequestBody FindUserForTranferPayload
-			findUserForTranferPayload) {
-		if (userService.findUser(findUserForTranferPayload.getTerm(),
-				findUserForTranferPayload.getType()) == null) {
+	public User find(@RequestBody FindUserForTransferPayload
+			findUserForTransferPayload) {
+		if (userService.findUser(findUserForTransferPayload.getTerm(),
+				findUserForTransferPayload.getType()) == null) {
 			throw new UserNotFoundException("User Not Found");
 		}
-		return userService.findUser(findUserForTranferPayload.getTerm(),
-				findUserForTranferPayload.getType());
+		return userService.findUser(findUserForTransferPayload.getTerm(),
+				findUserForTransferPayload.getType());
 	}
 
 	@GetMapping("/test")

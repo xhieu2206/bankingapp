@@ -1,15 +1,15 @@
 package fpt.banking.system.payload;
 
-public class TranferInternalPayloadByAccountNumber {
+public class TransferInternalPayloadByCardNumber {
 
-	private String accountNumber;
+	private String cardNumber;
 	private Long amount;
 	private String fullName;
 	private String pin;
 	private String description;
 
-	public TranferInternalPayloadByAccountNumber(String accountNumber, Long amount, String fullName, String pin, String description) {
-		this.accountNumber = accountNumber;
+	public TransferInternalPayloadByCardNumber(String cardNumber, Long amount, String fullName, String pin, String description) {
+		this.cardNumber = cardNumber;
 		this.amount = amount;
 		this.fullName = fullName;
 		this.pin = pin;
@@ -24,12 +24,12 @@ public class TranferInternalPayloadByAccountNumber {
 		this.description = description;
 	}
 
-	public String getAccountNumber() {
-		return accountNumber;
+	public String getCardNumber() {
+		return cardNumber;
 	}
 
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
 	}
 
 	public Long getAmount() {
@@ -58,7 +58,7 @@ public class TranferInternalPayloadByAccountNumber {
 
 	@Override
 	public String toString() {
-		return "TranferInternalPayloadByAccountNumber [accountNumber=" + accountNumber + ", amount=" + amount
+		return "TransferInternalPayloadByCardNumber [cardNumber=" + cardNumber + ", amount=" + amount
 				+ ", fullName=" + fullName + ", pin=" + pin + ", description=" + description + "]";
 	}
 }

@@ -26,8 +26,8 @@ public class TransactionQueueInternal {
 	@Column(name = "otp_code")
 	private String otpCode;
 	
-	@Column(name = "tranfer_account_id")
-    private Long tranferAccountId;
+	@Column(name = "transfer_account_id")
+    private Long transferAccountId;
 	
 	@Column(name = "receiver_account_id")
     private Long receiverAccountId;
@@ -45,21 +45,21 @@ public class TransactionQueueInternal {
 	public TransactionQueueInternal() {
 	}
 
-	public TransactionQueueInternal(Long id, String otpCode, Long tranferAccountId, Long receiverAccountId, long amount, String description,
+	public TransactionQueueInternal(Long id, String otpCode, Long transferAccountId, Long receiverAccountId, long amount, String description,
 			Date expriedAt) {
 		this.id = id;
 		this.otpCode = otpCode;
-		this.tranferAccountId = tranferAccountId;
+		this.transferAccountId = transferAccountId;
 		this.receiverAccountId = receiverAccountId;
 		this.amount = amount;
 		this.description = description;
 		this.expriedAt = expriedAt;
 	}
 
-	public TransactionQueueInternal(String otpCode, Long tranferAccountId, Long receiverAccountId, long amount, String description,
+	public TransactionQueueInternal(String otpCode, Long transferAccountId, Long receiverAccountId, long amount, String description,
 			Date expriedAt) {
 		this.otpCode = otpCode;
-		this.tranferAccountId = tranferAccountId;
+		this.transferAccountId = transferAccountId;
 		this.receiverAccountId = receiverAccountId;
 		this.amount = amount;
 		this.description = description;
@@ -82,12 +82,12 @@ public class TransactionQueueInternal {
 		this.otpCode = otpCode;
 	}
 
-	public Long getTranferAccountId() {
-		return tranferAccountId;
+	public Long getTransferAccountId() {
+		return transferAccountId;
 	}
 
-	public void setTranferAccountId(Long tranferAccountId) {
-		this.tranferAccountId = tranferAccountId;
+	public void setTransferAccountId(Long transferAccountId) {
+		this.transferAccountId = transferAccountId;
 	}
 
 	public Long getReceiverAccountId() {

@@ -1,11 +1,11 @@
 package fpt.banking.system.payload;
 
-public class ConfirmTranferPayload {
+public class ConfirmTransferPayload {
 
 	private long transactionQueueId;
 	private String otpCode;
 
-	public ConfirmTranferPayload(long transactionQueueId, String otpCode) {
+	public ConfirmTransferPayload(long transactionQueueId, String otpCode) {
 		this.transactionQueueId = transactionQueueId;
 		this.otpCode = otpCode;
 	}

@@ -43,7 +43,7 @@ public class ChequeServiceImpl implements ChequeService {
 
 	@Override
 	@Transactional
-	public Cheque findChequeWhenDeposit(String tranferFullName, String recieverIdCardNumber, String recieverFullName) {
+	public Cheque findChequeWhenDeposit(String transferFullName, String recieverIdCardNumber, String recieverFullName) {
 		
 		return null;
 	}

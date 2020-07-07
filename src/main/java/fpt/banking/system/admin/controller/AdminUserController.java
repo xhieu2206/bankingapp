@@ -19,7 +19,7 @@ import fpt.banking.system.exception.UserNotFoundException;
 import fpt.banking.system.model.Role;
 import fpt.banking.system.model.User;
 import fpt.banking.system.model.UserForAdmin;
-import fpt.banking.system.payload.FindUserForTranferPayload;
+import fpt.banking.system.payload.FindUserForTransferPayload;
 import fpt.banking.system.payload.RegisterUserRequestPayload;
 import fpt.banking.system.payload.SearchByIdCardNumberRequest;
 import fpt.banking.system.payload.SearchByPhoneNumberRequest;
@@ -50,7 +50,7 @@ public class AdminUserController {
 
 	@PostMapping("/admin/user/find")
 	@PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
-	public UserForAdmin user(@RequestBody FindUserForTranferPayload payload, @AuthenticationPrincipal UserPrincipal user) {
+	public UserForAdmin user(@RequestBody FindUserForTransferPayload payload, @AuthenticationPrincipal UserPrincipal user) {
 		if (!payload.getType().equals("PHONENUMBER") && !payload.getType().equals("IDCARDNUMBER")) {
 			throw new BadRequestException("Cannot find user with this type of data");
 		}
