@@ -161,6 +161,8 @@ create table `transaction` (
     `amount` decimal not null,
     `amount_after_transaction` decimal not null,
     `description` text not null,
+    `from_or_to_fullname` varchar(50) default null,
+    `from_or_to_account_number` varchar(50) default null,
     `created_at` datetime not null,
     
     primary key (`id`),
@@ -619,28 +621,28 @@ insert into `card` (card_number, expired_at, created_at, account_id) values
 (555511111104, '2025-10-10', '2020-10-10', 49),
 (555511113005, '2025-10-10', '2020-10-10', 50);
 
-insert into `transaction` (amount, amount_after_transaction, description, created_at, account_id, transaction_type_id) values
-(-100000, 1900000, 'test', '2020-06-25', 1, 1),
-(-100000, 1800000, 'test', '2020-06-25', 1, 1),
-(-100000, 1700000, 'test', '2020-06-25', 1, 1),
-(-100000, 1600000, 'test', '2020-06-25', 1, 1),
-(-100000, 1500000, 'test', '2020-06-25', 1, 1),
-(-100000, 1400000, 'test', '2020-06-25', 1, 1),
-(-100000, 1300000, 'test', '2020-06-25', 1, 1),
-(-100000, 1200000, 'test', '2020-06-25', 1, 1),
-(-100000, 1100000, 'test', '2020-06-25', 1, 1),
-(-100000, 1000000, 'test', '2020-06-25', 1, 1),
+insert into `transaction` (amount, amount_after_transaction, description, created_at, account_id, transaction_type_id, from_or_to_fullname, from_or_to_account_number) values
+(-100000, 1900000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1800000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1700000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1600000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1500000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1400000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1300000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1200000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1100000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1000000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
 
-(100000, 100000, 'test', '2020-06-25', 6, 3),
-(100000, 200000, 'test', '2020-06-25', 6, 3),
-(100000, 300000, 'test', '2020-06-25', 6, 3),
-(100000, 400000, 'test', '2020-06-25', 6, 3),
-(100000, 500000, 'test', '2020-06-25', 6, 3),
-(100000, 600000, 'test', '2020-06-25', 6, 3),
-(100000, 700000, 'test', '2020-06-25', 6, 3),
-(100000, 800000, 'test', '2020-06-25', 6, 3),
-(100000, 900000, 'test', '2020-06-25', 6, 3),
-(100000, 1000000, 'test', '2020-06-25', 6, 3);
+(100000, 100000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
+(100000, 200000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
+(100000, 300000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
+(100000, 400000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
+(100000, 500000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
+(100000, 600000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
+(100000, 700000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
+(100000, 800000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
+(100000, 900000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
+(100000, 1000000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001');
 
 insert into `cheque` (reciever_fullname, reciever_id_card_number, transaction_amount, status, canceled, created_at, expired_date, account_id)
 values

@@ -37,6 +37,12 @@ public class Transaction {
 	@Column(name = "description", length = 500, nullable = false)
 	private String description;
 	
+	@Column(name = "from_or_to_fullname")
+	private String fromOrToFullName;
+	
+	@Column(name = "from_or_to_account_number")
+	private String fromOrToAccountNumber;
+	
 	@Column(name = "created_at", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
@@ -56,21 +62,27 @@ public class Transaction {
 	public Transaction() {
 	}
 
-	public Transaction(Long id, long amount, long amountAfterTransaction, String description, Date createdAt, TransactionType transactionType) {
+	public Transaction(Long id, long amount, long amountAfterTransaction, String description, Date createdAt, TransactionType transactionType, String fromOrToFullName,
+			String fromOrToAccountNumber) {
 		this.id = id;
 		this.amount = amount;
 		this.amountAfterTransaction = amountAfterTransaction;
 		this.description = description;
 		this.createdAt = createdAt;
 		this.transactionType = transactionType;
+		this.fromOrToAccountNumber = fromOrToAccountNumber;
+		this.fromOrToFullName = fromOrToFullName;
 	}
 
-	public Transaction(long amount, long amountAfterTransaction, String description, Date createdAt, TransactionType transactionType) {
+	public Transaction(long amount, long amountAfterTransaction, String description, Date createdAt, TransactionType transactionType, String fromOrToFullName,
+			String fromOrToAccountNumber) {
 		this.amount = amount;
 		this.amountAfterTransaction = amountAfterTransaction;
 		this.description = description;
 		this.createdAt = createdAt;
 		this.transactionType = transactionType;
+		this.fromOrToAccountNumber = fromOrToAccountNumber;
+		this.fromOrToFullName = fromOrToFullName;
 	}
 	// --------------------------------------
 	
@@ -129,6 +141,22 @@ public class Transaction {
 
 	public void setTransactionType(TransactionType transactionType) {
 		this.transactionType = transactionType;
+	}
+
+	public String getFromOrToFullName() {
+		return fromOrToFullName;
+	}
+
+	public void setFromOrToFullName(String fromOrToFullName) {
+		this.fromOrToFullName = fromOrToFullName;
+	}
+
+	public String getFromOrToAccountNumber() {
+		return fromOrToAccountNumber;
+	}
+
+	public void setFromOrToAccountNumber(String fromOrToAccountNumber) {
+		this.fromOrToAccountNumber = fromOrToAccountNumber;
 	}
 	// --------------------------------------
 }

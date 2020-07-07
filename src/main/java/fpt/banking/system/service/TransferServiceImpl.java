@@ -38,8 +38,8 @@ public class TransferServiceImpl implements TransferService {
 			String description) {
 		Account transferAccount = accountDAO.getAccount(transferAccountId);
 		Account receiveAccount = accountDAO.getAccount(receiveAccountId);
-		transactionDAO.saveTransaction(transferAccountId, amount * (-1), transferAccount.getAmount() - amount, 1, description);
-		transactionDAO.saveTransaction(receiveAccountId, amount, receiveAccount.getAmount() + amount, 3, description);
+		transactionDAO.saveTranserTransaction(transferAccountId, amount * (-1), transferAccount.getAmount() - amount, 1, description, receiveAccount.getUser().getFullname(), receiveAccount.getAccountNumber());
+		transactionDAO.saveTranserTransaction(receiveAccountId, amount, receiveAccount.getAmount() + amount, 3, description, transferAccount.getUser().getFullname(), transferAccount.getAccountNumber());
 		accountDAO.changeAmount(transferAccountId, transferAccount.getAmount() - amount);
 		accountDAO.changeAmount(receiveAccountId, receiveAccount.getAmount() + amount);
 	}

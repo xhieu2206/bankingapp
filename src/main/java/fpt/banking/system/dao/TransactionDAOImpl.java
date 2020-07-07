@@ -58,7 +58,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 	}
 
 	@Override
-	public void saveTransaction(long accountId, Long amount, Long amountAfterTransaction, int transactionTypeId,
+	public void saveTransaction(long accountId, Long amountChange, Long amountAfterTransaction, int transactionTypeId,
 			String description) {
 		Session session = entityManager.unwrap(Session.class);
 		Account account = session.get(Account.class, Long.valueOf(accountId));
@@ -67,10 +67,29 @@ public class TransactionDAOImpl implements TransactionDAO {
 		Transaction transaction = new Transaction();
 		transaction.setAccount(account);
 		transaction.setTransactionType(transactionType);
-		transaction.setAmount(amount);
+		transaction.setAmount(amountChange);
 		transaction.setAmountAfterTransaction(amountAfterTransaction);
 		transaction.setCreatedAt(new Date(timestamp.getTime()));
 		transaction.setDescription(description);
+		session.saveOrUpdate(transaction);
+	}
+
+	@Override
+	public void saveTranserTransaction(long accountId, long changeAmount, long amountAfterTransaction, int transactionTypeId,
+			String description, String fullname, String accountNumber) {
+		Session session = entityManager.unwrap(Session.class);
+		Account account = session.get(Account.class, Long.valueOf(accountId));
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + TimerConstants.VIETNAM_TIMEZONE_TIMESTAMP);
+		TransactionType transactionType = session.get(TransactionType.class, Long.valueOf(transactionTypeId));
+		Transaction transaction = new Transaction();
+		transaction.setAccount(account);
+		transaction.setTransactionType(transactionType);
+		transaction.setAmount(changeAmount);
+		transaction.setAmountAfterTransaction(amountAfterTransaction);
+		transaction.setCreatedAt(new Date(timestamp.getTime()));
+		transaction.setDescription(description);
+		transaction.setFromOrToFullName(fullname);
+		transaction.setFromOrToAccountNumber(accountNumber);
 		session.saveOrUpdate(transaction);
 	}
 

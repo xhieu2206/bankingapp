@@ -11,7 +11,10 @@ public interface TransactionDAO {
 	
 	public int getTotalTransactions(long accountId);
 	
-	public void saveTransaction(long accountId, Long amount, Long 
+	public void saveTransaction(long accountId, Long changeAmount, Long 
 			amountAfterTransaction, int transactionTypeId,
 			String description);
+
+	public void saveTranserTransaction(long accountId, long changeAmount, long amountAfterTransaction, int transactionTypeId, String description,
+			String fullname, String accountNumber);
 }
