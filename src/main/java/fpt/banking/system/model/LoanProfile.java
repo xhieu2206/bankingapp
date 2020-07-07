@@ -50,6 +50,12 @@ public class LoanProfile {
 	
 	@Column(name = "status", nullable = false)
 	private String status;
+	
+	@Column(name = "employee_confirmed_name", nullable = true)
+	private String employeeConfirmedName;
+	
+	@Column(name = "employee_confirmed_id", nullable = true)
+	private long employeeConfirmedId;
 
 	@Column(name = "created_at", nullable = true)
 	@Temporal(TemporalType.DATE)
@@ -107,7 +113,7 @@ public class LoanProfile {
 	}
 
 	public LoanProfile(Long id, long amount, String description, boolean confirmed, boolean approved, boolean rejected,
-			String rejectedReason, String status, Date createdAt) {
+			String rejectedReason, String status, String employeeConfirmedName, long employeeConfirmedId, Date createdAt) {
 		this.id = id;
 		this.amount = amount;
 		this.description = description;
@@ -116,11 +122,13 @@ public class LoanProfile {
 		this.rejected = rejected;
 		this.rejectedReason = rejectedReason;
 		this.status = status;
+		this.employeeConfirmedName = employeeConfirmedName;
+		this.employeeConfirmedId = employeeConfirmedId;
 		this.createdAt = createdAt;
 	}
 
 	public LoanProfile(long amount, String description, boolean confirmed, boolean approved, boolean rejected, String rejectedReason,
-			String status, Date createdAt) {
+			String status, String employeeConfirmedName, long employeeConfirmedId, Date createdAt) {
 		this.amount = amount;
 		this.description = description;
 		this.confirmed = confirmed;
@@ -128,6 +136,8 @@ public class LoanProfile {
 		this.rejected = rejected;
 		this.rejectedReason = rejectedReason;
 		this.status = status;
+		this.employeeConfirmedName = employeeConfirmedName;
+		this.employeeConfirmedId = employeeConfirmedId;
 		this.createdAt = createdAt;
 	}
 	// ------------------------------
@@ -243,6 +253,22 @@ public class LoanProfile {
 
 	public void setAssets(List<Asset> assets) {
 		this.assets = assets;
+	}
+
+	public String getEmployeeConfirmedName() {
+		return employeeConfirmedName;
+	}
+
+	public void setEmployeeConfirmedName(String employeeConfirmedName) {
+		this.employeeConfirmedName = employeeConfirmedName;
+	}
+
+	public long getEmployeeConfirmedId() {
+		return employeeConfirmedId;
+	}
+
+	public void setEmployeeConfirmedId(long employeeConfirmedId) {
+		this.employeeConfirmedId = employeeConfirmedId;
 	}
 	// ------------------------------
 }

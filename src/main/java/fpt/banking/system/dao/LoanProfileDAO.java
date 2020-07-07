@@ -18,7 +18,7 @@ public interface LoanProfileDAO {
 	
 	public List<LoanProfile> findLoanProfilesByUser(User user);
 	
-	public void confirmLoanProfile(long id);
+	public void confirmLoanProfile(long id, String employeeConfirmedName, long employeeConfirmedId);
 	
 	public long approvedLoanProfileByTransactionManager(long loanProfileId);
 	
@@ -26,7 +26,7 @@ public interface LoanProfileDAO {
 	
 	public void rejectLoanProffile(long loanProfileId, String rejectedReason);
 	
-	public List<LoanProfile> getLoanProfilesByTransactionOffice(long transactionOfficeId, int page);
+	public List<LoanProfile> getLoanProfilesByTransactionOffice(long transactionOfficeId, int page, String status);
 	
-	public long getTotalLoanProfilesByTransactionOffice(long transactionOfficeId);
+	public long getTotalLoanProfilesByTransactionOffice(long transactionOfficeId, String status);
 }

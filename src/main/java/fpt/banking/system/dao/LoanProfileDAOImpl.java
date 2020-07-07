@@ -75,11 +75,13 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 	}
 
 	@Override
-	public void confirmLoanProfile(long id) {
+	public void confirmLoanProfile(long id, String employeeConfirmedName, long employeeConfirmedId) {
 		Session session = entityManager.unwrap(Session.class);
 		LoanProfile loanProfile = session.get(LoanProfile.class, id);
 		loanProfile.setConfirmed(true);
 		loanProfile.setStatus("2");
+		loanProfile.setEmployeeConfirmedName(employeeConfirmedName);
+		loanProfile.setEmployeeConfirmedId(employeeConfirmedId);
 		session.save(loanProfile);
 	}
 
@@ -112,13 +114,24 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 	}
 
 	@Override
-	public List<LoanProfile> getLoanProfilesByTransactionOffice(long transactionOfficeId, int page) {
+	public List<LoanProfile> getLoanProfilesByTransactionOffice(long transactionOfficeId, int page, String status) {
 		Session session = entityManager.unwrap(Session.class);
-		String sql = "SELECT l FROM LoanProfile l " +
-					 "WHERE transaction_office_id = :transactionOfficeId " +
-					 "ORDER BY l.id DESC";
+		String sql = "";
+		if (status == "ALL") {
+			sql = "SELECT l FROM LoanProfile l " +
+				  "WHERE transaction_office_id = :transactionOfficeId " +
+				  "ORDER BY l.id DESC";
+		} else {
+			sql = "SELECT l FROM LoanProfile l " +
+				  "WHERE transaction_office_id = :transactionOfficeId " +
+				  "AND status = :status " +
+				  "ORDER BY l.id DESC";
+		}
 		Query<LoanProfile> q = session.createQuery(sql, LoanProfile.class).setFirstResult((page - 1) * 5).setMaxResults(5);
 		q.setParameter("transactionOfficeId", transactionOfficeId);
+		if (status != "ALL") {
+			q.setParameter("status", status);
+		}
 		List<LoanProfile> results;
 		try {
 			results = q.getResultList();
@@ -129,12 +142,22 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 	}
 
 	@Override
-	public long getTotalLoanProfilesByTransactionOffice(long transactionOfficeId) {
+	public long getTotalLoanProfilesByTransactionOffice(long transactionOfficeId, String status) {
 		Session session = entityManager.unwrap(Session.class);
-		String sql = "SELECT COUNT(*) FROM LoanProfile l " +
-					 "WHERE transaction_office_id = :transactionOfficeId";
+		String sql = "";
+		if (status == "ALL") {
+			sql = "SELECT COUNT(*) FROM LoanProfile l " +
+				  "WHERE transaction_office_id = :transactionOfficeId";
+		} else {
+			sql = "SELECT COUNT(*) FROM LoanProfile l " +
+				  "WHERE transaction_office_id = :transactionOfficeId " +
+				  "AND status = :status";
+		}
 		Query q = session.createQuery(sql);
 		q.setParameter("transactionOfficeId", transactionOfficeId);
+		if (status != "ALL") {
+			q.setParameter("status", status);
+		}
 		long total = (Long) q.uniqueResult();
 		return total;
 	}

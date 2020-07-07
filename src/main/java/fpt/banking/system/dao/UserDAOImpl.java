@@ -1,12 +1,15 @@
 package fpt.banking.system.dao;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -203,5 +206,28 @@ public class UserDAOImpl implements UserDAO {
 		user.setStatus(true);
 		session.saveOrUpdate(user);
 		return user.getId();
+	}
+
+	@Override
+	public long getTotalUsers() {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT COUNT(*) FROM user INNER JOIN users_roles ON user.id = users_roles.user_id WHERE role_id = 1";
+		NativeQuery q = session.createNativeQuery(sql);
+		List<BigInteger> total = q.list();
+		return total.get(0).longValue();
+	}
+
+	@Override
+	public List<User> getUsersWithPagination(int page) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT * FROM user INNER JOIN users_roles ON user.id = users_roles.user_id WHERE role_id = 1 ORDER BY user.id DESC";
+		NativeQuery<User> q = session.createNativeQuery(sql, User.class).setFirstResult((page - 1) * 5).setMaxResults(5);
+		List<User> results;
+		try {
+			results = q.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		} 
+		return results;
 	}
 }

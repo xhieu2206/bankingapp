@@ -68,8 +68,11 @@ public class AdminUserLoanController {
 
 	@PostMapping("/admin/users/{userId}/loanprofiles")
 	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
-	public ResponseEntity<?> addLoanProfile(@PathVariable long userId, @RequestBody LoanProfileRequestPayload payload, @AuthenticationPrincipal UserPrincipal user) {
-		User emp = userService.getUser(user.getId());
+	public ResponseEntity<?> addLoanProfile(
+			@PathVariable long userId,
+			@RequestBody LoanProfileRequestPayload payload,
+			@AuthenticationPrincipal UserPrincipal currentEmployee) {
+		User emp = userService.getUser(currentEmployee.getId());
 		if (userService.getUser(userId) == null) {
 			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found",
     				System.currentTimeMillis());
@@ -216,15 +219,20 @@ public class AdminUserLoanController {
 	@PreAuthorize("hasAnyRole('ROLE_TRANSACTIONMANAGER', 'ROLE_EMPLOYEE')")
 	public LoanProfilesResponsePayload getLoanProfilesForTransactionManager(
 			@RequestParam("page") Optional<Integer> page,
-			@AuthenticationPrincipal UserPrincipal currentTransactionManager
+			@RequestParam("status") Optional<Integer> status,
+			@AuthenticationPrincipal UserPrincipal currentAdmin
 			) {
 		int pageNumber = 1;
+		String statusLoanProfile = "ALL";
 		if (page.isPresent()) {
 			pageNumber = page.get();
 		}
-		User transactionManager = userService.getUser(currentTransactionManager.getId());
-		TransactionOffice transactionOffice = transactionManager.getTransactionOffice();
-		return loanService.getLoanProfilesOfTransactionOffice(transactionOffice.getId(), pageNumber);
+		if (status.isPresent()) {
+			statusLoanProfile = String.valueOf(status.get());
+		}
+		User admin = userService.getUser(currentAdmin.getId());
+		TransactionOffice transactionOffice = admin.getTransactionOffice();
+		return loanService.getLoanProfilesOfTransactionOffice(transactionOffice.getId(), pageNumber, statusLoanProfile);
 	}
 	
 	@PostMapping("/admin/loan-profiles/approved")
@@ -289,6 +297,7 @@ public class AdminUserLoanController {
 	public LoanProfilesResponsePayload getLoanProfilesForBranchManager(
 			@PathVariable long transactionOfficeId,
 			@RequestParam("page") Optional<Integer> page,
+			@RequestParam("status") Optional<Integer> status,
 			@AuthenticationPrincipal UserPrincipal currentBranchManager
 			) {
 		TransactionOffice transactionOffice = transactionOfficeService.findTransactionOfficeById(transactionOfficeId);
@@ -300,10 +309,14 @@ public class AdminUserLoanController {
 			throw new AuthorizedException("You don't have this permission");
 		}
 		int pageNumber = 1;
+		String statusLoanProfile = "";
 		if (page.isPresent()) {
 			pageNumber = page.get();
 		}
-		return loanService.getLoanProfilesOfTransactionOffice(transactionOfficeId, pageNumber);
+		if (status.isPresent()) {
+			statusLoanProfile = String.valueOf(status.get());
+		}
+		return loanService.getLoanProfilesOfTransactionOffice(transactionOfficeId, pageNumber, statusLoanProfile);
 	}
 	
 	@PostMapping("/admin/loan-profiles/rejected")

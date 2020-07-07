@@ -1,6 +1,7 @@
 package fpt.banking.system.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import fpt.banking.system.model.Membership;
 import fpt.banking.system.model.User;
@@ -47,4 +48,8 @@ public interface UserDAO {
 		String phone,
 		Membership membership,
 		String image);
+	
+	public long getTotalUsers();
+
+	public List<User> getUsersWithPagination(int page);
 }

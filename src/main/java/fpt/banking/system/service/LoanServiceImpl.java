@@ -95,7 +95,6 @@ public class LoanServiceImpl implements LoanService {
 	@Override
 	@Transactional
 	public LoanProfileQueue findLoanProfileQueueById(long id) {
-		
 		return loanProfileQueueDAO.findById(id);
 	}
 
@@ -112,8 +111,8 @@ public class LoanServiceImpl implements LoanService {
 
 	@Override
 	@Transactional
-	public void confirmLoanProfile(long loanProfileId) {
-		loanProfileDAO.confirmLoanProfile(loanProfileId);
+	public void confirmLoanProfile(long loanProfileId, String employeeConfirmedName, long employeeConfirmedId) {
+		loanProfileDAO.confirmLoanProfile(loanProfileId, employeeConfirmedName, employeeConfirmedId);
 	}
 
 	@Override
@@ -154,16 +153,16 @@ public class LoanServiceImpl implements LoanService {
 
 	@Override
 	@Transactional
-	public LoanProfilesResponsePayload getLoanProfilesOfTransactionOffice(long transactionOfficeId, int page) {
+	public LoanProfilesResponsePayload getLoanProfilesOfTransactionOffice(long transactionOfficeId, int page, String status) {
 		LoanProfilesResponsePayload results = new LoanProfilesResponsePayload();
 		results.setPageNumber(page);
-		results.setTotalCount(loanProfileDAO.getTotalLoanProfilesByTransactionOffice(transactionOfficeId));
-		int totalPage = (int) Math.ceil(loanProfileDAO.getTotalLoanProfilesByTransactionOffice(transactionOfficeId) / 5);
-		if (loanProfileDAO.getTotalLoanProfilesByTransactionOffice(transactionOfficeId) % 5 > 0) {
+		results.setTotalCount(loanProfileDAO.getTotalLoanProfilesByTransactionOffice(transactionOfficeId, status));
+		int totalPage = (int) Math.ceil(loanProfileDAO.getTotalLoanProfilesByTransactionOffice(transactionOfficeId, status) / 5);
+		if (loanProfileDAO.getTotalLoanProfilesByTransactionOffice(transactionOfficeId, status) % 5 > 0) {
 			totalPage ++;
 		}
 		results.setTotalPage(totalPage);
-		results.setItems(loanProfileDAO.getLoanProfilesByTransactionOffice(transactionOfficeId, page));
+		results.setItems(loanProfileDAO.getLoanProfilesByTransactionOffice(transactionOfficeId, page, status));
 		results.setPageSize(results.getItems().size());
 		return results;
 	}

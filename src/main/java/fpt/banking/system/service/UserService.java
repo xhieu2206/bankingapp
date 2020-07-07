@@ -4,6 +4,8 @@ import java.util.Date;
 
 import fpt.banking.system.model.Membership;
 import fpt.banking.system.model.User;
+import fpt.banking.system.payload.LoanProfilesResponsePayload;
+import fpt.banking.system.payload.UsersResponse;
 
 public interface UserService {
 
@@ -33,4 +35,6 @@ public interface UserService {
 			String phone,
 			long membershipId,
 			String image);
+	
+	public UsersResponse getUsersWithPage(int page);
 }

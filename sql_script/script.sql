@@ -269,6 +269,8 @@ create table `loan_profile` (
     `rejected` boolean default false,
     `rejected_reason` text default null,
     `status` varchar(100) not null,
+    `employee_confirmed_name` varchar(50) default null,
+    `employee_confirmed_id` int(11) default null,
     `created_at` date default null,
 
     `loan_interest_rate_id` int(11) not null,

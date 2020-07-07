@@ -33,7 +33,7 @@ public interface LoanService {
 	
 	public long saveLoanProfileQueue(long loanProfileId);
 	
-	public void confirmLoanProfile(long loanProfileId);
+	public void confirmLoanProfile(long loanProfileId, String employeeFullName, long employeeId);
 	
 	public void deleteLoanProfileQueue(long loanProfileQueueId);
 	
@@ -47,7 +47,7 @@ public interface LoanService {
 	
 	public long getTotalLoanProfilesOfBranchOffice(long branchOfficeId);
 	
-	public LoanProfilesResponsePayload getLoanProfilesOfTransactionOffice(long transactionOfficeId, int page);
+	public LoanProfilesResponsePayload getLoanProfilesOfTransactionOffice(long transactionOfficeId, int page, String status);
 	
 	public LoanProfilesResponsePayload getLoanProfilesOfBranchOffice(long transactionOfficeId, int page);
 	

@@ -2,15 +2,18 @@ package fpt.banking.system.admin.controller;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fpt.banking.system.exception.BadRequestException;
@@ -24,6 +27,7 @@ import fpt.banking.system.payload.RegisterUserRequestPayload;
 import fpt.banking.system.payload.SearchByIdCardNumberRequest;
 import fpt.banking.system.payload.SearchByPhoneNumberRequest;
 import fpt.banking.system.payload.UserIdRequestPayload;
+import fpt.banking.system.payload.UsersResponse;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.AccountService;
@@ -144,5 +148,17 @@ public class AdminUserController {
 				, user);
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Unlock user successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+	}
+	
+	@GetMapping("/admin/users")
+	@PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
+	public UsersResponse getUsers(
+			@AuthenticationPrincipal UserPrincipal admin,
+			@RequestParam("page") Optional<Integer> page) {
+		int pageNumber = 1;
+		if (page.isPresent()) {
+			pageNumber = page.get();
+		}
+		return userService.getUsersWithPage(pageNumber);
 	}
 }

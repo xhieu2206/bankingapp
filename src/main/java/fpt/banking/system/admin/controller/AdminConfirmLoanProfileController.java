@@ -23,11 +23,15 @@ import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.LoanService;
 import fpt.banking.system.service.NotificationService;
+import fpt.banking.system.service.UserService;
 import fpt.banking.system.util.MD5;
 
 @RestController
 @RequestMapping("api/admin/loanprofile")
 public class AdminConfirmLoanProfileController {
+	@Autowired
+	private UserService userService;
+	
 	@Autowired
 	private NotificationService notificationService;
 
@@ -40,6 +44,7 @@ public class AdminConfirmLoanProfileController {
 			@RequestBody ConfirmLoanProfilePayload payload,
 			@AuthenticationPrincipal UserPrincipal currentEmp
 			) {
+		User emp = userService.getUser(currentEmp.getId());
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 300000);
 		LoanProfileQueue loanProfileQueue = loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId());
 		if (loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId()).getExpriedAt().getTime() < timestamp.getTime()) {
@@ -51,7 +56,7 @@ public class AdminConfirmLoanProfileController {
 		if (loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId()) == null) {
 			throw new AccountNotFound("Loan profile not found");
 		}
-		loanService.confirmLoanProfile(payload.getLoanProfileId());
+		loanService.confirmLoanProfile(payload.getLoanProfileId(), emp.getFullname(), emp.getId());
 		User user = loanService.findLoanProfileById(payload.getLoanProfileId()).getUser();
 		notificationService.saveNotification("Your Loan profile has been confirmed", user);
 		loanService.deleteLoanProfileQueue(loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId()).getId());

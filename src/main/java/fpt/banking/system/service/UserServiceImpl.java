@@ -14,6 +14,7 @@ import fpt.banking.system.dao.UserDAO;
 import fpt.banking.system.model.Account;
 import fpt.banking.system.model.Membership;
 import fpt.banking.system.model.User;
+import fpt.banking.system.payload.UsersResponse;
 import fpt.banking.system.util.MD5;
 import fpt.banking.system.util.MobilePhoneUtil;
 import fpt.banking.system.util.RandomGenerator;
@@ -118,5 +119,21 @@ public class UserServiceImpl implements UserService {
 		Account account = accountDAO.getAccount(accountId);
 		long cardId = cardDAO.saveCard(cardNumber, account);
 		return accountId;
+	}
+
+	@Override
+	@Transactional
+	public UsersResponse getUsersWithPage(int page) {
+		UsersResponse result = new UsersResponse();
+		result.setPageNumber(page);
+		result.setTotalCount(userDAO.getTotalUsers());
+		int totalPage = (int) Math.ceil(userDAO.getTotalUsers() / 5);
+		if (userDAO.getTotalUsers() % 5 > 0) {
+			totalPage ++;
+		}
+		result.setTotalPage(totalPage);
+		result.setItems(userDAO.getUsersWithPagination(page));
+		result.setPageSize(result.getItems().size());
+		return result;
 	}
 }
