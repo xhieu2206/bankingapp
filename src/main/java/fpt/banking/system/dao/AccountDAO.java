@@ -22,4 +22,6 @@ public interface AccountDAO {
 	public Account findByCardNumber(String cardNumber);
 	
 	public long saveAccount(String accountNumber, User user, long amount, String pinCodeEncoderString);
+
+	public void lockAccount(long accountId);
 }

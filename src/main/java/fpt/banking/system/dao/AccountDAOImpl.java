@@ -132,4 +132,12 @@ public class AccountDAOImpl implements AccountDAO {
 		session.saveOrUpdate(account);
 		return account.getId();
 	}
+
+	@Override
+	public void lockAccount(long accountId) {
+		Session session = entityManager.unwrap(Session.class);
+		Account account = session.get(Account.class, accountId);
+		account.setStatus(false);
+		session.saveOrUpdate(account);
+	}
 }

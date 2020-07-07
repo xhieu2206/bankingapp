@@ -78,7 +78,8 @@ public class Account implements Serializable {
 	@OneToOne(
 			fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL,
-			mappedBy = "account"
+			mappedBy = "account",
+			orphanRemoval = true
 			)
 	private Card card;
 	
@@ -96,7 +97,8 @@ public class Account implements Serializable {
 					CascadeType.MERGE,
 					CascadeType.REFRESH,
 					CascadeType.DETACH },
-			mappedBy = "account")
+			mappedBy = "account",
+			orphanRemoval = true)
 	@JsonIgnore
 	private LoanProfile loanProfile;
 	// ----------------------------------

@@ -215,6 +215,19 @@ public class AdminUserLoanController {
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 	
+	@GetMapping("/admin/transaction-office/employee/loan-profiles")
+	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
+	public LoanProfilesResponsePayload getLoanProfilesForEmployee(
+			@RequestParam("page") Optional<Integer> page,
+			@AuthenticationPrincipal UserPrincipal currentEmployee) {
+		int pageNumber = 1;
+		if (page.isPresent()) {
+			pageNumber = page.get();
+		}
+		User employee = userService.getUser(currentEmployee.getId());
+		return loanService.getLoanProfilesForEmployee(employee, pageNumber);
+	}
+	
 	@GetMapping("/admin/transaction-office/loan-profiles")
 	@PreAuthorize("hasAnyRole('ROLE_TRANSACTIONMANAGER', 'ROLE_EMPLOYEE')")
 	public LoanProfilesResponsePayload getLoanProfilesForTransactionManager(

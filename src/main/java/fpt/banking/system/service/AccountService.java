@@ -19,4 +19,6 @@ public interface AccountService {
 	public Account findByCardNumber(String cardNumber);
 	
 	public void changeAmount(long accountId, Long amount);
+	
+	public void lockAccount(long accountId);
 }

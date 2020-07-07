@@ -1,5 +1,6 @@
 package fpt.banking.system.dao;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -160,5 +162,42 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 		}
 		long total = (Long) q.uniqueResult();
 		return total;
+	}
+
+	@Override
+	public List<LoanProfile> getLoanProfilesForAnEmployee(User employee, int page) {
+		Session session = entityManager.unwrap(Session.class);
+		System.out.println(employee.getTransactionOffice().getId());
+		System.out.println(employee.getFullname());
+		System.out.println(employee.getId());
+		String sql = "SELECT * FROM loan_profile AS l " +
+			     "WHERE (l.transaction_office_id = :transactionOfficeId AND l.status = '1') " +
+				 "OR (l.employee_confirmed_name = :name AND l.employee_confirmed_id = :id) " +
+			     "ORDER BY l.id DESC";
+		NativeQuery<LoanProfile> q = session.createNativeQuery(sql, LoanProfile.class).setFirstResult((page - 1) * 5).setMaxResults(5);
+		q.setParameter("transactionOfficeId", employee.getTransactionOffice().getId());
+		q.setParameter("name", employee.getFullname());
+		q.setParameter("id", employee.getId());
+		List<LoanProfile> results;
+		try {
+			results = q.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		} 
+		return results;
+	}
+
+	@Override
+	public long getTotalLoanProfilesForAnEmployee(User employee) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT COUNT(*) FROM loan_profile AS l " +
+			     "WHERE (l.transaction_office_id = :transactionOfficeId AND l.status = '1') " +
+				 "OR (l.employee_confirmed_name = :name AND l.employee_confirmed_id = :id)";
+		NativeQuery q = session.createNativeQuery(sql);
+		q.setParameter("transactionOfficeId", employee.getTransactionOffice().getId());
+		q.setParameter("name", employee.getFullname());
+		q.setParameter("id", employee.getId());
+		List<BigInteger> total = q.list();
+		return total.get(0).longValue();
 	}
 }

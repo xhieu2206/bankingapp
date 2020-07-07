@@ -52,4 +52,6 @@ public interface LoanService {
 	public LoanProfilesResponsePayload getLoanProfilesOfBranchOffice(long transactionOfficeId, int page);
 	
 	public LoanProfileQueue findLoanProfileQueueByLoanProfileId(long loanProfileId);
+	
+	public LoanProfilesResponsePayload getLoanProfilesForEmployee(User employee, int page);
 }

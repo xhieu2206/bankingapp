@@ -78,6 +78,7 @@ public class LoanProfile {
 					CascadeType.REFRESH,
 					CascadeType.DETACH })
 	@JoinColumn(name = "account_id")
+	@JsonIgnore
 	private Account account;
 	
 	@ManyToOne(

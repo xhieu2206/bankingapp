@@ -29,4 +29,8 @@ public interface LoanProfileDAO {
 	public List<LoanProfile> getLoanProfilesByTransactionOffice(long transactionOfficeId, int page, String status);
 	
 	public long getTotalLoanProfilesByTransactionOffice(long transactionOfficeId, String status);
+	
+	public List<LoanProfile> getLoanProfilesForAnEmployee(User employee, int page);
+	
+	public long getTotalLoanProfilesForAnEmployee(User employee);
 }

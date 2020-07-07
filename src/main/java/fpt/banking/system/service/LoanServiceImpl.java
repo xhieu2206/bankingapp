@@ -179,4 +179,20 @@ public class LoanServiceImpl implements LoanService {
 	public LoanProfileQueue findLoanProfileQueueByLoanProfileId(long loanProfileId) {
 		return loanProfileQueueDAO.findLoanProfileQueueByLoanProfileId(loanProfileId);
 	}
+
+	@Override
+	@Transactional
+	public LoanProfilesResponsePayload getLoanProfilesForEmployee(User employee, int page) {
+		LoanProfilesResponsePayload results = new LoanProfilesResponsePayload();
+		results.setPageNumber(page);
+		results.setTotalCount(loanProfileDAO.getTotalLoanProfilesForAnEmployee(employee));
+		int totalPage = (int) Math.ceil(results.getTotalCount() / 5);
+		if (results.getTotalCount() % 5 > 0) {
+			totalPage ++;
+		}
+		results.setTotalPage(totalPage);
+		results.setItems(loanProfileDAO.getLoanProfilesForAnEmployee(employee, page));
+		results.setPageSize(results.getItems().size());
+		return results;
+	}
 }

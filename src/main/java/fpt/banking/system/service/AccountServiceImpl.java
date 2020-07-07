@@ -57,4 +57,10 @@ public class AccountServiceImpl implements AccountService {
 		accountDAO.changeAmount(accountId, amount);
 	}
 
+	@Override
+	@Transactional
+	public void lockAccount(long accountId) {
+		accountDAO.lockAccount(accountId);
+	}
+
 }
