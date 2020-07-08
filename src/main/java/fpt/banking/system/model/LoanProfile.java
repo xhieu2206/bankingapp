@@ -70,7 +70,7 @@ public class LoanProfile {
 					CascadeType.DETACH })
 	@JoinColumn(name = "loan_interest_rate_id")
 	private LoanInterestRate loanInterestRate;
-	
+
 	@OneToOne(
 			fetch = FetchType.LAZY,
 			cascade = { CascadeType.PERSIST,
@@ -80,7 +80,7 @@ public class LoanProfile {
 	@JoinColumn(name = "account_id")
 	@JsonIgnore
 	private Account account;
-	
+
 	@ManyToOne(
 			fetch = FetchType.LAZY,
 			cascade = { CascadeType.PERSIST,
@@ -88,9 +88,8 @@ public class LoanProfile {
 					CascadeType.REFRESH,
 					CascadeType.DETACH })
 	@JoinColumn(name = "user_id")
-	@JsonIgnore
 	private User user;
-	
+
 	@ManyToOne(
 			fetch = FetchType.LAZY,
 			cascade = { CascadeType.PERSIST,
