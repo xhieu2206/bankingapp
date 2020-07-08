@@ -92,6 +92,11 @@ public class AdminUserController {
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
+		if (userService.findUser(payload.getPhone(), "PHONENUMBER") != null) {
+			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This phone number has already been used",
+    				System.currentTimeMillis());
+    		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
+		}
 		if (payload.getIdCardNumber().length() < 12) {
 			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "Id card number is not corrected format",
     				System.currentTimeMillis());

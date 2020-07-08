@@ -3,7 +3,9 @@ package fpt.banking.system.dao;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import fpt.banking.system.model.Account;
 import fpt.banking.system.model.Card;
 import fpt.banking.system.model.Membership;
+import fpt.banking.system.model.Role;
 import fpt.banking.system.model.User;
 
 @Repository
@@ -205,6 +208,9 @@ public class UserDAOImpl implements UserDAO {
 		user.setLocked(false);
 		user.setStatus(true);
 		session.saveOrUpdate(user);
+		String sql = "INSERT INTO users_roles (user_id,role_id) VALUES (" + user.getId().toString() + ", 1)";
+		NativeQuery q = session.createNativeQuery(sql);
+		q.executeUpdate();
 		return user.getId();
 	}
 
