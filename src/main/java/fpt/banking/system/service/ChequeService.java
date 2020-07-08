@@ -16,4 +16,6 @@ public interface ChequeService {
 	public void cancelCheque(long chequeId);
 	
 	public Cheque findChequeWhenDeposit(String transferFullName, String recieverIdCardNumber, String recieverFullName);
+	
+	public void updateCheque(long chequeId, String recieverFullname, String recieverIdCardNumber, long transactionAmount);
 }

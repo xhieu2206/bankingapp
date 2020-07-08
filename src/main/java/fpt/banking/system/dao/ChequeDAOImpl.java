@@ -95,4 +95,15 @@ public class ChequeDAOImpl implements ChequeDAO {
 //		if (cheque.getAccount().getUser().getFullname() 
 		return null;
 	}
+
+	@Override
+	public void updateCheque(long chequeId, String recieverFullname, String recieverIdCardNumber,
+			long transactionAmount) {
+		Session session = entityManager.unwrap(Session.class);
+		Cheque cheque = session.get(Cheque.class, chequeId);
+		cheque.setRecieverFullname(recieverFullname);
+		cheque.setRecieverIdCardNumber(recieverIdCardNumber);
+		cheque.setTransactionAmount(transactionAmount);
+		session.saveOrUpdate(cheque);
+	}
 }

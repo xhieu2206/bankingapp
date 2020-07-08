@@ -47,4 +47,11 @@ public class ChequeServiceImpl implements ChequeService {
 		
 		return null;
 	}
+
+	@Override
+	@Transactional
+	public void updateCheque(long chequeId, String recieverFullname, String recieverIdCardNumber,
+			long transactionAmount) {
+		chequeDAO.updateCheque(chequeId, recieverFullname, recieverIdCardNumber, transactionAmount);
+	}
 }

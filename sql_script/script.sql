@@ -234,7 +234,7 @@ create table `cheque`(
   `reciever_fullname` varchar(255) not null,
   `reciever_id_card_number` varchar(50) not null,
   `transaction_amount` decimal not null,
-  `status` bool default 1,
+  `status` bool default 0,
   `canceled` bool not null,
   `created_at` datetime not null,
   `expired_date` datetime default null,
