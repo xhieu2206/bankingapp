@@ -43,9 +43,8 @@ public class ChequeServiceImpl implements ChequeService {
 
 	@Override
 	@Transactional
-	public List<Cheque> findChequesWhenDeposit(String recieverIdCardNumber, String recieverFullName) {
-		
-		return chequeDAO.findChequesWhenDeposit(recieverIdCardNumber, recieverFullName);
+	public List<Cheque> findChequesWhenDeposit(String recieverFullName, String recieverIdCardNumber) {
+		return chequeDAO.findChequesWhenDeposit(recieverFullName, recieverIdCardNumber);
 	}
 
 	@Override
@@ -53,5 +52,11 @@ public class ChequeServiceImpl implements ChequeService {
 	public void updateCheque(long chequeId, String recieverFullname, String recieverIdCardNumber,
 			long transactionAmount) {
 		chequeDAO.updateCheque(chequeId, recieverFullname, recieverIdCardNumber, transactionAmount);
+	}
+
+	@Override
+	@Transactional
+	public void depositCheque(long chequeId) {
+		chequeDAO.depositCheque(chequeId);
 	}
 }

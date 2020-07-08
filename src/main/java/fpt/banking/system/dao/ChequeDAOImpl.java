@@ -77,12 +77,12 @@ public class ChequeDAOImpl implements ChequeDAO {
 	}
 
 	@Override
-	public List<Cheque> findChequesWhenDeposit(String recieverIdCardNumber, String recieverFullName) {
+	public List<Cheque> findChequesWhenDeposit(String recieverFullName, String recieverIdCardNumber) {
 		Session session = entityManager.unwrap(Session.class);
 		String sql = "SELECT * FROM cheque " +
-				     "WHERE expired_date >= CURDATE()" +
-				     "AND reciever_fullname = :recieverIdCardNumber " +
-				     "AND reciever_id_card_number = :recieverFullName " +
+				     "WHERE expired_date >= CURDATE() " +
+				     "AND reciever_fullname = :recieverFullName " +
+				     "AND reciever_id_card_number = :recieverIdCardNumber " +
 				     "AND status = 0 " +
 				     "AND canceled = 0";
 		NativeQuery<Cheque> q = session.createNativeQuery(sql, Cheque.class);
@@ -93,7 +93,7 @@ public class ChequeDAOImpl implements ChequeDAO {
 			results = q.getResultList();
 		} catch (NoResultException e) {
 			return null;
-		} 
+		}
 		return results;
 	}
 
@@ -105,6 +105,16 @@ public class ChequeDAOImpl implements ChequeDAO {
 		cheque.setRecieverFullname(recieverFullname);
 		cheque.setRecieverIdCardNumber(recieverIdCardNumber);
 		cheque.setTransactionAmount(transactionAmount);
+		session.saveOrUpdate(cheque);
+	}
+
+	@Override
+	public void depositCheque(long chequeId) {
+		Session session = entityManager.unwrap(Session.class);
+		Timestamp withdrawDate = new Timestamp(System.currentTimeMillis() + TimerConstants.VIETNAM_TIMEZONE_TIMESTAMP);
+		Cheque cheque = session.get(Cheque.class, chequeId);
+		cheque.setStatus(true);
+		cheque.setWithdrawDate(new Date(withdrawDate.getTime()));
 		session.saveOrUpdate(cheque);
 	}
 }

@@ -621,7 +621,8 @@ values
 ('receive_internal'),
 ('receive_from_loaning'),
 ('deposit'),
-('withdraw');
+('withdraw'),
+('deposit_cheque');
 
 insert into `card` (card_number, expired_at, created_at, account_id) values
 (555511111001, '2025-10-10', '2020-10-10', 1),
