@@ -28,11 +28,11 @@ create table `transaction_office` (
   `phone` varchar(20) not null,
   `information` text not null,
   `branch_office_id` int(11) NOT NULL,
-  
+ 
   constraint `FK_BRANCH_OFFICE_1` foreign key (`branch_office_id`)
   references `branch_office` (`id`)
   ON DELETE NO ACTION ON UPDATE NO ACTION,
-  
+ 
   unique key `UNIQUE_PHONE_TRANSACTION` (`phone`),
   unique key `TRANSACTION_BRANCH_UNIQUE` (`name`, `branch_office_id`),
   primary key (`id`)
@@ -45,7 +45,7 @@ DROP TABLE IF EXISTS `membership`;
 create table `membership`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) not null,
-  
+ 
   primary key (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 #######################################################
@@ -74,15 +74,15 @@ CREATE TABLE `user` (
   `transaction_office_id` int(11) default null,
   `branch_office_id` int(11) default null,
   `membership_id` int(11) not null,
-  
+ 
   unique key `EMAIL_UNIQUE` (`email`),
   unique key `USERNAME_UNIQUE` (`username`),
   unique key `ID_CARD_NUMBER` (`id_card_number`),
-  
+ 
   constraint `FK_MEMBERSHIP_1` foreign key (`membership_id`)
   references `membership` (`id`)
   ON DELETE NO ACTION ON UPDATE NO ACTION,
-  
+ 
   constraint `FK_BRANCH_OFFICE_2` foreign key (`branch_office_id`)
   references `branch_office` (`id`)
   ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -109,14 +109,14 @@ create table `account` (
   `expired_date` date default null,
   `created_at` date default null,
   `updated_at` date default null,
-  
+ 
   unique key `UNIQUE_ACCOUNT_NUMBER` (`account_number`),
   primary key (`id`),
-  
+ 
   constraint `FK_USER_ACCOUNT` foreign key (`user_id`)
   references `user` (`id`)
   ON DELETE NO ACTION ON UPDATE NO ACTION
-  
+ 
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 ########################################################
 
@@ -130,11 +130,11 @@ create table `card`(
   `account_id` int(11) not null,
   `expired_at` date default null,
   `created_at` date default null,
-  
+ 
   constraint `FK_ACCOUNT_ID` foreign key (`account_id`)
   references `account` (`id`)
   ON DELETE NO ACTION ON UPDATE NO ACTION,
-  
+ 
   primary key (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 ########################################################
@@ -145,17 +145,17 @@ DROP TABLE IF EXISTS `transaction_type`;
 create table `transaction_type`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255),
-  
+ 
   unique key `UNIQUE_NAME_TRANSACTION_TYPE` (`name`),
   primary key (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 ########################################################
-  
+ 
 #### TRANSACTION TABLE #################################
 DROP TABLE IF EXISTS `transaction`;
 
 create table `transaction` (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+`id` int(11) NOT NULL AUTO_INCREMENT,
     `account_id` int(11) not null,
     `transaction_type_id` int(11) not null default 1,
     `amount` decimal not null,
@@ -164,31 +164,31 @@ create table `transaction` (
     `from_or_to_fullname` varchar(50) default null,
     `from_or_to_account_number` varchar(50) default null,
     `created_at` datetime not null,
-    
+   
     primary key (`id`),
-    
+   
     constraint `FK_ACCOUNT_ID_1` foreign key (`account_id`)
     references `account` (`id`)
     ON DELETE NO ACTION ON UPDATE NO ACTION,
-    
+   
     constraint `FK_TRANSACTION_TYPE_ID` foreign key (`transaction_type_id`)
     references `transaction_type` (`id`)
     ON DELETE NO ACTION ON UPDATE NO ACTION
-    
+   
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 ########################################################
 
 #### TRANSACTION QUEUE TABLE #################################
 DROP TABLE IF EXISTS `transaction_queue_internal`;
 create table `transaction_queue_internal` (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+`id` int(11) NOT NULL AUTO_INCREMENT,
     `otp_code` varchar(100) not null,
     `transfer_account_id` int(11) NOT NULL,
     `receiver_account_id` int(11) NOT NULL,
     `amount` decimal not null,
     `description` text not null,
     `expried_at` timestamp not null,
-    
+   
     primary key (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 ##############################################################
@@ -210,17 +210,17 @@ DROP TABLE IF EXISTS `users_roles`;
 CREATE TABLE `users_roles` (
   `user_id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
-  
+ 
   PRIMARY KEY (`user_id`,`role_id`),
-  
+ 
   KEY `FK_ROLE_idx` (`role_id`),
-  
-  CONSTRAINT `FK_USER_05` FOREIGN KEY (`user_id`) 
-  REFERENCES `user` (`id`) 
+ 
+  CONSTRAINT `FK_USER_05` FOREIGN KEY (`user_id`)
+  REFERENCES `user` (`id`)
   ON DELETE NO ACTION ON UPDATE NO ACTION,
-  
-  CONSTRAINT `FK_ROLE` FOREIGN KEY (`role_id`) 
-  REFERENCES `role` (`id`) 
+ 
+  CONSTRAINT `FK_ROLE` FOREIGN KEY (`role_id`)
+  REFERENCES `role` (`id`)
   ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ##############################################################
@@ -234,12 +234,12 @@ create table `cheque`(
   `reciever_fullname` varchar(255) not null,
   `reciever_id_card_number` varchar(50) not null,
   `transaction_amount` decimal not null,
-  `status` bool default 0,
+  `status` bool default 1,
   `canceled` bool not null,
   `created_at` datetime not null,
   `expired_date` datetime default null,
   `withdraw_date` datetime default null,
-  
+ 
   constraint `FK_ACCOUNT_CHEQUE` foreign key (`account_id`)
   references `account` (`id`)
   ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -252,7 +252,7 @@ create table `cheque`(
 drop table if exists `loan_interest_rate`;
 
 create table `loan_interest_rate` (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+`id` int(11) NOT NULL AUTO_INCREMENT,
     `interest_rate` decimal(2,1) not null,
     `months` int not null,
     primary key (`id`)
@@ -263,7 +263,7 @@ create table `loan_interest_rate` (
 drop table if exists `loan_profile`;
 
 create table `loan_profile` (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+`id` int(11) NOT NULL AUTO_INCREMENT,
     `amount` bigint(20),
     `description` text not null,
     `confirmed` boolean not null,
@@ -279,19 +279,19 @@ create table `loan_profile` (
     `account_id` int(11) not null,
     `user_id` int(11) not null,
     `transaction_office_id` int(11) default null,
-    
+   
     constraint `FK_USER_LOAN_PROFILE` foreign key (`user_id`)
     references `user` (`id`)
     ON DELETE NO ACTION ON UPDATE NO ACTION,
-    
+   
     constraint `FK_ACCOUNT_LOAN_PROFILE` foreign key (`account_id`)
     references `account` (`id`)
     ON DELETE NO ACTION ON UPDATE NO ACTION,
-    
+   
     constraint `FK_INTEREST_RATE_LOAN_PROFILE` foreign key (`loan_interest_rate_id`)
     references `loan_interest_rate` (`id`)
     ON DELETE NO ACTION ON UPDATE NO ACTION,
-    
+   
     constraint `FK_LOAN_PROFILE_TRANSACTION_OFFICE_ID` foreign key (`transaction_office_id`)
     references `transaction_office` (`id`)
     ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -304,12 +304,12 @@ create table `loan_profile` (
 drop table if exists `asset`;
 
 create table `asset` (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+`id` int(11) NOT NULL AUTO_INCREMENT,
     `name` varchar(255) NOT NULL,
     `description` text not null,
     `price` bigint(20) not null,
     `loan_profile_id` int(11) NOT NULL,
-    
+   
     constraint `FK_ASSET_LOAN_PRIFILE` foreign key (`loan_profile_id`)
     references `loan_profile` (`id`)
     ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -321,14 +321,14 @@ create table `asset` (
 #### IMAGES ASSET TABLE #############################################
 drop table if exists `images_asset`;
 create table `images_asset` (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+`id` int(11) NOT NULL AUTO_INCREMENT,
     `url` varchar(255) not null,
     `asset_id` int(11) NOT NULL,
-    
+   
     constraint `FK_IMAGES_ASSET_ID` foreign key (`asset_id`)
     references `asset` (`id`)
     ON DELETE NO ACTION ON UPDATE NO ACTION,
-    
+   
     primary key (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ##############################################################
@@ -336,13 +336,13 @@ create table `images_asset` (
 #### NOTIFICATION TABLE TABLE ################################
 drop table if exists `notification`;
 create table `notification`(
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+`id` int(11) NOT NULL AUTO_INCREMENT,
     `message` varchar(1000) not null,
     `created_at` datetime not null,
     `is_read` boolean default 0,
-    
+   
     `user_id` int(11) NOT NULL,
-    
+   
     constraint `FK_NOTIFICATION_USER_ID` foreign key (`user_id`)
     references `user` (`id`)
     ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -354,16 +354,55 @@ create table `notification`(
 #### LOAN PROFILE QUEUE TABLE ################################
 drop table if exists `loan_profile_queue`;
 create table `loan_profile_queue`(
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+`id` int(11) NOT NULL AUTO_INCREMENT,
     `otp_code` varchar(100) not null,
-	`expried_at` timestamp not null,
+`expried_at` timestamp not null,
     `loan_profile_id` int(11) NOT NULL,
      
-    primary key (`id`) 
+    primary key (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ##############################################################
 
+#### CONVERSATION QUEUE TABLE ################################
+DROP TABLE IF EXISTS `conversation`;
+CREATE TABLE `conversation` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `questioner_id` int(11) not null,
+    `respondent_id` int(11),
+    `created_at` datetime not null,
+   
+    constraint `FK_CONVERSATION_QUESTIONER_ID` foreign key (`questioner_id`)
+    references `user` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+   
+    constraint `FK_CONVERSATION_RESPONDENT_ID` foreign key (`respondent_id`)
+    references `user` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
 
+    primary key (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+##############################################################
+
+#### MESSENGER TABLE #########################################
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `conversation_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    `message` text not null,
+    `created_at` datetime not null,
+   
+    constraint `FK_MESSAGE_CONVERSATION_ID` foreign key (`conversation_id`)
+    references `conversation` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+   
+    constraint `FK_MESSAGE_USER_ID` foreign key (`user_id`)
+    references `user` (`id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+   
+    primary key (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+##############################################################
 
 
 
@@ -391,7 +430,7 @@ insert into `loan_interest_rate` (interest_rate, months) values
 (5.5, 6), (6, 9), (6.5, 12), (7, 15), (7.5, 18), (8, 21), (8.5, 24);
 
 INSERT INTO `role` (name)
-VALUES 
+VALUES
 ('ROLE_USER'),
 ('ROLE_EMPLOYEE'),
 ('ROLE_TRANSACTIONMANAGER'),
@@ -463,7 +502,7 @@ INSERT INTO `user` (username, email, password, fullname, birthday, address, id_c
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, branch_office_id) VALUES
 ('branch_manager_1', 'branchmanager1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Branch Mot', '1990-01-01', 'Ha Noi', '123153124011', '0123153211', 4, '2015-12-12','2015-12-12', 1, 0, 1),
 ('branch_manager_2', 'branchmanager2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Branch Hai', '1990-01-01', 'Ha Noi', '123153124012', '0123153212', 4, '2015-12-12','2015-12-12', 1, 0, 2);
-INSERT INTO `users_roles` (user_id,role_id) VALUES 
+INSERT INTO `users_roles` (user_id,role_id) VALUES
 (1, 1),
 (2, 1),
 (3, 1),
@@ -474,102 +513,105 @@ INSERT INTO `users_roles` (user_id,role_id) VALUES
 (8, 1),
 (9, 1),
 (10, 1),
-(11, 2),
-(12, 2),
-(13, 2),
+(11, 1),
+(12, 1),
+(13, 1),
 (14, 2),
 (15, 2),
 (16, 2),
 (17, 2),
-(18, 3),
-(19, 3),
-(20, 3),
+(18, 2),
+(19, 2),
+(20, 2),
 (21, 3),
 (22, 3),
 (23, 3),
 (24, 3),
-(25, 4),
-(26, 4);
+(25, 3),
+(26, 3),
+(27, 3),
+(28, 4),
+(29, 4);
 
 INSERT INTO `account` (amount, account_number, user_id, created_at, updated_at, expired_date, otp_transfer_enabled, status)
 VALUES
 # accounts of Xuan Hieu
-(1000000, 444411111001, 1, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444411111002, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444411111001, 1, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444411111002, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (3000000, 444411111005, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
-(4000000, 444411111003, 1, '2013-10-10', '2013-10-10', '2022-10-10', 0, 1), 
+(4000000, 444411111003, 1, '2013-10-10', '2013-10-10', '2022-10-10', 0, 1),
 (5000000, 444411111004, 1, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of Minh Duc
-(1000000, 444411112001, 2, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444411112002, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(3000000, 444411112003, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(4000000, 444411112004, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444411112001, 2, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444411112002, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(3000000, 444411112003, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444411112004, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (5000000, 444411112005, 2, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of Hoang Hung
-(1000000, 444411113001, 3, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444411113002, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(3000000, 444411113003, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(4000000, 444411113004, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444411113001, 3, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444411113002, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(3000000, 444411113003, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444411113004, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (5000000, 444411113005, 3, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of username_1
-(1000000, 444411114001, 4, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444411114002, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(3000000, 444411114003, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(4000000, 444411114004, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444411114001, 4, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444411114002, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(3000000, 444411114003, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444411114004, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (5000000, 444411114005, 4, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of username_2
-(1000000, 444411115001, 5, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444411115002, 5, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(3000000, 444411115003, 5, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(4000000, 444411115004, 5, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444411115001, 5, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444411115002, 5, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(3000000, 444411115003, 5, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444411115004, 5, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (5000000, 444411115005, 5, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of username_3
-(1000000, 444411116001, 6, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444411116002, 6, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(3000000, 444411116003, 6, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(4000000, 444411116004, 6, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444411116001, 6, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444411116002, 6, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(3000000, 444411116003, 6, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444411116004, 6, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (5000000, 444411116005, 6, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of username_4
-(1000000, 444411117001, 7, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444411117002, 7, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(3000000, 444411117003, 7, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(4000000, 444411117004, 7, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444411117001, 7, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444411117002, 7, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(3000000, 444411117003, 7, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444411117004, 7, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (5000000, 444411117005, 7, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of username_5
-(1000000, 444411118001, 8, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444411118002, 8, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(3000000, 444411118003, 8, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(4000000, 444411118004, 8, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444411118001, 8, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444411118002, 8, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(3000000, 444411118003, 8, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444411118004, 8, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (5000000, 444411118005, 8, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of username_6
-(1000000, 444411119001, 9, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444411119002, 9, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(3000000, 444411119003, 9, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(4000000, 444411119004, 9, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444411119001, 9, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444411119002, 9, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(3000000, 444411119003, 9, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444411119004, 9, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (5000000, 444411119005, 9, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of username_7
-(1000000, 444411111101, 10, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444411111102, 10, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(3000000, 444411111103, 10, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(4000000, 444411111104, 10, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444411111101, 10, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444411111102, 10, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(3000000, 444411111103, 10, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444411111104, 10, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (5000000, 444411111105, 10, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of username_8
-(1000000, 444412111101, 11, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444412111102, 11, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(3000000, 444412111103, 11, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(4000000, 444412111104, 11, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444412111101, 11, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444412111102, 11, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(3000000, 444412111103, 11, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444412111104, 11, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (5000000, 444412111105, 11, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of username_9
-(1000000, 444412211101, 12, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444412211102, 12, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(3000000, 444412211103, 12, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(4000000, 444412211104, 12, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444412211101, 12, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444412211102, 12, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(3000000, 444412211103, 12, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444412211104, 12, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (5000000, 444412211105, 12, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 # accounts of username_10
-(1000000, 444412311101, 13, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1), 
-(2000000, 444412311102, 13, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(3000000, 444412311103, 13, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
-(4000000, 444412311104, 13, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1), 
+(1000000, 444412311101, 13, '2020-10-10', '2020-10-10', '2025-10-10', 1, 1),
+(2000000, 444412311102, 13, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(3000000, 444412311103, 13, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
+(4000000, 444412311104, 13, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1),
 (5000000, 444412311105, 13, '2020-10-10', '2020-10-10', '2025-10-10', 0, 1);
 
 insert into `transaction_type` (name)
@@ -691,59 +733,58 @@ values
 ("NGUYEN VAN A", "123123124004", 100000, 0, 0, '2020-06-29', '2020-07-03', 1),
 ("NGUYEN VAN B", "123123124005", 100000, 0, 0, '2020-06-29', '2020-07-03', 1);
 
-insert into `loan_profile` (amount, description, confirmed, approved, rejected, rejected_reason, status, created_at, loan_interest_rate_id, account_id, user_id, transaction_office_id, employee_confirmed_name, employee_confirmed_id) 
+insert into `loan_profile` (amount, description, confirmed, approved, rejected, rejected_reason, status, created_at, loan_interest_rate_id, account_id, user_id, transaction_office_id, employee_confirmed_name, employee_confirmed_id)
 values
 (50000000, 'Test Description', true, false, true, 'Not Enough Money', '0', '2020-06-28', 2, 16, 4, 1, 'EMPLOYEE MOT', 14),
-(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 17, 4, 1, '', 0), 
-(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 18, 4, 1, 'EMPLOYEE MOT', 14), 
-(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 19, 4, 1, 'EMPLOYEE MOT', 14), 
-(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 20, 4, 1, 'EMPLOYEE MOT', 14), 
+(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 17, 4, 1, '', 0),
+(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 18, 4, 1, 'EMPLOYEE MOT', 14),
+(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 19, 4, 1, 'EMPLOYEE MOT', 14),
+(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 20, 4, 1, 'EMPLOYEE MOT', 14),
 
 (50000000, 'Test Description', true, false, true, 'Not Enough Money', '0', '2020-06-28', 2, 21, 5, 1, 'EMPLOYEE MOT', 14),
-(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 22, 5, 1, '', 0), 
-(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 23, 5, 1, 'EMPLOYEE MOT', 14), 
-(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 24, 5, 1, 'EMPLOYEE MOT', 14), 
-(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 25, 5, 1, 'EMPLOYEE MOT', 14), 
+(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 22, 5, 1, '', 0),
+(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 23, 5, 1, 'EMPLOYEE MOT', 14),
+(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 24, 5, 1, 'EMPLOYEE MOT', 14),
+(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 25, 5, 1, 'EMPLOYEE MOT', 14),
 
 (50000000, 'Test Description', true, false, true, 'Not Enough Money', '0', '2020-06-28', 2, 26, 6, 1, 'EMPLOYEE MOT', 14),
-(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 27, 6, 1, '', 0), 
-(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 28, 6, 1, 'EMPLOYEE MOT', 14), 
-(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 29, 6, 1, 'EMPLOYEE MOT', 14), 
-(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 30, 6, 1, 'EMPLOYEE MOT', 14), 
+(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 27, 6, 1, '', 0),
+(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 28, 6, 1, 'EMPLOYEE MOT', 14),
+(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 29, 6, 1, 'EMPLOYEE MOT', 14),
+(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 30, 6, 1, 'EMPLOYEE MOT', 14),
 
 (50000000, 'Test Description', true, false, true, 'Not Enough Money', '0', '2020-06-28', 2, 31, 7, 1, 'EMPLOYEE HAI', 15),
-(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 32, 7, 1, '', 0), 
-(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 33, 7, 1, 'EMPLOYEE HAI', 15), 
-(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 34, 7, 1, 'EMPLOYEE HAI', 15), 
-(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 35, 7, 1, 'EMPLOYEE HAI', 15), 
+(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 32, 7, 1, '', 0),
+(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 33, 7, 1, 'EMPLOYEE HAI', 15),
+(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 34, 7, 1, 'EMPLOYEE HAI', 15),
+(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 35, 7, 1, 'EMPLOYEE HAI', 15),
 
 (50000000, 'Test Description', true, false, true, 'Not Enough Money', '0', '2020-06-28', 2, 36, 8, 1, 'EMPLOYEE NAM', 18),
-(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 37, 8, 2, '', 0), 
-(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 38, 8, 2, 'EMPLOYEE NAM', 18), 
-(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 39, 8, 2, 'EMPLOYEE NAM', 18), 
-(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 40, 8, 2, 'EMPLOYEE NAM', 18), 
+(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 37, 8, 2, '', 0),
+(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 38, 8, 2, 'EMPLOYEE NAM', 18),
+(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 39, 8, 2, 'EMPLOYEE NAM', 18),
+(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 40, 8, 2, 'EMPLOYEE NAM', 18),
 
 (50000000, 'Test Description', true, false, true, 'Not Enough Money', '0', '2020-06-28', 2, 41, 9, 1, 'EMPLOYEE SAU', 19),
-(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 42, 9, 1, '', 0), 
-(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 43, 9, 1, 'EMPLOYEE SAU', 19), 
-(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 44, 9, 1, 'EMPLOYEE SAU', 19), 
-(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 45, 9, 1, 'EMPLOYEE SAU', 19), 
+(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 42, 9, 1, '', 0),
+(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 43, 9, 1, 'EMPLOYEE SAU', 19),
+(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 44, 9, 1, 'EMPLOYEE SAU', 19),
+(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 45, 9, 1, 'EMPLOYEE SAU', 19),
 
 (50000000, 'Test Description', true, false, true, 'Not Enough Money', '0', '2020-06-28', 2, 46, 10, 1, 'EMPLOYEE MOT', 14),
-(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 47, 10, 1, '', 0), 
-(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 48, 10, 1, 'EMPLOYEE MOT', 14), 
-(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 49, 10, 1, 'EMPLOYEE MOT', 14), 
-(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 50, 10, 1, 'EMPLOYEE MOT', 14), 
+(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 47, 10, 1, '', 0),
+(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 48, 10, 1, 'EMPLOYEE MOT', 14),
+(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 49, 10, 1, 'EMPLOYEE MOT', 14),
+(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 50, 10, 1, 'EMPLOYEE MOT', 14),
 
 (50000000, 'Test Description', true, false, true, 'Not Enough Money', '0', '2020-06-28', 2, 51, 11, 1, 'EMPLOYEE MOT', 14),
-(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 52, 11, 1, '', 0), 
-(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 53, 11, 1, 'EMPLOYEE MOT', 14), 
-(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 54, 11, 1, 'EMPLOYEE MOT', 14), 
-(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 55, 11, 1, 'EMPLOYEE MOT', 14), 
+(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 52, 11, 1, '', 0),
+(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 53, 11, 1, 'EMPLOYEE MOT', 14),
+(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 54, 11, 1, 'EMPLOYEE MOT', 14),
+(80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 55, 11, 1, 'EMPLOYEE MOT', 14),
 
 (50000000, 'Test Description', true, false, true, 'Not Enough Money', '0', '2020-06-28', 2, 56, 12, 1, 'EMPLOYEE MOT', 14),
-(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 57, 12, 1, '', 0), 
-(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 58, 12, 1, 'EMPLOYEE MOT', 14), 
-(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 59, 12, 1, 'EMPLOYEE MOT', 14), 
+(100000000, 'Test Description', false, false, false, '', '1', '2020-06-28', 4, 57, 12, 1, '', 0),
+(150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 58, 12, 1, 'EMPLOYEE MOT', 14),
+(20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 59, 12, 1, 'EMPLOYEE MOT', 14),
 (80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 60, 12, 1, 'EMPLOYEE MOT', 14);
-

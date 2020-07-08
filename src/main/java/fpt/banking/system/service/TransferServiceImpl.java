@@ -19,6 +19,7 @@ import fpt.banking.system.util.MobilePhoneUtil;
 import fpt.banking.system.util.RandomGenerator;
 import fpt.banking.system.constants.TimerConstants;
 import fpt.banking.system.util.SendSms;
+import fpt.banking.system.util.SendSmsWithLib;
 
 @Service
 public class TransferServiceImpl implements TransferService {
@@ -50,6 +51,7 @@ public class TransferServiceImpl implements TransferService {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 300000 + TimerConstants.VIETNAM_TIMEZONE_TIMESTAMP);
 		String otpCode = RandomGenerator.generateOTP();
 		String phone = accountDAO.getAccount(transferAccountId).getUser().getPhone();
+//		SendSmsWithLib.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
 		SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
 		String id = transactionQueueInternalDAO.saveTransactionQueueInternal(MD5.getMd5(otpCode), transferAccountId, receiverAccountId, amount, new Date(timestamp.getTime()), description);
 		return id;

@@ -19,6 +19,7 @@ import fpt.banking.system.util.MD5;
 import fpt.banking.system.util.MobilePhoneUtil;
 import fpt.banking.system.util.RandomGenerator;
 import fpt.banking.system.util.SendSms;
+import fpt.banking.system.util.SendSmsWithLib;
 import fpt.banking.system.enums.SearchUserTypeEnum;
 
 @Service
@@ -112,6 +113,8 @@ public class UserServiceImpl implements UserService {
 		String password = RandomGenerator.generatePassword();
 		String otpCode = RandomGenerator.generateOTP();
 		long userId = userDAO.saveUser(username, email, passwordEncoder.encode(password), fullName, birthday, address, gender, idCardNumber, phone, membership, image);
+//		SendSmsWithLib.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "You have created a credential in our banking app with username: " + username + " and password is: " + password
+//				+ ", please login into our application to see your new account detail and card detail");
 		SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "You have created a credential in our banking app with username: " + username + " and password is: " + password
 				+ ", please login into our application to see your new account detail and card detail");
 		User user = userDAO.findById(userId);

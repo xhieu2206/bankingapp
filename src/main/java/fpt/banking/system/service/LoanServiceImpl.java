@@ -26,6 +26,7 @@ import fpt.banking.system.util.MD5;
 import fpt.banking.system.util.MobilePhoneUtil;
 import fpt.banking.system.util.RandomGenerator;
 import fpt.banking.system.util.SendSms;
+import fpt.banking.system.util.SendSmsWithLib;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -104,6 +105,7 @@ public class LoanServiceImpl implements LoanService {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 300000 + TimerConstants.VIETNAM_TIMEZONE_TIMESTAMP);
 		String otpCode = RandomGenerator.generateOTP();
 		String phone = loanProfileDAO.findById(loanProfileId).getUser().getPhone();
+//		SendSmsWithLib.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
 		SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
 		long id = loanProfileQueueDAO.saveLoanProfileQueue(MD5.getMd5(otpCode), loanProfileId, new Date(timestamp.getTime()));
 		return id;
