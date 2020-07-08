@@ -2,21 +2,13 @@ package fpt.banking.system.payload;
 
 public class DepositChequeRequestPayload {
 
-	private String transferFullName;
 	private String recieverIdCardNumber;
 	private String recieverFullName;
 	public DepositChequeRequestPayload() {
 	}
-	public DepositChequeRequestPayload(String transferFullName, String recieverIdCardNumber, String recieverFullName) {
-		this.transferFullName = transferFullName;
+	public DepositChequeRequestPayload(String recieverIdCardNumber, String recieverFullName) {
 		this.recieverIdCardNumber = recieverIdCardNumber;
 		this.recieverFullName = recieverFullName;
-	}
-	public String getTransferFullName() {
-		return transferFullName;
-	}
-	public void setTransferFullName(String transferFullName) {
-		this.transferFullName = transferFullName;
 	}
 	public String getRecieverIdCardNumber() {
 		return recieverIdCardNumber;
@@ -30,5 +22,4 @@ public class DepositChequeRequestPayload {
 	public void setRecieverFullName(String recieverFullName) {
 		this.recieverFullName = recieverFullName;
 	}
-	
 }

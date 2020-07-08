@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -76,24 +77,24 @@ public class ChequeDAOImpl implements ChequeDAO {
 	}
 
 	@Override
-	public Cheque findChequeWhenDeposit(String transferFullName, String recieverIdCardNumber, String recieverFullName) {
+	public List<Cheque> findChequesWhenDeposit(String recieverIdCardNumber, String recieverFullName) {
 		Session session = entityManager.unwrap(Session.class);
-		String sql = "SELECT c FROM Cheque " +
-					 "WHERE reciever_fullname = :recieverFullName " +
-					 "AND reciever_id_card_number = :recieverIdCardNumber " +
-					 "AND canceled = 1 " +
-					 "AND status = 0";
-		Query<Cheque> query = session.createQuery(sql, Cheque.class);
-		query.setParameter("recieverFullName", recieverFullName);
-		query.setParameter("recieverIdCardNumber", recieverIdCardNumber);
-		Cheque cheque;
+		String sql = "SELECT * FROM cheque " +
+				     "WHERE expired_date >= CURDATE()" +
+				     "AND reciever_fullname = :recieverIdCardNumber " +
+				     "AND reciever_id_card_number = :recieverFullName " +
+				     "AND status = 0 " +
+				     "AND canceled = 0";
+		NativeQuery<Cheque> q = session.createNativeQuery(sql, Cheque.class);
+		q.setParameter("recieverIdCardNumber", recieverIdCardNumber);
+		q.setParameter("recieverFullName", recieverFullName);
+		List<Cheque> results;
 		try {
-			cheque = query.getSingleResult();
+			results = q.getResultList();
 		} catch (NoResultException e) {
 			return null;
-		}
-//		if (cheque.getAccount().getUser().getFullname() 
-		return null;
+		} 
+		return results;
 	}
 
 	@Override

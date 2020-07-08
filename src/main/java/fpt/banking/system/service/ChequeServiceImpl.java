@@ -43,9 +43,9 @@ public class ChequeServiceImpl implements ChequeService {
 
 	@Override
 	@Transactional
-	public Cheque findChequeWhenDeposit(String transferFullName, String recieverIdCardNumber, String recieverFullName) {
+	public List<Cheque> findChequesWhenDeposit(String recieverIdCardNumber, String recieverFullName) {
 		
-		return null;
+		return chequeDAO.findChequesWhenDeposit(recieverIdCardNumber, recieverFullName);
 	}
 
 	@Override

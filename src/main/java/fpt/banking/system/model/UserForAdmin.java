@@ -5,6 +5,10 @@ import java.util.Date;
 public class UserForAdmin {
 	private Long id;
 	
+	private String email;
+	
+	private String username;
+	
 	private String fullname;
 	
 	private Date birthday;
@@ -24,9 +28,11 @@ public class UserForAdmin {
 	public UserForAdmin() {
 	}
 
-	public UserForAdmin(Long id, String fullname, Date birthday, String address, String gender, String image,
+	public UserForAdmin(Long id, String email, String username, String fullname, Date birthday, String address, String gender, String image,
 			String idCardNumber, String phone, boolean locked) {
 		this.id = id;
+		this.email = email;
+		this.username = username;
 		this.fullname = fullname;
 		this.birthday = birthday;
 		this.address = address;
@@ -107,5 +113,21 @@ public class UserForAdmin {
 
 	public void setLocked(boolean locked) {
 		this.locked = locked;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }

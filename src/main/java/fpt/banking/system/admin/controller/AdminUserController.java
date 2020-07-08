@@ -69,7 +69,7 @@ public class AdminUserController {
 		if (!role.equals("ROLE_USER")) {
 			throw new UserNotFoundException("User Not Found");
 		}
-		return new UserForAdmin(result.getId(), result.getFullname(), result.getBirthday(), result.getAddress(), result.getGender(), 
+		return new UserForAdmin(result.getId(), result.getEmail(), result.getUsername(), result.getFullname(), result.getBirthday(), result.getAddress(), result.getGender(), 
 				result.getImage(), result.getIdCardNumber(), result.getPhone(), result.isLocked());
 	}
 	
