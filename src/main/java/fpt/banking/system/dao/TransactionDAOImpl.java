@@ -1,5 +1,6 @@
 package fpt.banking.system.dao;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -91,6 +93,42 @@ public class TransactionDAOImpl implements TransactionDAO {
 		transaction.setFromOrToFullName(fullname);
 		transaction.setFromOrToAccountNumber(accountNumber);
 		session.saveOrUpdate(transaction);
+	}
+
+	@Override
+	public List<Transaction> getTransactionsWithSearchTerm(long accountId, int page, String term) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT * " +
+				 "FROM transaction " +
+				 "WHERE account_id = :accountId " +
+				 "AND (description LIKE :term " +
+				 "OR from_or_to_fullname LIKE :term) " +
+				 "ORDER BY id DESC";
+		NativeQuery<Transaction> q = session.createNativeQuery(sql, Transaction.class).setFirstResult((page - 1) * 5).setMaxResults(5);
+		q.setParameter("accountId", accountId);
+		q.setParameter("term", "%" + term + "%");
+		List<Transaction> results;
+		try {
+			results = q.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		} 
+		return results;
+	}
+
+	@Override
+	public int getTotalTransactionsWithSearchTerm(long accountId, String term) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT COUNT(*) " +
+					 "FROM transaction " +
+					 "WHERE account_id = :accountId " +
+					 "AND (description LIKE :term " +
+					 "OR from_or_to_fullname LIKE :term)";
+		NativeQuery q = session.createNativeQuery(sql);
+		q.setParameter("accountId", accountId);
+		q.setParameter("term", "%" + term + "%");
+		List<BigInteger> total = q.list();
+		return total.get(0).intValue();
 	}
 
 }

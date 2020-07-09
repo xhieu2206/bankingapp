@@ -463,7 +463,7 @@ VALUES
 -- INSERT FOR USER
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked)
 VALUES
-('xuanhieu_1', 'xuanhieu1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'NGUYEN XUAN HIEU','1994-06-22','Ha Noi','123123123001','0963558932',1,'2015-12-12','2015-12-12', 1, 0),
+('xuanhieu_1', 'xuanhieu1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'NGUYEN XUAN HIEU','1994-06-22','Ha Noi','123123123001','0963558935',1,'2015-12-12','2015-12-12', 1, 0),
 ('minhduc_1', 'minhduc1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'NGUYEN MINH DUC','1994-06-01','Ha Noi','123123123002','0966423895',1,'2015-12-12','2015-12-12', 1, 0),
 ('hoanghung_1', 'hoanghung1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'HOANG VAN HUNG','1994-06-02','Ha Noi','123123123003','0325357329',1,'2015-12-12','2015-12-12', 1, 0),
 ('username_1', 'username1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME MOT','1994-06-03','Ha Noi','123123123004','0912311111',1,'2015-12-12','2015-12-12', 1, 0),
@@ -704,25 +704,25 @@ insert into `card` (card_number, expired_at, created_at, account_id) values
 (555511113325, '2025-10-10', '2020-10-10', 65);
 
 insert into `transaction` (amount, amount_after_transaction, description, created_at, account_id, transaction_type_id, from_or_to_fullname, from_or_to_account_number) values
-(-100000, 1900000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
-(-100000, 1800000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1900000, 'test 123 duc', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1800000, 'testduc', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
 (-100000, 1700000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
-(-100000, 1600000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
-(-100000, 1500000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
-(-100000, 1400000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1600000, 'test duc', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1500000, 'testduc', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1400000, 'test duc 123', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
 (-100000, 1300000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
-(-100000, 1200000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
-(-100000, 1100000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1200000, 'test duc', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
+(-100000, 1100000, 'testduc', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
 (-100000, 1000000, 'test', '2020-06-25', 1, 1, 'NGUYEN MINH DUC', '444411111001'),
 
 (100000, 100000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
-(100000, 200000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
+(100000, 200000, 'test duc', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
 (100000, 300000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
-(100000, 400000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
+(100000, 400000, 'test duc', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
 (100000, 500000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
 (100000, 600000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
 (100000, 700000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
-(100000, 800000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
+(100000, 800000, 'test duc', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
 (100000, 900000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
 (100000, 1000000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001');
 

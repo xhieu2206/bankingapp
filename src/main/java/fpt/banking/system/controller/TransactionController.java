@@ -30,8 +30,10 @@ public class TransactionController {
 
 	@GetMapping("/{userId}/accounts/{accountId}/transactions")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public TransactionsResponse getTransaction(@RequestParam("page") Optional<Integer> page,
-			@PathVariable int accountId, @AuthenticationPrincipal UserPrincipal user) {
+	public TransactionsResponse getTransaction(
+			@RequestParam("page") Optional<Integer> page,
+			@PathVariable int accountId, 
+			@AuthenticationPrincipal UserPrincipal user) {
 		if (accountService.getAccount(accountId).getUser().getId() != user.getId()) {
 			throw new AuthorizedException("You don't have permission to access this resource");
 		}
@@ -40,5 +42,29 @@ public class TransactionController {
 			pageNumber = page.get();
 		}
 		return transactionService.getTransactions(accountId, pageNumber);
+	}
+	
+	@GetMapping("/current/accounts/{accountId}/transactions/search")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public TransactionsResponse searchTransactions(
+			@AuthenticationPrincipal UserPrincipal currentUser,
+			@PathVariable int accountId,
+			@RequestParam("page") Optional<Integer> page,
+			@RequestParam("term") Optional<String> term) {
+		if (accountService.getAccount(accountId).getUser().getId() != currentUser.getId()) {
+			throw new AuthorizedException("You don't have permission to access this resource");
+		}
+		int pageNumber = 1;
+		if (page.isPresent()) {
+			pageNumber = page.get();
+		}
+		String searchTerm = "";
+		if (term.isPresent()) {
+			searchTerm = term.get();
+		}
+		if (searchTerm.trim().equals("")) {
+			return transactionService.getTransactions(accountId, pageNumber);
+		}
+		return transactionService.getTransactionsWithSearchTerm(Long.valueOf(accountId), pageNumber, searchTerm);
 	}
 }

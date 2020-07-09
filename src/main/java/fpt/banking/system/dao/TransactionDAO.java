@@ -9,7 +9,11 @@ public interface TransactionDAO {
 
 	public List<Transaction> getTransactions(long accountId, int page);
 	
+	public List<Transaction> getTransactionsWithSearchTerm(long accountId, int page, String term);
+	
 	public int getTotalTransactions(long accountId);
+	
+	public int getTotalTransactionsWithSearchTerm(long accountId, String term);
 	
 	public void saveTransaction(long accountId, Long changeAmount, Long 
 			amountAfterTransaction, int transactionTypeId,

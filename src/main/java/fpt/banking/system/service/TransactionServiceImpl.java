@@ -36,4 +36,20 @@ public class TransactionServiceImpl implements TransactionService {
 			String description) {
 		transactionDAO.saveTransaction(accountId, amount, amountAfterTransaction, transactionTypeId, description);
 	}
+
+	@Override
+	@Transactional
+	public TransactionsResponse getTransactionsWithSearchTerm(long accountId, int page, String searchTerm) {
+		TransactionsResponse transactionResponse = new TransactionsResponse();
+		transactionResponse.setPageNumber(page);
+		transactionResponse.setTotalCount(transactionDAO.getTotalTransactionsWithSearchTerm(accountId, searchTerm));
+		int totalPage = (int) Math.ceil(transactionDAO.getTotalTransactionsWithSearchTerm(accountId, searchTerm) / 5);
+		if (transactionDAO.getTotalTransactionsWithSearchTerm(accountId, searchTerm) % 5 > 0) {
+			totalPage ++;
+		}
+		transactionResponse.setTotalPage(totalPage);
+		transactionResponse.setItems(transactionDAO.getTransactionsWithSearchTerm(accountId, page, searchTerm));
+		transactionResponse.setPageSize(transactionResponse.getItems().size());
+		return transactionResponse;
+	}
 }
