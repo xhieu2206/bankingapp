@@ -57,7 +57,6 @@ public class Cheque {
 	// Relationship ---------------------
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id")
-	@JsonIgnore
 	private Account account;
 	// ----------------------------------
 	

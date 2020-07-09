@@ -55,7 +55,7 @@ public class AdminChequeController {
 		return cheques;
 	}
 	
-	@PostMapping("/admin/cheques/deposit")
+	@PostMapping("/admin/cheques/withdraw")
 	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
 	public ResponseEntity<?> depositCheque(
 			@RequestBody ChequeIdRequestPayload payload) {
@@ -78,12 +78,12 @@ public class AdminChequeController {
 					-1 * (cheque.getTransactionAmount() + fees),
 					account.getAmount() - fees - cheque.getTransactionAmount(), 
 					7, 
-					cheque.getRecieverFullname() + " has deposited a cheque from your account");
+					cheque.getRecieverFullname() + " has withdrawed a cheque from your account");
 			accountService.changeAmount(
 					account.getId(),
 					account.getAmount() - fees - cheque.getTransactionAmount());
 			notificationService.saveNotification(
-					cheque.getRecieverFullname() + " has deposited a cheque from your account with number is " + account.getAccountNumber(),
+					cheque.getRecieverFullname() + " has withdrawed a cheque from your account with number is " + account.getAccountNumber(),
 					user);
 		} else {
 			throw new NotEnoughMoneyException("This account doesn't have enough money for this transaction");
