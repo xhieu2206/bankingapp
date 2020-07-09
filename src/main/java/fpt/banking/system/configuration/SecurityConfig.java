@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/admin/auth/login").permitAll()
             .antMatchers("/api/public").permitAll()
             .antMatchers("/api/loanInterestRates").permitAll()
+            .antMatchers("/api/transaction-offices").permitAll()
             .anyRequest().authenticated();
 
         // Add our custom JWT security filter

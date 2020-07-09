@@ -6,12 +6,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import fpt.banking.system.model.TransactionOffice;
+import fpt.banking.system.model.User;
 
 @Repository
 public class TransactionOfficeDAOImpl implements TransactionOfficeDAO {
@@ -43,6 +45,14 @@ public class TransactionOfficeDAOImpl implements TransactionOfficeDAO {
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+	@Override
+	public List<TransactionOffice> listAllTransactionOffices() {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT * FROM transaction_office";
+		NativeQuery<TransactionOffice> query = session.createNativeQuery(sql, TransactionOffice.class);
+		return query.getResultList();
 	}
 
 }

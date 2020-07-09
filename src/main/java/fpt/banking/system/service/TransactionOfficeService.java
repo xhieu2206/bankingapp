@@ -9,4 +9,6 @@ public interface TransactionOfficeService {
 	public TransactionOffice findTransactionOfficeById(long id);
 	
 	public List<TransactionOffice> findTransactionOfficesByBranchOfficeId(long branchOfficeId);
+	
+	public List<TransactionOffice> listAllTransactionOffices();
 }

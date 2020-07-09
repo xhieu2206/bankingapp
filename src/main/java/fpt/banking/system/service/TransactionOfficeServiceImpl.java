@@ -27,4 +27,10 @@ public class TransactionOfficeServiceImpl implements TransactionOfficeService {
 		return transactionOfficeDAO.findTransactionOfficesOfABranchOffice(branchOfficeId);
 	}
 
+	@Override
+	@Transactional
+	public List<TransactionOffice> listAllTransactionOffices() {
+		return transactionOfficeDAO.listAllTransactionOffices();
+	}
+
 }

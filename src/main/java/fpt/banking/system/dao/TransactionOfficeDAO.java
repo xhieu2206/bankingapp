@@ -8,4 +8,6 @@ public interface TransactionOfficeDAO {
 	public TransactionOffice findById(long id);
 	
 	public List<TransactionOffice> findTransactionOfficesOfABranchOffice(long branchOfficeId);
+	
+	public List<TransactionOffice> listAllTransactionOffices();
 }
