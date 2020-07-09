@@ -52,4 +52,16 @@ public interface UserDAO {
 	public long getTotalUsers();
 
 	public List<User> getUsersWithPagination(int page);
+	
+	public long updatedUser(
+		long userId,
+		String username,
+		String email,
+		String fullName,
+		Date birthday,
+		String address,
+		String gender,
+		String idCardNumber,
+		String phone,
+		String image);
 }

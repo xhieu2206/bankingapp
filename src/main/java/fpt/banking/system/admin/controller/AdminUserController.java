@@ -77,48 +77,48 @@ public class AdminUserController {
 	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
 	public ResponseEntity<?> createUser(
 			@RequestBody RegisterUserRequestPayload payload) throws ParseException {
-		if (userService.findUser(payload.getEmail(), "EMAIL") != null) {
+		if (userService.findUser(payload.getEmail().trim(), "EMAIL") != null) {
 			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This email has already been used",
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
-		if (userService.findUser(payload.getUsername(), "USERNAME") != null) {
+		if (userService.findUser(payload.getUsername().trim(), "USERNAME") != null) {
 			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This username has already been used",
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
-		if (userService.findUser(payload.getIdCardNumber(), "IDCARDNUMBER") != null) {
+		if (userService.findUser(payload.getIdCardNumber().trim(), "IDCARDNUMBER") != null) {
 			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This id card number has already been used",
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
-		if (userService.findUser(payload.getPhone(), "PHONENUMBER") != null) {
+		if (userService.findUser(payload.getPhone().trim(), "PHONENUMBER") != null) {
 			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This phone number has already been used",
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
-		if (payload.getIdCardNumber().length() < 12) {
+		if (payload.getIdCardNumber().trim().length() < 12) {
 			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "Id card number is not corrected format",
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
-		if (EmailValidation.isValidEmail(payload.getEmail()) == false) {
+		if (EmailValidation.isValidEmail(payload.getEmail().trim()) == false) {
 			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "Email is not corrected format",
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		Date theBirthday = DateUtils.parseDate(payload.getBirthday());
 		long accountId = userService.saveUser(
-				payload.getUsername(), 
-				payload.getEmail(), 
-				payload.getFullName(), 
+				payload.getUsername().trim(), 
+				payload.getEmail().trim(), 
+				payload.getFullName().trim().toUpperCase(), 
 				theBirthday, 
-				payload.getAddress(), 
-				payload.getGender(), 
-				payload.getIdCardNumber(), 
-				payload.getPhone(), 
+				payload.getAddress().trim(), 
+				payload.getGender().trim(), 
+				payload.getIdCardNumber().trim(), 
+				payload.getPhone().trim(), 
 				payload.getMembershipId(), 
-				payload.getImage());
+				payload.getImage().trim());
 		notificationService.saveNotification("You have created a credential in our banking app", accountService.getAccount(accountId).getUser());
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Create user successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);

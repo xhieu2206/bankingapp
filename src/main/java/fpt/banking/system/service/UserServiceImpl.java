@@ -139,4 +139,11 @@ public class UserServiceImpl implements UserService {
 		result.setPageSize(result.getItems().size());
 		return result;
 	}
+
+	@Override
+	@Transactional
+	public long updatedUser(long userId, String username, String email, String fullName, Date birthday, String address,
+			String gender, String idCardNumber, String phone, String image) {
+		return userDAO.updatedUser(userId, username, email, fullName, birthday, address, gender, idCardNumber, phone, image);
+	}
 }

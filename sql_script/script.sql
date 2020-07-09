@@ -463,7 +463,7 @@ VALUES
 -- INSERT FOR USER
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked)
 VALUES
-('xuanhieu_1', 'xuanhieu1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'NGUYEN XUAN HIEU','1994-06-22','Ha Noi','123123123001','0963558935',1,'2015-12-12','2015-12-12', 1, 0),
+('xuanhieu_1', 'xuanhieu1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'NGUYEN XUAN HIEU','1994-06-22','Ha Noi','123123123001','0963558932',1,'2015-12-12','2015-12-12', 1, 0),
 ('minhduc_1', 'minhduc1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'NGUYEN MINH DUC','1994-06-01','Ha Noi','123123123002','0966423895',1,'2015-12-12','2015-12-12', 1, 0),
 ('hoanghung_1', 'hoanghung1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'HOANG VAN HUNG','1994-06-02','Ha Noi','123123123003','0325357329',1,'2015-12-12','2015-12-12', 1, 0),
 ('username_1', 'username1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME MOT','1994-06-03','Ha Noi','123123123004','0912311111',1,'2015-12-12','2015-12-12', 1, 0),

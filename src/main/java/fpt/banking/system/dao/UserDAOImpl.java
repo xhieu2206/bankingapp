@@ -236,4 +236,24 @@ public class UserDAOImpl implements UserDAO {
 		} 
 		return results;
 	}
+
+	@Override
+	public long updatedUser(long userId, String username, String email, String fullName, Date birthday, String address, String gender,
+			String idCardNumber, String phone, String image) {
+		Session session = entityManager.unwrap(Session.class);
+		LocalDate updatedAt = LocalDate.now();
+		User user = session.get(User.class, userId);
+		user.setUsername(username);
+		user.setEmail(email);
+		user.setFullname(fullName);
+		user.setBirthday(birthday);
+		user.setAddress(address);
+		user.setGender(gender);
+		user.setIdCardNumber(idCardNumber);
+		user.setPhone(phone);
+		user.setImage(image);
+		user.setUpdatedAt(java.sql.Date.valueOf(updatedAt));
+		session.saveOrUpdate(user);
+		return user.getId();
+	}
 }
