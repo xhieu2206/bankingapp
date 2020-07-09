@@ -111,14 +111,15 @@ public class UserServiceImpl implements UserService {
 		String accountNumber = RandomGenerator.generateAccountNumber();
 		String cardNumber = RandomGenerator.generateCardNumber();
 		String password = RandomGenerator.generatePassword();
-		String otpCode = RandomGenerator.generateOTP();
+		String pinCode = RandomGenerator.generatePinCode();
 		long userId = userDAO.saveUser(username, email, passwordEncoder.encode(password), fullName, birthday, address, gender, idCardNumber, phone, membership, image);
 //		SendSmsWithLib.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "You have created a credential in our banking app with username: " + username + " and password is: " + password
 //				+ ", please login into our application to see your new account detail and card detail");
 		SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "You have created a credential in our banking app with username: " + username + " and password is: " + password
+				+ ", pin code of your new account is " + pinCode
 				+ ", please login into our application to see your new account detail and card detail");
 		User user = userDAO.findById(userId);
-		long accountId = accountDAO.saveAccount(accountNumber, user, 100000, MD5.getMd5(otpCode));
+		long accountId = accountDAO.saveAccount(accountNumber, user, 100000, MD5.getMd5(pinCode));
 		Account account = accountDAO.getAccount(accountId);
 		long cardId = cardDAO.saveCard(cardNumber, account);
 		return accountId;

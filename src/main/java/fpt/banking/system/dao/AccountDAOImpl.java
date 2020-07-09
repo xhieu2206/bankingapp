@@ -129,6 +129,7 @@ public class AccountDAOImpl implements AccountDAO {
 		account.setUpdatedAt(java.sql.Date.valueOf(createdAt));
 		account.setExpiredAt(expiredDate);
 		account.setStatus(true);
+		account.setOtpTransferEnabled(true);
 		session.saveOrUpdate(account);
 		return account.getId();
 	}

@@ -57,7 +57,7 @@ public class TransferController {
 			throw new NotEnoughMoneyException("You don't have enough money to transfer, you must have at least 50000vnd after transaction");
 		}
 		if (accountService.findByAccountNumber(transferInternalPayloadByAccountNumber.getAccountNumber()) == null ||
-			!accountService.findByAccountNumber(transferInternalPayloadByAccountNumber.getAccountNumber()).getUser().getFullname().equals(transferInternalPayloadByAccountNumber.getFullName())) {
+			!accountService.findByAccountNumber(transferInternalPayloadByAccountNumber.getAccountNumber()).getUser().getFullname().equals(transferInternalPayloadByAccountNumber.getFullName().trim().toUpperCase())) {
 			throw new AccountNotFound("Account Not Found");
 		}
 		String pinCode = MD5.getMd5(transferInternalPayloadByAccountNumber.getPin());
@@ -108,7 +108,7 @@ public class TransferController {
 			throw new NotEnoughMoneyException("You don't have enough money to transfer, you must have at least 50000vnd after transaction");
 		}
 		if (accountService.findByCardNumber(transferInternalPayloadByCardNumber.getCardNumber()) == null ||
-			!accountService.findByCardNumber(transferInternalPayloadByCardNumber.getCardNumber()).getUser().getFullname().equals(transferInternalPayloadByCardNumber.getFullName())) {
+			!accountService.findByCardNumber(transferInternalPayloadByCardNumber.getCardNumber()).getUser().getFullname().equals(transferInternalPayloadByCardNumber.getFullName().trim().toUpperCase())) {
 			throw new AccountNotFound("Account Not Found");
 		}
 		String pinCode = MD5.getMd5(transferInternalPayloadByCardNumber.getPin());

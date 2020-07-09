@@ -51,8 +51,9 @@ public class UserController {
 	
 	@GetMapping("/current")
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE', 'ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
-	public UserPrincipal getCurrentUserLoggedIn(@AuthenticationPrincipal UserPrincipal user) {
-		return user;
+	public User getCurrentUserLoggedIn(@AuthenticationPrincipal UserPrincipal user) {
+		System.out.println("VAO DAY");
+		return userService.getUser(user.getId());
 	}
 	
 	@GetMapping("/current/role")
