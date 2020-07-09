@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fpt.banking.system.exception.ChequesNotFound;
+import fpt.banking.system.exception.NotEnoughMoneyException;
 import fpt.banking.system.model.Account;
 import fpt.banking.system.model.Cheque;
 import fpt.banking.system.model.User;
+import fpt.banking.system.payload.ChequeIdRequestPayload;
 import fpt.banking.system.payload.DepositChequeRequestPayload;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.service.AccountService;
@@ -41,48 +44,55 @@ public class AdminChequeController {
 	@Autowired
 	private NotificationService notificationService;
 	
-	@PostMapping("/admin/deposit/cheque")
+	@PostMapping("/admin/employee/cheques")
+	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
+	public List<Cheque> getChequesForReceiver(
+			@RequestBody DepositChequeRequestPayload payload) {
+		List<Cheque> cheques = chequeService.findChequesWhenDeposit(payload.getRecieverFullName().trim().toUpperCase(), payload.getRecieverIdCardNumber());
+		if (cheques.size() == 0) {
+			throw new ChequesNotFound("You don't have any cheques in our system");
+		}
+		return cheques;
+	}
+	
+	@PostMapping("/admin/cheques/deposit")
 	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
 	public ResponseEntity<?> depositCheque(
-			@RequestBody DepositChequeRequestPayload payload) {
-		List<Cheque> cheques = chequeService.findChequesWhenDeposit(payload.getRecieverFullName(), payload.getRecieverIdCardNumber());
-		if (cheques.size() == 0) {
-			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "You doesn't have any cheques in our system", System.currentTimeMillis());
-			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+			@RequestBody ChequeIdRequestPayload payload) {
+		Cheque cheque = chequeService.getChequeById(payload.getChequeId());
+		if (cheque == null) {
+			throw new ChequesNotFound("This cheque id doesn't existed");
 		}
-		long totalAmount = 0;
-		for (Cheque cheque : cheques) {
-			Account account = cheque.getAccount();
-			User user = account.getUser();
-			long fees = 0;
-			if (user.getMembership().getName().equals("GOLD")) {
-				fees = 10000;
-			} else if (user.getMembership().getName().equals("PLATINUM")) {
-				fees = 5000;
-			}
-			if (account.getAmount() > fees + cheque.getTransactionAmount()) {
-				System.out.println("ABC");
-				totalAmount = totalAmount + cheque.getTransactionAmount();
-				chequeService.depositCheque(cheque.getId());
-				transactionService.saveTransaction(
-						account.getId(),
-						-1 * (cheque.getTransactionAmount() + fees),
-						account.getAmount() - fees - cheque.getTransactionAmount(), 
-						7, 
-						cheque.getRecieverFullname() + " has deposited a cheque from your account");
-				accountService.changeAmount(account.getId(), account.getAmount() - fees - cheque.getTransactionAmount());
-				notificationService.saveNotification(
-						cheque.getRecieverFullname() + " has deposited a cheque from your account with number is " + account.getAccountNumber(),
-						user);
-			}
+		Account account = cheque.getAccount();
+		User user = cheque.getAccount().getUser();
+		long fees = 0;
+		if (user.getMembership().getName().equals("GOLD")) {
+			fees = 10000;
+		} else if (user.getMembership().getName().equals("PLATINUM")) {
+			fees = 5000;
 		}
-		if (totalAmount == 0) {
-			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "You doesn't have any cheques in our system", System.currentTimeMillis());
-			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+		if (account.getAmount() > fees + cheque.getTransactionAmount()) {
+			chequeService.depositCheque(cheque.getId());
+			transactionService.saveTransaction(
+					account.getId(),
+					-1 * (cheque.getTransactionAmount() + fees),
+					account.getAmount() - fees - cheque.getTransactionAmount(), 
+					7, 
+					cheque.getRecieverFullname() + " has deposited a cheque from your account");
+			accountService.changeAmount(
+					account.getId(),
+					account.getAmount() - fees - cheque.getTransactionAmount());
+			notificationService.saveNotification(
+					cheque.getRecieverFullname() + " has deposited a cheque from your account with number is " + account.getAccountNumber(),
+					user);
 		} else {
-			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "You has deposit " + totalAmount + " from your cheques", System.currentTimeMillis());
-			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+			throw new NotEnoughMoneyException("This account doesn't have enough money for this transaction");
 		}
+		SuccessfulResponse res = new SuccessfulResponse(
+				HttpStatus.OK.value(),
+				"Deposit " + cheque.getTransactionAmount() + " for " + cheque.getRecieverFullname(),
+				System.currentTimeMillis());
+		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 	
 }

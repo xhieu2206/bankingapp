@@ -10,6 +10,19 @@ import fpt.banking.system.exception.ErrorResponse;
 public class RestExceptionHandler {
 	
 	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(ChequesNotFound exc) {
+
+		// create CustomerErrorResponse
+
+		ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exc.getMessage(),
+				System.currentTimeMillis());
+
+		// return ResponseEntity
+
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(NotFoundException exc) {
 
 		// create CustomerErrorResponse
