@@ -104,5 +104,4 @@ public class LoanController {
 				System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
-	
 }

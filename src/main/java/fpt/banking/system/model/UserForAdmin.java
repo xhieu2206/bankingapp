@@ -24,12 +24,14 @@ public class UserForAdmin {
 	private String phone;
 	
 	private boolean locked;
+	
+	private Membership membership;
 
 	public UserForAdmin() {
 	}
 
-	public UserForAdmin(Long id, String email, String username, String fullname, Date birthday, String address, String gender, String image,
-			String idCardNumber, String phone, boolean locked) {
+	public UserForAdmin(Long id, String email, String username, String fullname, Date birthday, String address,
+			String gender, String image, String idCardNumber, String phone, boolean locked, Membership membership) {
 		this.id = id;
 		this.email = email;
 		this.username = username;
@@ -41,6 +43,7 @@ public class UserForAdmin {
 		this.idCardNumber = idCardNumber;
 		this.phone = phone;
 		this.locked = locked;
+		this.membership = membership;
 	}
 
 	public Long getId() {
@@ -130,4 +133,14 @@ public class UserForAdmin {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public Membership getMembership() {
+		return membership;
+	}
+
+	public void setMembership(Membership membership) {
+		this.membership = membership;
+	}
+	
+	
 }
