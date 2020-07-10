@@ -1,5 +1,6 @@
 package fpt.banking.system.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import fpt.banking.system.service.LoanService;
 import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.TransactionOfficeService;
 import fpt.banking.system.service.UserService;
+import fpt.banking.system.util.SendEmail;
 
 @RestController
 @RequestMapping("/api/users")
@@ -95,9 +97,19 @@ public class LoanController {
 				loanService.findLoanInterestRateById(payload.getLoanInterestRateId()), 
 				user, 
 				transactionOffice);
+
 		notificationService.saveNotification(
 				"You have create a new loan profile, please contact your admin for more info or checking in our banking application",
 				user);
+
+		try {
+			SendEmail.sendEmail(
+					user.getEmail(),
+					"You have create a new loan profile, please contact your admin for more info or checking in our banking application");
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
+
 		SuccessfulResponse res = new SuccessfulResponse(
 				HttpStatus.OK.value(),
 				"You have create a new loan profile successfully, please contact your admin to confirmed and add asset for this profile",

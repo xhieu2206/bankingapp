@@ -1,5 +1,6 @@
 package fpt.banking.system.admin.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ import fpt.banking.system.service.AccountService;
 import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.TransactionService;
 import fpt.banking.system.service.UserService;
+import fpt.banking.system.util.SendEmail;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -56,7 +58,14 @@ public class AdminAccountController {
 			throw new AccountNotFound("This user doesn't have any useable account");
 		}
 		for (Account account: accounts) {
-			AccountForAdminResponse result = new AccountForAdminResponse(account.getId(), account.getAccountNumber(), account.getAmount(), account.isStatus(), account.getExpiredAt(), account.getCreatedAt(), account.getUpdatedAt());
+			AccountForAdminResponse result = new AccountForAdminResponse(
+					account.getId(),
+					account.getAccountNumber(),
+					account.getAmount(),
+					account.isStatus(),
+					account.getExpiredAt(),
+					account.getCreatedAt(),
+					account.getUpdatedAt());
 			results.add(result);
 		}
 		return results;
@@ -72,7 +81,14 @@ public class AdminAccountController {
 			throw new AccountNotFound("This user doesn't have any useable account");
 		}
 		for (Account account: accounts) {
-			AccountForAdminResponse result = new AccountForAdminResponse(account.getId(), account.getAccountNumber(), account.getAmount(), account.isStatus(), account.getExpiredAt(), account.getCreatedAt(), account.getUpdatedAt());
+			AccountForAdminResponse result = new AccountForAdminResponse(
+					account.getId(),
+					account.getAccountNumber(),
+					account.getAmount(),
+					account.isStatus(),
+					account.getExpiredAt(),
+					account.getCreatedAt(),
+					account.getUpdatedAt());
 			results.add(result);
 		}
 		return results;
@@ -101,9 +117,25 @@ public class AdminAccountController {
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.LOCKED);
 		}
-		transactionService.saveTransaction(payload.getAccountId(), payload.getAmount(), 
-				account.getAmount() + payload.getAmount(), 5, "Deposit " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName());
-		notificationService.saveNotification("Deposit " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName(), user);
+		transactionService.saveTransaction(
+				payload.getAccountId(),
+				payload.getAmount(), 
+				account.getAmount() + payload.getAmount(), 
+				5,
+				"Deposit " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName());
+
+		notificationService.saveNotification(
+				"Deposit " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName(),
+				user);
+		
+		try {
+			SendEmail.sendEmail(
+					user.getEmail(),
+					"Deposit " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName());
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
+
 		accountService.changeAmount(payload.getAccountId(), account.getAmount() + payload.getAmount());
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Deposit successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
@@ -146,6 +178,14 @@ public class AdminAccountController {
 		notificationService.saveNotification(
 				"Withdraw " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName(), 
 				user);
+		try {
+			SendEmail.sendEmail(
+					user.getEmail(),
+					"Withdraw " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName());
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
+
 		transactionService.saveTransaction(account.getId(), amount * -1, account.getAmount() - amount, 6, "Withdraw " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName());
 		accountService.changeAmount(account.getId(), account.getAmount() - amount);
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Withdraw successfully", System.currentTimeMillis());

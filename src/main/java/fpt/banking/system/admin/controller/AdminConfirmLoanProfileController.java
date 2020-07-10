@@ -1,5 +1,6 @@
 package fpt.banking.system.admin.controller;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import fpt.banking.system.service.LoanService;
 import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.UserService;
 import fpt.banking.system.util.MD5;
+import fpt.banking.system.util.SendEmail;
 
 @RestController
 @RequestMapping("api/admin/loanprofile")
@@ -59,6 +61,15 @@ public class AdminConfirmLoanProfileController {
 		loanService.confirmLoanProfile(payload.getLoanProfileId(), emp.getFullname(), emp.getId());
 		User user = loanService.findLoanProfileById(payload.getLoanProfileId()).getUser();
 		notificationService.saveNotification("Your Loan profile has been confirmed", user);
+
+		try {
+			SendEmail.sendEmail(
+					user.getEmail(),
+					"Your Loan profile has been confirmed");
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
+
 		loanService.deleteLoanProfileQueue(loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId()).getId());
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "This loan profile has been confirmed", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);

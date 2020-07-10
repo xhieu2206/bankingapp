@@ -1,5 +1,6 @@
 package fpt.banking.system.admin.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ import fpt.banking.system.service.ChequeService;
 import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.TransactionService;
 import fpt.banking.system.service.UserService;
+import fpt.banking.system.util.SendEmail;
 
 @RestController
 @RequestMapping("/api")
@@ -98,6 +100,15 @@ public class AdminChequeController {
 			notificationService.saveNotification(
 					cheque.getRecieverFullname() + " has withdrawed a cheque from your account with number is " + account.getAccountNumber(),
 					user);
+			
+			try {
+				SendEmail.sendEmail(
+						user.getEmail(),
+						cheque.getRecieverFullname() + " has withdrawed a cheque from your account with number is " + account.getAccountNumber());
+			} catch (IOException e) {
+				System.out.println("Couldn't send email");
+			}
+
 		} else {
 			throw new NotEnoughMoneyException("This account doesn't have enough money for this transaction");
 		}

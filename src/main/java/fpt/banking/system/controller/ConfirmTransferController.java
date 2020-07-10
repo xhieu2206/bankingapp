@@ -1,5 +1,6 @@
 package fpt.banking.system.controller;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 
 import javax.security.auth.login.AccountNotFoundException;
@@ -27,6 +28,7 @@ import fpt.banking.system.service.AccountService;
 import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.TransferService;
 import fpt.banking.system.util.MD5;
+import fpt.banking.system.util.SendEmail;
 
 @RestController
 @RequestMapping("/api/transfer")
@@ -63,13 +65,35 @@ public class ConfirmTransferController {
 				transactionQueueInternal.getDescription());
 		User transferUser = accountService.getAccount(transactionQueueInternal.getTransferAccountId()).getUser();
 		User reveiverUser = accountService.getAccount(transactionQueueInternal.getReceiverAccountId()).getUser();
+
 		transferService.deleteTransactionQueueInternal(confirmTransferPayload.getTransactionQueueId());
+
 		notificationService.saveNotification(
 				"You have transfered " + transactionQueueInternal.getAmount() + " to account with card number is " +
 				accountService.getAccount(transactionQueueInternal.getReceiverAccountId()).getAccountNumber(), transferUser);
+
+		try {
+			SendEmail.sendEmail(
+					transferUser.getEmail(),
+					"You have transfered " + transactionQueueInternal.getAmount() + " to account with card number is " +
+					accountService.getAccount(transactionQueueInternal.getReceiverAccountId()).getAccountNumber());
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
+
 		notificationService.saveNotification(
 				"You have revieved " + transactionQueueInternal.getAmount() + " from account with card number is " +
 				accountService.getAccount(transactionQueueInternal.getTransferAccountId()).getAccountNumber(), reveiverUser);
+
+		try {
+			SendEmail.sendEmail(
+					reveiverUser.getEmail(),
+					"You have revieved " + transactionQueueInternal.getAmount() + " from account with card number is " +
+					accountService.getAccount(transactionQueueInternal.getTransferAccountId()).getAccountNumber());
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
+
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Transfer successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}

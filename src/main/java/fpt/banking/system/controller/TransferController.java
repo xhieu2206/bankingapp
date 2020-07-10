@@ -1,6 +1,8 @@
 package fpt.banking.system.controller;
 
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,7 @@ import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.TransferService;
 import fpt.banking.system.service.UserService;
 import fpt.banking.system.util.MD5;
+import fpt.banking.system.util.SendEmail;
 
 @RestController
 @RequestMapping("/api/users")
@@ -89,9 +92,25 @@ public class TransferController {
 		notificationService.saveNotification(
 				"You have transfered " + transferInternalPayloadByAccountNumber.getAmount().toString() + " to account with account number is " +
 				transferInternalPayloadByAccountNumber.getAccountNumber(), transferUser);
+		try {
+			SendEmail.sendEmail(
+					transferUser.getEmail(),
+					"You have transfered " + transferInternalPayloadByAccountNumber.getAmount().toString() + " to account with account number is " +
+					transferInternalPayloadByAccountNumber.getAccountNumber());
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
 		notificationService.saveNotification(
 				"You have revieved " + transferInternalPayloadByAccountNumber.getAmount().toString() + " from account with account number is " +
 				accountService.getAccount(accountId).getAccountNumber(), revieverUser);
+		try {
+			SendEmail.sendEmail(
+					revieverUser.getEmail(),
+					"You have revieved " + transferInternalPayloadByAccountNumber.getAmount().toString() + " from account with account number is " +
+					accountService.getAccount(accountId).getAccountNumber());
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Transfer successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
@@ -141,9 +160,28 @@ public class TransferController {
 		notificationService.saveNotification(
 				"You have transfered " + transferInternalPayloadByCardNumber.getAmount().toString() + " to account with card number is " +
 						transferInternalPayloadByCardNumber.getCardNumber(), transferUser);
+		try {
+			SendEmail.sendEmail(
+					transferUser.getEmail(),
+					"You have transfered " + transferInternalPayloadByCardNumber.getAmount().toString() + " to account with card number is " +
+					transferInternalPayloadByCardNumber.getCardNumber());
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
+
 		notificationService.saveNotification(
 				"You have revieved " + transferInternalPayloadByCardNumber.getAmount().toString() + " from account with card number is " +
 				accountService.getAccount(accountId).getAccountNumber(), revieverUser);
+
+		try {
+			SendEmail.sendEmail(
+					revieverUser.getEmail(),
+					"You have revieved " + transferInternalPayloadByCardNumber.getAmount().toString() + " from account with card number is " +
+					accountService.getAccount(accountId).getAccountNumber());
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
+
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 }

@@ -1,5 +1,6 @@
 package fpt.banking.system.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -27,6 +28,7 @@ import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.UserService;
 import fpt.banking.system.util.DateUtils;
 import fpt.banking.system.util.EmailValidation;
+import fpt.banking.system.util.SendEmail;
 
 @RestController
 @RequestMapping("/api/users")
@@ -85,6 +87,13 @@ public class UserController {
 		notificationService.saveNotification(
 				"You have change your password"
 				, userService.getUser(user.getId()));
+		try {
+			SendEmail.sendEmail(
+					userService.getUser(user.getId()).getEmail(),
+					"You have change your password");
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 
@@ -141,8 +150,15 @@ public class UserController {
 				"Updated profile successfully",
 				System.currentTimeMillis());
 		notificationService.saveNotification(
-				"You have updated your profile successfully"
-				, user);
+				"You have updated your profile successfully",
+				user);
+		try {
+			SendEmail.sendEmail(
+					user.getEmail(),
+					"You have updated your profile successfully");
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 }

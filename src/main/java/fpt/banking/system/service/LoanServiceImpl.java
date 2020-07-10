@@ -1,5 +1,6 @@
 package fpt.banking.system.service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.twilio.exception.ApiException;
 
 import fpt.banking.system.constants.TimerConstants;
 import fpt.banking.system.dao.AssetDAO;
@@ -25,6 +28,7 @@ import fpt.banking.system.payload.LoanProfilesResponsePayload;
 import fpt.banking.system.util.MD5;
 import fpt.banking.system.util.MobilePhoneUtil;
 import fpt.banking.system.util.RandomGenerator;
+import fpt.banking.system.util.SendEmail;
 import fpt.banking.system.util.SendSms;
 import fpt.banking.system.util.SendSmsWithLib;
 
@@ -105,8 +109,18 @@ public class LoanServiceImpl implements LoanService {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 300000 + TimerConstants.VIETNAM_TIMEZONE_TIMESTAMP);
 		String otpCode = RandomGenerator.generateOTP();
 		String phone = loanProfileDAO.findById(loanProfileId).getUser().getPhone();
+		String email = loanProfileDAO.findById(loanProfileId).getUser().getEmail();
 //		SendSmsWithLib.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
-		SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
+		try {
+			SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
+		} catch (Exception e) {
+			System.out.println("Phone was not verified");
+			try {
+				SendEmail.sendEmail(email, "OTP: " + otpCode);
+			} catch (IOException e1) {
+				System.out.println("Could not send email");
+			}
+		}
 		long id = loanProfileQueueDAO.saveLoanProfileQueue(MD5.getMd5(otpCode), loanProfileId, new Date(timestamp.getTime()));
 		return id;
 	}

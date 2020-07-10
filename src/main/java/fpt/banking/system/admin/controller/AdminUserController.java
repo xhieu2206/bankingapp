@@ -1,5 +1,6 @@
 package fpt.banking.system.admin.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Optional;
@@ -36,6 +37,7 @@ import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.UserService;
 import fpt.banking.system.util.DateUtils;
 import fpt.banking.system.util.EmailValidation;
+import fpt.banking.system.util.SendEmail;
 
 @RestController
 @RequestMapping("/api")
@@ -119,8 +121,23 @@ public class AdminUserController {
 				payload.getPhone().trim(), 
 				payload.getMembershipId(), 
 				payload.getImage().trim());
-		notificationService.saveNotification("You have created a credential in our banking app", accountService.getAccount(accountId).getUser());
-		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Create user successfully", System.currentTimeMillis());
+
+		notificationService.saveNotification(
+				"You have created a credential in our banking app",
+				accountService.getAccount(accountId).getUser());
+
+		try {
+			SendEmail.sendEmail(
+					accountService.getAccount(accountId).getUser().getEmail(),
+					"You have created a credential in our banking app");
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
+
+		SuccessfulResponse res = new SuccessfulResponse(
+				HttpStatus.OK.value(),
+				"Create user successfully",
+				System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 	
@@ -148,9 +165,19 @@ public class AdminUserController {
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		userService.unlockAnUser(user.getId());
+
 		notificationService.saveNotification(
 				"Your account is unlock now"
 				, user);
+
+		try {
+			SendEmail.sendEmail(
+					user.getEmail(),
+					"Your account is unlock now");
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
+
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Unlock user successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}

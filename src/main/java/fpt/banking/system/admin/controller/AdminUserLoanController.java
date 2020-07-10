@@ -1,5 +1,6 @@
 package fpt.banking.system.admin.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +44,7 @@ import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.TransactionOfficeService;
 import fpt.banking.system.service.TransactionService;
 import fpt.banking.system.service.UserService;
+import fpt.banking.system.util.SendEmail;
 
 @RestController
 @RequestMapping("/api")
@@ -116,6 +118,14 @@ public class AdminUserLoanController {
 		notificationService.saveNotification(
 				"You have create a new loan profile, please contact your admin for more info or checking in our banking application",
 				userService.getUser(userId));
+
+		try {
+			SendEmail.sendEmail(
+					userService.getUser(userId).getEmail(),
+					"You have create a new loan profile, please contact your admin for more info or checking in our banking application");
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
 
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
@@ -303,6 +313,16 @@ public class AdminUserLoanController {
 					"Your loan profile has been approved." +
 					" Please check account with account number " + loanProfile.getAccount().getAccountNumber() +
 					" for more detail", loanProfile.getUser());
+
+			try {
+				SendEmail.sendEmail(
+						loanProfile.getUser().getEmail(),
+						"Your loan profile has been approved." +
+						" Please check account with account number " + loanProfile.getAccount().getAccountNumber() + " for more detail");
+			} catch (IOException e) {
+				System.out.println("Couldn't send email");
+			}
+
 			transactionService.saveTransaction(
 					loanProfile.getAccount().getId(),
 					loanProfile.getAmount(),
@@ -377,6 +397,16 @@ public class AdminUserLoanController {
 			notificationService.saveNotification(
 					"Your loan profile has been rejected." +
 					" Please check your loan profile for more information", loanProfile.getUser());
+
+			try {
+				SendEmail.sendEmail(
+						loanProfile.getUser().getEmail(),
+						"Your loan profile has been rejected." +
+						" Please check your loan profile for more information");
+			} catch (IOException e) {
+				System.out.println("Couldn't send email");
+			}
+
 			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 		} else if (role.equals("ROLE_BRANCHMANAGER") == true) {
 			if (loanProfile.getTransactionOffice().getBranchOffice().getId() != admin.getBranchOffice().getId()) {
@@ -386,9 +416,20 @@ public class AdminUserLoanController {
 			}
 			loanService.rejectLoanProffile(loanProfile.getId(), payload.getRejectedReason());
 			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "REJECTED", System.currentTimeMillis());
+
 			notificationService.saveNotification(
 					"Your loan profile has been rejected." +
 					" Please check your loan profile for more information", loanProfile.getUser());
+
+			try {
+				SendEmail.sendEmail(
+						loanProfile.getUser().getEmail(),
+						"Your loan profile has been rejected." +
+						" Please check your loan profile for more information");
+			} catch (IOException e) {
+				System.out.println("Couldn't send email");
+			}
+
 			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 		}
 		return null;

@@ -1,5 +1,6 @@
 package fpt.banking.system.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.AccountService;
 import fpt.banking.system.service.NotificationService;
 import fpt.banking.system.service.UserService;
+import fpt.banking.system.util.SendEmail;
 
 @RestController
 @RequestMapping("/api/users")
@@ -75,9 +77,19 @@ public class AccountController {
 		}
 		User user = userService.getUser(currentUser.getId());
 		accountService.lockAccount(payload.getAccountId());
+
 		notificationService.saveNotification(
 				"You have lock your account with number " + accountService.getAccount(payload.getAccountId()).getAccountNumber(), 
 				user);
+
+		try {
+			SendEmail.sendEmail(
+					user.getEmail(),
+					"You have lock your account with number " + accountService.getAccount(payload.getAccountId()).getAccountNumber());
+		} catch (IOException e) {
+			System.out.println("Couldn't send email");
+		}
+
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Your account has been locked, please contact admin to unlock your account", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
