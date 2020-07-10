@@ -101,12 +101,22 @@ public class AdminUserLoanController {
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
-		long loanProfileId = loanService.saveLoanProfile(payload.getAmount(), payload.getDescription(), accountService.getAccount(payload.getAccountId()), 
+		long loanProfileId = loanService.saveLoanProfile(
+				payload.getAmount(), payload.getDescription(),
+				accountService.getAccount(payload.getAccountId()), 
 				loanService.findLoanInterestRateById(payload.getLoanInterestRateId()), 
 				userService.getUser(userId), 
 				transactionOfficeService.findTransactionOfficeById(emp.getTransactionOffice().getId()));
-		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), String.valueOf(loanProfileId), System.currentTimeMillis());
-		notificationService.saveNotification("You have create a new loan profile, please contact your admin for more info or checking in our banking application", userService.getUser(userId));
+
+		SuccessfulResponse res = new SuccessfulResponse(
+				HttpStatus.OK.value(),
+				String.valueOf(loanProfileId),
+				System.currentTimeMillis());
+
+		notificationService.saveNotification(
+				"You have create a new loan profile, please contact your admin for more info or checking in our banking application",
+				userService.getUser(userId));
+
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 	

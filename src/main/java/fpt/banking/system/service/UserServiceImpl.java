@@ -1,5 +1,6 @@
 package fpt.banking.system.service;
 
+import java.io.IOException;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import fpt.banking.system.payload.UsersResponse;
 import fpt.banking.system.util.MD5;
 import fpt.banking.system.util.MobilePhoneUtil;
 import fpt.banking.system.util.RandomGenerator;
+import fpt.banking.system.util.SendEmail;
 import fpt.banking.system.util.SendSms;
 import fpt.banking.system.util.SendSmsWithLib;
 import fpt.banking.system.enums.SearchUserTypeEnum;
@@ -114,9 +116,22 @@ public class UserServiceImpl implements UserService {
 		long userId = userDAO.saveUser(username, email, passwordEncoder.encode(password), fullName, birthday, address, gender, idCardNumber, phone, membership, image);
 //		SendSmsWithLib.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "You have created a credential in our banking app with username: " + username + " and password is: " + password
 //				+ ", please login into our application to see your new account detail and card detail");
-		SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "You have created a credential in our banking app with username: " + username + " and password is: " + password
-				+ ", pin code of your new account is " + pinCode
-				+ ", please login into our application to see your new account detail and card detail");
+		try {
+			SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "You have created a credential in our banking app with username: " + username + " and password is: " + password
+					+ ", pin code of your new account is " + pinCode
+					+ ", please login into our application to see your new account detail and card detail");
+		} catch (Exception e) {
+			System.out.println("Phone was not verified");
+			try {
+				SendEmail.sendEmail(
+						email,
+						"You have created a credential in our banking app with username: " + username + " and password is: " + password
+						+ ", pin code of your new account is " + pinCode
+						+ ", please login into our application to see your new account detail and card detail");
+			} catch (IOException e1) {
+				System.out.println("Could not send email");
+			}
+		}
 		User user = userDAO.findById(userId);
 		long accountId = accountDAO.saveAccount(accountNumber, user, 100000, MD5.getMd5(pinCode));
 		Account account = accountDAO.getAccount(accountId);

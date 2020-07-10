@@ -1,5 +1,6 @@
 package fpt.banking.system.service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.twilio.exception.ApiException;
 import com.twilio.rest.proxy.v1.service.PhoneNumberUpdater;
 
 import fpt.banking.system.dao.AccountDAO;
@@ -17,6 +19,7 @@ import fpt.banking.system.model.TransactionQueueInternal;
 import fpt.banking.system.util.MD5;
 import fpt.banking.system.util.MobilePhoneUtil;
 import fpt.banking.system.util.RandomGenerator;
+import fpt.banking.system.util.SendEmail;
 import fpt.banking.system.constants.TimerConstants;
 import fpt.banking.system.util.SendSms;
 import fpt.banking.system.util.SendSmsWithLib;
@@ -51,8 +54,18 @@ public class TransferServiceImpl implements TransferService {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 300000 + TimerConstants.VIETNAM_TIMEZONE_TIMESTAMP);
 		String otpCode = RandomGenerator.generateOTP();
 		String phone = accountDAO.getAccount(transferAccountId).getUser().getPhone();
+		String email = accountDAO.getAccount(transferAccountId).getUser().getEmail();
 //		SendSmsWithLib.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
-		SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
+		try {
+			SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
+		} catch (Exception e) {
+			System.out.println("Phone was not verified");
+			try {
+				SendEmail.sendEmail(email, "OTP: " + otpCode);
+			} catch (IOException e1) {
+				System.out.println("Could not send email");
+			}
+		}
 		String id = transactionQueueInternalDAO.saveTransactionQueueInternal(MD5.getMd5(otpCode), transferAccountId, receiverAccountId, amount, new Date(timestamp.getTime()), description);
 		return id;
 	}
