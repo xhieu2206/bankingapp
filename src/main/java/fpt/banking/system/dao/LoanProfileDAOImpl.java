@@ -167,9 +167,6 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 	@Override
 	public List<LoanProfile> getLoanProfilesForAnEmployee(User employee, int page) {
 		Session session = entityManager.unwrap(Session.class);
-		System.out.println(employee.getTransactionOffice().getId());
-		System.out.println(employee.getFullname());
-		System.out.println(employee.getId());
 		String sql = "SELECT * FROM loan_profile AS l " +
 			     "WHERE (l.transaction_office_id = :transactionOfficeId AND l.status = '1') " +
 				 "OR (l.employee_confirmed_name = :name AND l.employee_confirmed_id = :id) " +
@@ -183,7 +180,7 @@ public class LoanProfileDAOImpl implements LoanProfileDAO {
 			results = q.getResultList();
 		} catch (NoResultException e) {
 			return null;
-		} 
+		}
 		return results;
 	}
 

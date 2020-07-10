@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import fpt.banking.system.constants.TimerConstants;
 import fpt.banking.system.model.Account;
 import fpt.banking.system.model.Cheque;
+import fpt.banking.system.model.User;
 
 @Repository
 public class ChequeDAOImpl implements ChequeDAO {
@@ -109,12 +110,65 @@ public class ChequeDAOImpl implements ChequeDAO {
 	}
 
 	@Override
-	public void depositCheque(long chequeId) {
+	public void withdrawCheque(long chequeId, User employee) {
 		Session session = entityManager.unwrap(Session.class);
 		Timestamp withdrawDate = new Timestamp(System.currentTimeMillis() + TimerConstants.VIETNAM_TIMEZONE_TIMESTAMP);
 		Cheque cheque = session.get(Cheque.class, chequeId);
 		cheque.setStatus(true);
 		cheque.setWithdrawDate(new Date(withdrawDate.getTime()));
+		cheque.setWithdrawBy(employee);
 		session.saveOrUpdate(cheque);
+	}
+
+	@Override
+	public List<Cheque> getChequesForAdmin(long page, String status) {
+		Session session = entityManager.unwrap(Session.class);
+		System.out.println(status);
+		String sql = "";
+		if (status == "ALL") {
+			sql = "SELECT c FROM Cheque c " +
+				  "ORDER BY c.id DESC";
+		} else if (status.equals("CANCELED")) {
+			sql = "SELECT c FROM Cheque c " +
+				  "WHERE canceled = 1 " +
+				  "ORDER BY c.id DESC";
+		} else if (status.equals("WITHDRAWED")) {
+			sql = "SELECT c FROM Cheque c " +
+					  "WHERE status = 1 " +
+					  "ORDER BY c.id DESC";
+		} else {
+			sql = "SELECT c FROM Cheque c " +
+					  "WHERE status = 0 " +
+					  "AND canceled = 0 " +
+					  "ORDER BY c.id DESC";
+		}
+		Query<Cheque> query = session.createQuery(sql, Cheque.class).setFirstResult((int) ((page - 1) * 5)).setMaxResults(5);
+		List<Cheque> results;
+		try {
+			results = query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		} 
+		return results;
+	}
+	
+	public long getTotalChequesForAdmin(String status) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "";
+		if (status == "ALL") {
+			sql = "SELECT COUNT(*) FROM Cheque c";
+		} else if (status.equals("CANCELED")) {
+			sql = "SELECT COUNT(*) FROM Cheque c " +
+				  "WHERE canceled = 1";
+		} else if (status.equals("WITHDRAWED")) {
+			sql = "SELECT COUNT(*) FROM Cheque c " +
+			      "WHERE status = 1 ";
+		} else {
+			sql = "SELECT COUNT(*) FROM Cheque c " +
+				  "WHERE status = 0 " +
+				  "AND canceled = 0";
+		}
+		Query q = session.createQuery(sql);
+		return (Long) q.uniqueResult();
 	}
 }

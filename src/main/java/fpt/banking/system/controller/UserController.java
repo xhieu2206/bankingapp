@@ -33,10 +33,10 @@ import fpt.banking.system.util.EmailValidation;
 public class UserController {
 	@Autowired
 	private NotificationService notificationService;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@PostMapping("/find")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public User find(@RequestBody FindUserForTransferPayload
@@ -48,14 +48,13 @@ public class UserController {
 		return userService.findUser(findUserForTransferPayload.getTerm(),
 				findUserForTransferPayload.getType());
 	}
-	
+
 	@GetMapping("/current")
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE', 'ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
 	public User getCurrentUserLoggedIn(@AuthenticationPrincipal UserPrincipal user) {
-		System.out.println("VAO DAY");
 		return userService.getUser(user.getId());
 	}
-	
+
 	@GetMapping("/current/role")
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE', 'ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
 	public String getCurrentUserLoggedInRole(@AuthenticationPrincipal UserPrincipal user) {
@@ -65,7 +64,7 @@ public class UserController {
 		}
 		return role;
 	}
-	
+
 	@PostMapping("/current/change-password")
 	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_EMPLOYEE', 'ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
 	public ResponseEntity<?> changePassword(
@@ -88,7 +87,7 @@ public class UserController {
 				, userService.getUser(user.getId()));
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/current/edit")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public  ResponseEntity<?> editProfile(
@@ -130,7 +129,7 @@ public class UserController {
 				user.getId(),
 				payload.getUsername().trim(),
 				payload.getEmail().trim(),
-				payload.getFullName().trim().toUpperCase(), 
+				payload.getFullName().trim().toUpperCase(),
 				theBirthday,
 				payload.getAddress().trim(),
 				payload.getGender().trim(),

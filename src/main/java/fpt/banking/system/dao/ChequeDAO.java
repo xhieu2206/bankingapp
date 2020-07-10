@@ -4,6 +4,7 @@ import java.util.List;
 
 import fpt.banking.system.model.Account;
 import fpt.banking.system.model.Cheque;
+import fpt.banking.system.model.User;
 
 public interface ChequeDAO {
 
@@ -19,5 +20,9 @@ public interface ChequeDAO {
 	
 	public void updateCheque(long chequeId, String recieverFullname, String recieverIdCardNumber, long transactionAmount);
 	
-	public void depositCheque(long chequeId);
+	public void withdrawCheque(long chequeId, User employee);
+	
+	public List<Cheque> getChequesForAdmin(long page, String status);
+	
+	public long getTotalChequesForAdmin(String status);
 }

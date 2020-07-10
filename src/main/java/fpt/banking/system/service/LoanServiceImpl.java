@@ -32,30 +32,30 @@ import fpt.banking.system.util.SendSmsWithLib;
 public class LoanServiceImpl implements LoanService {
 	@Autowired
 	private LoanProfileQueueDAO loanProfileQueueDAO;
-	
+
 	@Autowired
 	private LoanProfileDAO loanProfileDAO;
-	
+
 	@Autowired
 	private LoanInterestRateDAO loanInterestRateDAO;
-	
+
 	@Autowired
 	private AssetDAO assetDAO;
-	
+
 	@Autowired
 	private ImagesAssetDAO imagesAssetDAO;
-	
+
 	@Override
 	@Transactional
 	public LoanProfile findLoanProfileById(long loanProfileId) {
 		return loanProfileDAO.findById(loanProfileId);
 	}
-	
+
 	@Override
 	public Asset findAssetById(long assetId) {
 		return assetDAO.findById(assetId);
 	}
-	
+
 	@Override
 	@Transactional
 	public long saveLoanProfile(long amount, String description, Account account, LoanInterestRate loanInterestRate,

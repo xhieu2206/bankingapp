@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -58,6 +59,16 @@ public class Cheque {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id")
 	private Account account;
+	
+	@ManyToOne(
+			fetch = FetchType.LAZY,
+			cascade = { CascadeType.PERSIST,
+					CascadeType.MERGE,
+					CascadeType.REFRESH,
+					CascadeType.DETACH })
+	@JoinColumn(name = "withdraw_by")
+	@JsonIgnore
+	private User withdrawBy;
 	// ----------------------------------
 	
 	// Constructor ----------------------
@@ -168,6 +179,14 @@ public class Cheque {
 
 	public void setWithdrawDate(Date withdrawDate) {
 		this.withdrawDate = withdrawDate;
+	}
+
+	public User getWithdrawBy() {
+		return withdrawBy;
+	}
+
+	public void setWithdrawBy(User withdrawBy) {
+		this.withdrawBy = withdrawBy;
 	}
 	
 	// ----------------------------------

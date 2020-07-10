@@ -337,7 +337,6 @@ public class AdminUserLoanController {
 	public ResponseEntity<?> rejectedLoanProfile(
 			@RequestBody RejectedLoanProfileRequestPayload payload,
 			@AuthenticationPrincipal UserPrincipal currentAdmin) {
-		System.out.println(payload.getLoanProfileId());
 		User admin = userService.getUser(currentAdmin.getId());
 		LoanProfile loanProfile = loanService.findLoanProfileById(payload.getLoanProfileId());
 		if (loanProfile == null) {

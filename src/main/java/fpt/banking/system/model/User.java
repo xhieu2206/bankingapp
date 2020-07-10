@@ -130,6 +130,17 @@ public class User implements Serializable {
 			})
 	@JsonIgnore
 	private List<Notification> notifications;
+	
+	@OneToMany(
+			fetch = FetchType.LAZY,
+			mappedBy = "withdrawBy",
+			cascade = {
+				CascadeType.PERSIST,
+				CascadeType.MERGE,
+				CascadeType.REFRESH,
+				CascadeType.DETACH})
+	@JsonIgnore
+	private List<Cheque> withdrawCheques;
 	// ---------------------------------------
 	
 	// Constructor 

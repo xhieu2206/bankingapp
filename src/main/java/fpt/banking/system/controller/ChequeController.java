@@ -20,6 +20,7 @@ import fpt.banking.system.exception.ErrorResponse;
 import fpt.banking.system.model.Account;
 import fpt.banking.system.model.Cheque;
 import fpt.banking.system.model.User;
+import fpt.banking.system.payload.ChequeForUserResponse;
 import fpt.banking.system.payload.ChequeRequestPayload;
 import fpt.banking.system.payload.UpdatedChequeRequestPayload;
 import fpt.banking.system.response.SuccessfulResponse;
@@ -46,7 +47,7 @@ public class ChequeController {
 	
 	@GetMapping("/{userId}/accounts/{accountId}/cheques")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public List<Cheque> getCheques(@PathVariable int accountId, @AuthenticationPrincipal UserPrincipal user) {
+	public List<ChequeForUserResponse> getCheques(@PathVariable int accountId, @AuthenticationPrincipal UserPrincipal user) {
 		if (accountService.getAccount(accountId).getUser().getId() != user.getId()) {
 			throw new AuthorizedException("You don't have permission to access this resource");
 		}
@@ -76,14 +77,17 @@ public class ChequeController {
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.LOCKED);
 		}
 		Account account = accountService.getAccount(accountId);
+
 		chequeService.saveCheque(account, 
 				payload.getRecieverFullname().trim().toUpperCase(), 
 				payload.getRecieverIdCardNumber(), 
 				payload.getTransactionAmount());
+
 		notificationService.saveNotification("You have created a cheque for " +
 				payload.getRecieverFullname() + " with id card number is " +
 				payload.getRecieverIdCardNumber() + ", amount is " +
 				payload.getTransactionAmount(), account.getUser());
+
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Your cheque has been created successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}

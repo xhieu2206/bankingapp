@@ -21,7 +21,7 @@ import fpt.banking.system.payload.JwtAuthenticationResponse;
 @Component
 public class JwtTokenProvider {
 	private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
-	 
+
     public JwtAuthenticationResponse generateToken(Authentication authentication) {
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();

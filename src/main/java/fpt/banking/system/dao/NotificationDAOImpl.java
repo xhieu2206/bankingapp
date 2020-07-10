@@ -20,7 +20,7 @@ import fpt.banking.system.model.User;
 public class NotificationDAOImpl implements NotificationDAO {
 	// define field for entitymanager	
 	private EntityManager entityManager;
-	
+
 	// set up constructor injection
 	@Autowired
 	public NotificationDAOImpl(EntityManager theEntityManager) {
@@ -52,7 +52,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 			results = q.getResultList();
 		} catch (NoResultException e) {
 			return null;
-		} 
+		}
 		return results;
 	}
 
@@ -77,7 +77,6 @@ public class NotificationDAOImpl implements NotificationDAO {
 		Query q = session.createQuery(sql);
 		q.setParameter("userId", userId);
 		int result = q.executeUpdate();
-		System.out.println(result);
 	}
 
 	@Override

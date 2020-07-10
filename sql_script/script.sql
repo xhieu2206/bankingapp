@@ -239,9 +239,14 @@ create table `cheque`(
   `created_at` datetime not null,
   `expired_date` datetime default null,
   `withdraw_date` datetime default null,
+  `withdraw_by` int(11) default null,
  
   constraint `FK_ACCOUNT_CHEQUE` foreign key (`account_id`)
   references `account` (`id`)
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+  
+  constraint `FK_EMPLOYEE_WITHDRAW_CHEQUE` foreign key (`withdraw_by`)
+  references `user` (`id`)
   ON DELETE NO ACTION ON UPDATE NO ACTION,
 
   primary key (`id`)
@@ -502,7 +507,7 @@ INSERT INTO `user` (username, email, password, fullname, birthday, address, id_c
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, branch_office_id) VALUES
 ('branch_manager_1', 'branchmanager1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Branch Mot', '1990-01-01', 'Ha Noi', '123153124011', '0123153211', 4, '2015-12-12','2015-12-12', 1, 0, 1),
 ('branch_manager_2', 'branchmanager2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'Branch Hai', '1990-01-01', 'Ha Noi', '123153124012', '0123153212', 4, '2015-12-12','2015-12-12', 1, 0, 2);
-INSERT INTO `users_roles` (user_id,role_id) VALUES
+INSERT INTO `users_roles` (user_id, role_id) VALUES
 (1, 1),
 (2, 1),
 (3, 1),
@@ -622,7 +627,7 @@ values
 ('receive_from_loaning'),
 ('deposit'),
 ('withdraw'),
-('deposit_cheque');
+('withdraw_cheque');
 
 insert into `card` (card_number, expired_at, created_at, account_id) values
 (555511111001, '2025-10-10', '2020-10-10', 1),
@@ -726,13 +731,40 @@ insert into `transaction` (amount, amount_after_transaction, description, create
 (100000, 900000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001'),
 (100000, 1000000, 'test', '2020-06-25', 6, 3, 'NGUYEN XUAN HIEU', '444411112001');
 
+insert into `cheque` (reciever_fullname, reciever_id_card_number, transaction_amount, status, canceled, created_at, expired_date, withdraw_date, account_id, withdraw_by)
+values
+-- WITHDRAWED CHEQUES
+("LE THI XUAN HOA", "123123124001", 100000, 1, 0, '2020-06-29', '2020-07-04', '2020-07-03', 1, 14),
+("NGUYEN XUAN DONG", "123123124002", 100000, 1, 0, '2020-06-29', '2020-07-04', '2020-07-03', 1, 15),
+("NGUYEN MINH DUC", "123123124003", 100000, 1, 0, '2020-06-29', '2020-07-04', '2020-07-03', 1, 16),
+("NGUYEN VAN A", "123123124004", 100000, 1, 0, '2020-06-29', '2020-07-04', '2020-07-03', 1, 19),
+("NGUYEN VAN B", "123123124005", 100000, 1, 0, '2020-06-29', '2020-07-04', '2020-07-03', 1, 20);
 insert into `cheque` (reciever_fullname, reciever_id_card_number, transaction_amount, status, canceled, created_at, expired_date, account_id)
 values
-("LE THI XUAN HOA", "123123124001", 100000, 0, 0, '2020-06-29', '2020-07-03', 1),
-("NGUYEN XUAN DONG", "123123124002", 100000, 0, 0, '2020-06-29', '2020-07-03', 1),
-("NGUYEN MINH DUC", "123123124003", 100000, 0, 0, '2020-06-29', '2020-07-03', 1),
-("NGUYEN VAN A", "123123124004", 100000, 0, 0, '2020-06-29', '2020-07-03', 1),
-("NGUYEN VAN B", "123123124005", 100000, 0, 0, '2020-06-29', '2020-07-03', 1);
+-- WAITING CHEQUES
+("NGUYEN VAN B", "123123124006", 100000, 0, 0, '2020-07-09', '2020-07-14', 1),
+("NGUYEN VAN C", "123123124007", 100000, 0, 0, '2020-07-09', '2020-07-14', 1),
+("NGUYEN VAN D", "123123124008", 100000, 0, 0, '2020-07-09', '2020-07-14', 1),
+("NGUYEN VAN E", "123123124009", 100000, 0, 0, '2020-07-09', '2020-07-14', 1),
+("NGUYEN VAN F", "123123124010", 100000, 0, 0, '2020-07-09', '2020-07-14', 2),
+("NGUYEN VAN G", "123123124011", 100000, 0, 0, '2020-07-09', '2020-07-14', 2),
+("NGUYEN VAN H", "123123124012", 100000, 0, 0, '2020-07-09', '2020-07-14', 2),
+("NGUYEN VAN I", "123123124013", 100000, 0, 0, '2020-07-09', '2020-07-14', 2),
+("NGUYEN VAN J", "123123124014", 100000, 0, 0, '2020-07-09', '2020-07-14', 3),
+("NGUYEN VAN K", "123123124015", 100000, 0, 0, '2020-07-09', '2020-07-14', 3),
+("NGUYEN VAN L", "123123124016", 100000, 0, 0, '2020-07-09', '2020-07-14', 4),
+-- CANCELED CHEQUES
+("NGUYEN THI B", "123153124006", 100000, 0, 1, '2020-07-09', '2020-07-14', 1),
+("NGUYEN THI C", "123153124007", 100000, 0, 1, '2020-07-09', '2020-07-14', 1),
+("NGUYEN THI D", "123153124008", 100000, 0, 1, '2020-07-09', '2020-07-14', 1),
+("NGUYEN THI E", "123153124009", 100000, 0, 1, '2020-07-09', '2020-07-14', 1),
+("NGUYEN THI F", "123153124010", 100000, 0, 1, '2020-07-09', '2020-07-14', 2),
+("NGUYEN THI G", "123153124011", 100000, 0, 1, '2020-07-09', '2020-07-14', 2),
+("NGUYEN THI H", "123153124012", 100000, 0, 1, '2020-07-09', '2020-07-14', 2),
+("NGUYEN THI I", "123153124013", 100000, 0, 1, '2020-07-09', '2020-07-14', 2),
+("NGUYEN THI J", "123153124014", 100000, 0, 1, '2020-07-09', '2020-07-14', 1),
+("NGUYEN THI K", "123153124015", 100000, 0, 1, '2020-07-09', '2020-07-14', 1),
+("NGUYEN THI L", "123153124016", 100000, 0, 1, '2020-07-09', '2020-07-14', 1);
 
 insert into `loan_profile` (amount, description, confirmed, approved, rejected, rejected_reason, status, created_at, loan_interest_rate_id, account_id, user_id, transaction_office_id, employee_confirmed_name, employee_confirmed_id)
 values

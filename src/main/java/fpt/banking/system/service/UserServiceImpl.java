@@ -26,16 +26,16 @@ import fpt.banking.system.enums.SearchUserTypeEnum;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private CardDAO cardDAO;
-	
+
 	@Autowired
 	private AccountDAO accountDAO;
-	
+
 	@Autowired
 	private MembershipDAO membershipDAO;
 
 	@Autowired
 	private UserDAO userDAO;
-	
+
 	@Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -48,7 +48,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User getUser(long id) {
-		System.out.println(id + " In SERVICE");
 		return userDAO.findById(id);
 	}
 
@@ -77,13 +76,13 @@ public class UserServiceImpl implements UserService {
 	public int increaseAttemptedLoginFail(long userId) {
 		return userDAO.increaseAttemptedLoginFail(userId);
 	}
-	
+
 	@Override
 	@Transactional
 	public void lockAnUser(long userId) {
 		userDAO.lockAnUser(userId);
 	}
-	
+
 	@Override
 	@Transactional
 	public void unlockAnUser(long userId) {

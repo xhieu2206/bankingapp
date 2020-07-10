@@ -28,33 +28,33 @@ public class UserPrincipal implements UserDetails {
 
     @JsonIgnore
     private String password;
-    
+
     private Date birthday;
-    
+
     private String address;
 
     private String gender;
-    
+
     private String image;
-    
+
     private String idCardNumber;
-    
+
     private String phone;
-    
+
     private Date createdAt;
-    
+
     private Date updatedAt;
-    
+
     private boolean status;
-    
+
     private boolean locked;
-    
+
     private Membership membership;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(Long id, 
-    		String fullname, String username, String email, String password, 
+    public UserPrincipal(Long id,
+    		String fullname, String username, String email, String password,
     		Collection<? extends GrantedAuthority> authorities, Date birthday,
     		String address, String gender, String image, String idCardNumber,
     		String phone, Date createdAt, Date updatedAt, boolean status, boolean locked, Membership membership) {
@@ -106,7 +106,7 @@ public class UserPrincipal implements UserDetails {
     public Long getId() {
         return id;
     }
-    
+
     public String getFullname() {
 		return fullname;
 	}
