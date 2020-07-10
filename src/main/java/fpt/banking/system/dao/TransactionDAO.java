@@ -11,9 +11,13 @@ public interface TransactionDAO {
 	
 	public List<Transaction> getTransactionsWithSearchTerm(long accountId, int page, String term);
 	
+	public List<Transaction> getTransactionsWithTimeFileter(long accountId, int page, int year, int month);
+	
 	public int getTotalTransactions(long accountId);
 	
 	public int getTotalTransactionsWithSearchTerm(long accountId, String term);
+	
+	public int getTotalTransactionsWithTimeFileter(long accountId, int year, int month);
 	
 	public void saveTransaction(long accountId, Long changeAmount, Long 
 			amountAfterTransaction, int transactionTypeId,

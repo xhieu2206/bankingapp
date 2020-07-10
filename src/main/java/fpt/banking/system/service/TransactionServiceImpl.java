@@ -52,4 +52,20 @@ public class TransactionServiceImpl implements TransactionService {
 		transactionResponse.setPageSize(transactionResponse.getItems().size());
 		return transactionResponse;
 	}
+
+	@Override
+	@Transactional
+	public TransactionsResponse getTransactionWithTimeFilter(long accountId, int page, int year, int month) {
+		TransactionsResponse transactionsResponse = new TransactionsResponse();
+		transactionsResponse.setPageNumber(page);
+		transactionsResponse.setTotalCount(transactionDAO.getTotalTransactionsWithTimeFileter(accountId, year, month));
+		int totalPage = (int) Math.ceil(transactionDAO.getTotalTransactionsWithTimeFileter(accountId, year, month) / 5);
+		if (transactionDAO.getTotalTransactionsWithTimeFileter(accountId, year, month) % 5 > 0) {
+			totalPage ++;
+		}
+		transactionsResponse.setTotalPage(totalPage);
+		transactionsResponse.setItems(transactionDAO.getTransactionsWithTimeFileter(accountId, totalPage, year, month));
+		transactionsResponse.setPageSize(transactionsResponse.getItems().size());
+		return transactionsResponse;
+	}
 }

@@ -131,4 +131,59 @@ public class TransactionDAOImpl implements TransactionDAO {
 		return total.get(0).intValue();
 	}
 
+	@Override
+	public List<Transaction> getTransactionsWithTimeFileter(long accountId, int page, int year, int month) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "";
+		if (month == 0) {
+			sql = "SELECT * FROM transaction " +
+	              "WHERE account_id = :accountId " +
+	              "AND YEAR(created_at) = :year " +
+	              "ORDER BY id DESC";
+		} else {
+			sql = "SELECT * FROM transaction " +
+	              "WHERE account_id = :accountId " +
+	              "AND YEAR(created_at) = :year " +
+	              "AND MONTH(created_at) = :month " +
+	              "ORDER BY id DESC";
+		}
+		NativeQuery<Transaction> q = session.createNativeQuery(sql, Transaction.class).setFirstResult((page - 1) * 5).setMaxResults(5);
+		q.setParameter("accountId", accountId);
+		q.setParameter("year", year);
+		if (month > 0) {
+			q.setParameter("month", month);
+		}
+		List<Transaction> results;
+		try {
+			results = q.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		} 
+		return results;
+	}
+
+	@Override
+	public int getTotalTransactionsWithTimeFileter(long accountId, int year, int month) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "";
+		if (month == 0) {
+			sql = "SELECT COUNT(*) FROM transaction " +
+	              "WHERE account_id = :accountId " +
+	              "AND YEAR(created_at) = :year";
+		} else {
+			sql = "SELECT COUNT(*) FROM transaction " +
+	              "WHERE account_id = :accountId " +
+	              "AND YEAR(created_at) = :year " +
+	              "AND MONTH(created_at) = :month";
+		}
+		NativeQuery q = session.createNativeQuery(sql);
+		q.setParameter("accountId", accountId);
+		q.setParameter("year", year);
+		if (month > 0) {
+			q.setParameter("month", month);
+		}
+		List<BigInteger> total = q.list();
+		return total.get(0).intValue();
+	}
+
 }
