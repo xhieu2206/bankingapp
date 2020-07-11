@@ -56,6 +56,7 @@ public class LoanServiceImpl implements LoanService {
 	}
 
 	@Override
+	@Transactional
 	public Asset findAssetById(long assetId) {
 		return assetDAO.findById(assetId);
 	}
@@ -210,5 +211,11 @@ public class LoanServiceImpl implements LoanService {
 		results.setItems(loanProfileDAO.getLoanProfilesForAnEmployee(employee, page));
 		results.setPageSize(results.getItems().size());
 		return results;
+	}
+
+	@Override
+	@Transactional
+	public void removeAsset(long assetId) {
+		assetDAO.removeAsset(assetId);
 	}
 }

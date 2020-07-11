@@ -8,4 +8,6 @@ public interface AssetDAO {
 	public Asset findById(long id);
 
 	public long saveAsset(String name, String description, long price, LoanProfile loanProfile);
+
+	public void removeAsset(long assetId);
 }

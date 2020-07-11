@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fpt.banking.system.exception.AccountNotFound;
+import fpt.banking.system.exception.ErrorResponse;
 import fpt.banking.system.exception.ExpriedOTP;
 import fpt.banking.system.exception.WrongOTPCode;
+import fpt.banking.system.model.LoanProfile;
 import fpt.banking.system.model.LoanProfileQueue;
 import fpt.banking.system.model.User;
 import fpt.banking.system.payload.ConfirmLoanProfilePayload;
@@ -44,9 +46,29 @@ public class AdminConfirmLoanProfileController {
 	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
 	public ResponseEntity<?> confirm(
 			@RequestBody ConfirmLoanProfilePayload payload,
-			@AuthenticationPrincipal UserPrincipal currentEmp
+			@AuthenticationPrincipal UserPrincipal currentEmployee
 			) {
-		User emp = userService.getUser(currentEmp.getId());
+		User employee = userService.getUser(currentEmployee.getId());
+		LoanProfile loanProfile = loanService.findLoanProfileById(payload.getLoanProfileId());
+
+		// check if this loan profile status was CREATED
+		if (!loanProfile.getStatus().equals("1")) {
+			ErrorResponse res = new ErrorResponse(
+					HttpStatus.NOT_ACCEPTABLE.value(),
+					"This loan profile doesn't need to be confirmed",
+					System.currentTimeMillis());
+			return new ResponseEntity<ErrorResponse>(res, HttpStatus.NOT_ACCEPTABLE);
+		}
+
+		// check if this loan profile belong to this transaction office
+		if (loanProfile.getTransactionOffice() != null && loanProfile.getTransactionOffice().getId() != employee.getTransactionOffice().getId()) {
+			ErrorResponse res = new ErrorResponse(
+					HttpStatus.UNAUTHORIZED.value(),
+					"This loan profile doesn't under your management",
+					System.currentTimeMillis());
+			return new ResponseEntity<ErrorResponse>(res, HttpStatus.UNAUTHORIZED);
+		}
+
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis() + 300000);
 		LoanProfileQueue loanProfileQueue = loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId());
 		if (loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId()).getExpriedAt().getTime() < timestamp.getTime()) {
@@ -58,14 +80,21 @@ public class AdminConfirmLoanProfileController {
 		if (loanService.findLoanProfileQueueByLoanProfileId(payload.getLoanProfileId()) == null) {
 			throw new AccountNotFound("Loan profile not found");
 		}
-		loanService.confirmLoanProfile(payload.getLoanProfileId(), emp.getFullname(), emp.getId());
+
+		loanService.confirmLoanProfile(
+				payload.getLoanProfileId(),
+				employee.getFullname(),
+				employee.getId());
+
 		User user = loanService.findLoanProfileById(payload.getLoanProfileId()).getUser();
-		notificationService.saveNotification("Your Loan profile has been confirmed", user);
+		notificationService.saveNotification(
+				"Your Loan profile has been confirmed",
+				user);
 
 		try {
 			SendEmail.sendEmail(
 					user.getEmail(),
-					"Your Loan profile has been confirmed");
+					"Your Loan profile has been confirmed by " + employee.getFullname() + " at " + employee.getTransactionOffice().getName());
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}

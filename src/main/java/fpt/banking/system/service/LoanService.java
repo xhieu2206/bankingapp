@@ -54,4 +54,6 @@ public interface LoanService {
 	public LoanProfileQueue findLoanProfileQueueByLoanProfileId(long loanProfileId);
 	
 	public LoanProfilesResponsePayload getLoanProfilesForEmployee(User employee, int page);
+	
+	public void removeAsset(long assetId);
 }

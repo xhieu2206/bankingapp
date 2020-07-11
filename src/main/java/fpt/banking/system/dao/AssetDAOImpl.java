@@ -23,7 +23,13 @@ public class AssetDAOImpl implements AssetDAO {
 	@Override
 	public Asset findById(long id) {
 		Session session = entityManager.unwrap(Session.class);
-		return session.get(Asset.class, id);
+		Asset asset = session.get(Asset.class, id);
+		try {
+			return asset;
+		} catch (Exception e) {
+			System.out.println("LOI");
+			return null;
+		}
 	}
 
 	@Override
@@ -36,6 +42,13 @@ public class AssetDAOImpl implements AssetDAO {
 		asset.setLoanProfile(loanProfile);
 		session.saveOrUpdate(asset);
 		return asset.getId();
+	}
+
+	@Override
+	public void removeAsset(long assetId) {
+		Session session = entityManager.unwrap(Session.class);
+		Asset asset = session.get(Asset.class, assetId);
+		session.remove(asset);
 	}
 
 }

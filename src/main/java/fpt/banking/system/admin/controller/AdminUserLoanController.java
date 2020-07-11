@@ -136,8 +136,9 @@ public class AdminUserLoanController {
 			@PathVariable long userId,
 			@PathVariable long loanProfileId,
 			@RequestBody AssetRequestPayload payload,
-			@AuthenticationPrincipal UserPrincipal emp) {
+			@AuthenticationPrincipal UserPrincipal currentEmployee) {
 		User user = userService.getUser(userId);
+		User employee = userService.getUser(currentEmployee.getId());
 		if (userService.getUser(userId) == null) {
 			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found",
     				System.currentTimeMillis());
@@ -162,6 +163,25 @@ public class AdminUserLoanController {
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		LoanProfile loanProfile = loanService.findLoanProfileById(loanProfileId);
+
+		// check if this loan profile status was CREATED
+		if (!loanProfile.getStatus().equals("1")) {
+			ErrorResponse res = new ErrorResponse(
+					HttpStatus.NOT_ACCEPTABLE.value(),
+					"Cannot add any more assets to this loan profile",
+					System.currentTimeMillis());
+			return new ResponseEntity<ErrorResponse>(res, HttpStatus.NOT_ACCEPTABLE);
+		}
+
+		// check if this loan profile belong to this transaction office
+		if (loanProfile.getTransactionOffice() != null && loanProfile.getTransactionOffice().getId() != employee.getTransactionOffice().getId()) {
+			ErrorResponse res = new ErrorResponse(
+					HttpStatus.UNAUTHORIZED.value(),
+					"This loan profile doesn't under your management",
+					System.currentTimeMillis());
+			return new ResponseEntity<ErrorResponse>(res, HttpStatus.UNAUTHORIZED);
+		}
+
 		long assetId = loanService.saveAsset(
 				payload.getName(), 
 				payload.getDescription(), 
@@ -171,7 +191,7 @@ public class AdminUserLoanController {
 		for (String url: payload.getImages()) {
 			loanService.saveImagesAsset(url, asset);
 		}
-		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), String.valueOf(loanProfileId), System.currentTimeMillis());
+		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), String.valueOf(assetId), System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
 	
