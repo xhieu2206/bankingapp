@@ -472,40 +472,40 @@ VALUES
 -- INSERT FOR USER
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked)
 VALUES
-('xuanhieu_1', 'xhieu94@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'NGUYEN XUAN HIEU','1994-06-22','Ha Noi','123123123001','0963558935',1,'2015-12-12','2015-12-12', 1, 0),
-('minhduc_1', 'minhduc0987@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'NGUYEN MINH DUC','1994-06-01','Ha Noi','123123123002','0966423895',1,'2015-12-12','2015-12-12', 1, 0),
-('hoanghung_1', 'hunghv3010@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'HOANG VAN HUNG','1994-06-02','Ha Noi','123123123003','0936230865',1,'2015-12-12','2015-12-12', 1, 0),
-('username_1', 'username1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME MOT','1994-06-03','Ha Noi','123123123004','0912311111',1,'2015-12-12','2015-12-12', 1, 0),
-('username_2', 'username2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME HAI','1996-06-04','Ha Noi','123123123005','0912311112',1,'2015-12-12','2015-12-12', 1, 0),
-('username_3', 'username3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME BA','1994-06-05','Ha Noi','123123123006','0912311113',1,'2015-12-12','2015-12-12', 1, 0),
-('username_4', 'username4@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME BON','1994-06-06','Ha Noi','123123123007','0912311114',1,'2015-12-12','2015-12-12', 1, 0),
-('username_5', 'username5@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME NAM','1995-06-22','Ha Noi','123123123008','0912311115',1,'2015-12-12','2015-12-12', 1, 0),
-('username_6', 'username6@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME SAU','1994-10-07','Ha Noi','123123123009','0912311116',1,'2015-12-12','2015-12-12', 1, 0),
-('username_7', 'username7@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME BAY','1994-06-22','Ha Noi','123123123010','0912311117',1,'2015-12-12','2015-12-12', 1, 0),
-('username_8', 'username8@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME TAM','1998-06-09','Ha Noi','123123123111','0912311118',1,'2015-12-12','2015-12-12', 1, 0),
-('username_9', 'username9@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME CHIN','1994-11-22','Ha Noi','123123123112','0912311119',1,'2015-12-12','2015-12-12', 1, 0),
-('username_10', 'username10@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME MUOI','1994-06-22','Ha Noi','123123123113','0912311110',1,'2015-12-12','2015-12-12', 1, 0);
+('xuanhieu_1', 'xhieu94@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'NGUYEN XUAN HIEU','1994-06-22','Ha Noi','123123123001','0963558935',1,'2015-12-12','2015-12-12', 1, 0), -- 1
+('minhduc_1', 'minhduc0987@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'NGUYEN MINH DUC','1994-06-01','Ha Noi','123123123002','0966423895',1,'2015-12-12','2015-12-12', 1, 0), -- 2
+('hoanghung_1', 'hunghv3010@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'HOANG VAN HUNG','1994-06-02','Ha Noi','123123123003','0936230865',1,'2015-12-12','2015-12-12', 1, 0), -- 3
+('username_1', 'username1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME MOT','1994-06-03','Ha Noi','123123123004','0912311111',1,'2015-12-12','2015-12-12', 1, 0), -- 4
+('username_2', 'username2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME HAI','1996-06-04','Ha Noi','123123123005','0912311112',1,'2015-12-12','2015-12-12', 1, 0), -- 5
+('username_3', 'username3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME BA','1994-06-05','Ha Noi','123123123006','0912311113',1,'2015-12-12','2015-12-12', 1, 0), -- 6
+('username_4', 'username4@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME BON','1994-06-06','Ha Noi','123123123007','0912311114',1,'2015-12-12','2015-12-12', 1, 0), -- 7
+('username_5', 'username5@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME NAM','1995-06-22','Ha Noi','123123123008','0912311115',1,'2015-12-12','2015-12-12', 1, 0), -- 8
+('username_6', 'username6@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME SAU','1994-10-07','Ha Noi','123123123009','0912311116',1,'2015-12-12','2015-12-12', 1, 0), -- 9
+('username_7', 'username7@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME BAY','1994-06-22','Ha Noi','123123123010','0912311117',1,'2015-12-12','2015-12-12', 1, 0), -- 10
+('username_8', 'username8@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME TAM','1998-06-09','Ha Noi','123123123111','0912311118',1,'2015-12-12','2015-12-12', 1, 0), -- 11
+('username_9', 'username9@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME CHIN','1994-11-22','Ha Noi','123123123112','0912311119',1,'2015-12-12','2015-12-12', 1, 0), -- 12
+('username_10', 'username10@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'USER NAME MUOI','1994-06-22','Ha Noi','123123123113','0912311110',1,'2015-12-12','2015-12-12', 1, 0); -- 13
 
 -- INSERT FOR EMPLOYEE
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, transaction_office_id)
 VALUES
-('employee_1', 'employee1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE MOT','1995-06-21','Ha Noi','123123123011','0123123111',4,'2015-12-12','2015-12-12', 1, 0, 1),
-('employee_2', 'employee2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE HAI','1995-06-21','Ha Noi','123123123012','0123123112',4,'2015-12-12','2015-12-12', 1, 0, 1),
-('employee_3', 'employee3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE BA','1995-06-21','Ha Noi','123123123013','0123123113',4,'2015-12-12','2015-12-12', 1, 0, 1),
-('employee_4', 'employee4@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE BON','1995-06-21','Ha Noi','123123123014','0123123114',4,'2015-12-12','2015-12-12', 1, 0, 1),
-('employee_5', 'employee5@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE NAM','1995-06-21','Ha Noi','123123123015','0123123115',4,'2015-12-12','2015-12-12', 1, 0, 2),
-('employee_6', 'employee6@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE SAU','1995-06-21','Ha Noi','123123123016','0123123116',4,'2015-12-12','2015-12-12', 1, 0, 2),
-('employee_7', 'employee7@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE BAY','1995-06-21','Ha Noi','123123123017','0123123117',4,'2015-12-12','2015-12-12', 1, 0, 2);
+('employee_1', 'employee1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE MOT','1995-06-21','Ha Noi','123123123011','0123123111',4,'2015-12-12','2015-12-12', 1, 0, 1), -- 14
+('employee_2', 'employee2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE HAI','1995-06-21','Ha Noi','123123123012','0123123112',4,'2015-12-12','2015-12-12', 1, 0, 1), -- 15
+('employee_3', 'employee3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE BA','1995-06-21','Ha Noi','123123123013','0123123113',4,'2015-12-12','2015-12-12', 1, 0, 1), -- 16
+('employee_4', 'employee4@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE BON','1995-06-21','Ha Noi','123123123014','0123123114',4,'2015-12-12','2015-12-12', 1, 0, 1), -- 17
+('employee_5', 'employee5@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE NAM','1995-06-21','Ha Noi','123123123015','0123123115',4,'2015-12-12','2015-12-12', 1, 0, 2), -- 18
+('employee_6', 'employee6@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE SAU','1995-06-21','Ha Noi','123123123016','0123123116',4,'2015-12-12','2015-12-12', 1, 0, 2), -- 19
+('employee_7', 'employee7@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'EMPLOYEE BAY','1995-06-21','Ha Noi','123123123017','0123123117',4,'2015-12-12','2015-12-12', 1, 0, 2); -- 20
 
 -- INSERT FOR TRANSACTION OFFICE MANAGER ROLE
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, transaction_office_id) VALUES
-('transaction_manager_1', 'transactionM1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION MOT', '1993-01-01', 'Ha Noi', '123123124011', '0123123211', 4, '2015-12-12','2015-12-12', 1, 0, 1),
-('transaction_manager_2', 'transactionM2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION HAI', '1993-01-01', 'Ha Noi', '123123124012', '0123123212', 4, '2015-12-12','2015-12-12', 1, 0, 2),
-('transaction_manager_3', 'transactionM3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION BA', '1993-01-01', 'Ha Noi', '123123124013', '0123123213', 4, '2015-12-12','2015-12-12', 1, 0, 3),
-('transaction_manager_4', 'transactionM4@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION BON', '1993-01-01', 'Ha Noi', '123123124014', '0123123214', 4, '2015-12-12','2015-12-12', 1, 0, 4),
-('transaction_manager_5', 'transactionM5@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION NAM', '1993-01-01', 'Ha Noi', '123123124015', '0123123215', 4, '2015-12-12','2015-12-12', 1, 0, 5),
-('transaction_manager_6', 'transactionM6@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION SAU', '1993-01-01', 'Ha Noi', '123123124016', '0123123216', 4, '2015-12-12','2015-12-12', 1, 0, 6),
-('transaction_manager_7', 'transactionM7@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION BAY', '1993-01-01', 'Ha Noi', '123123124017', '0123123217', 4, '2015-12-12','2015-12-12', 1, 0, 7);
+('transaction_manager_1', 'transactionM1@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION MOT', '1993-01-01', 'Ha Noi', '123123124011', '0123123211', 4, '2015-12-12','2015-12-12', 1, 0, 1), -- 21
+('transaction_manager_2', 'transactionM2@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION HAI', '1993-01-01', 'Ha Noi', '123123124012', '0123123212', 4, '2015-12-12','2015-12-12', 1, 0, 2), -- 22
+('transaction_manager_3', 'transactionM3@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION BA', '1993-01-01', 'Ha Noi', '123123124013', '0123123213', 4, '2015-12-12','2015-12-12', 1, 0, 3), -- 23
+('transaction_manager_4', 'transactionM4@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION BON', '1993-01-01', 'Ha Noi', '123123124014', '0123123214', 4, '2015-12-12','2015-12-12', 1, 0, 4), -- 24 
+('transaction_manager_5', 'transactionM5@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION NAM', '1993-01-01', 'Ha Noi', '123123124015', '0123123215', 4, '2015-12-12','2015-12-12', 1, 0, 5), -- 25
+('transaction_manager_6', 'transactionM6@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION SAU', '1993-01-01', 'Ha Noi', '123123124016', '0123123216', 4, '2015-12-12','2015-12-12', 1, 0, 6), -- 26
+('transaction_manager_7', 'transactionM7@gmail.com', '$2y$12$IojDHLSwsag0uk4RPmY1Re7ek/b4ptRNAsPohxsB9DdAEDGUiHMb6', 'TRANSACION BAY', '1993-01-01', 'Ha Noi', '123123124017', '0123123217', 4, '2015-12-12','2015-12-12', 1, 0, 7); -- 27
 
 -- INSERT FOR BRANCH OFFICE MANAGER ROLE
 INSERT INTO `user` (username, email, password, fullname, birthday, address, id_card_number, phone, membership_id, created_at, updated_at, status, locked, branch_office_id) VALUES
@@ -884,22 +884,31 @@ values
 
 -- INSERT FOR CONVERSATION ------------
 insert into `conversation` (created_at, title, read_from_questioner, read_from_respondent, questioner_id) values
-('2020-07-11', 'Title 1', true, false, 1),
-('2020-07-11', 'Title 2', true, false, 1),
-('2020-07-11', 'Title 3', true, false, 1),
-('2020-07-11', 'Title 4', true, false, 2),
-('2020-07-11', 'Title 5', true, false, 2),
-('2020-07-11', 'Title 6', true, false, 2),
-('2020-07-11', 'Title 7', true, false, 3),
-('2020-07-11', 'Title 8', true, false, 3);
+('2020-07-11', 'Title 1', true, true, 1),
+('2020-07-11', 'Title 2', false, true, 1),
+('2020-07-11', 'Title 3', true, true, 1),
+('2020-07-11', 'Title 4', false, true, 2),
+('2020-07-11', 'Title 5', true, true, 2),
+('2020-07-11', 'Title 6', false, true, 2),
+('2020-07-11', 'Title 7', true, true, 3),
+('2020-07-11', 'Title 8', false, true, 3);
 
 insert into `message` (created_at, message_detail, message_type, conversation_id, user_id) values
 ('2020-07-11', 'Simple Question 1?', 0, 1, 1),
--- ('2020-07-12', 'Describe situation', 0, 1, 1),
+('2020-07-12', 'Describe situation', 0, 1, 1),
 ('2020-07-11', 'Simple Question 2?', 0, 2, 1),
 ('2020-07-11', 'Simple Question 3?', 0, 3, 1),
 ('2020-07-11', 'Simple Question 4?', 0, 4, 2),
 ('2020-07-11', 'Simple Question 5?', 0, 5, 2),
 ('2020-07-11', 'Simple Question 6?', 0, 6, 2),
 ('2020-07-11', 'Simple Question 7?', 0, 7, 3),
-('2020-07-11', 'Simple Question 8?', 0, 8, 4);
+('2020-07-11', 'Simple Question 8?', 0, 8, 4),
+
+('2020-07-11', 'Simple Answer 1', 1, 1, 14),
+('2020-07-11', 'Simple Answer 2', 1, 2, 14),
+('2020-07-11', 'Simple Answer 3', 1, 3, 14),
+('2020-07-11', 'Simple Answer 4', 1, 4, 14),
+('2020-07-11', 'Simple Answer 5', 1, 5, 14),
+('2020-07-11', 'Simple Answer 6', 1, 6, 14),
+('2020-07-11', 'Simple Answer 7', 1, 7, 14),
+('2020-07-11', 'Simple Answer 8', 1, 8, 14);

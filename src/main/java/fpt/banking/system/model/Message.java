@@ -35,7 +35,7 @@ public class Message {
 	private String messageDetail;
 
 	@Column(name = "message_type")
-	private boolean messgaeType;
+	private boolean messageType;
 	// Relationship -------------------------
 	@ManyToOne(
 			fetch = FetchType.LAZY,
@@ -61,16 +61,21 @@ public class Message {
 	// Constructor --------------------------
 	public Message() {
 	}
-
-	public Message(Date createdAt, String messageDetail) {
+	public Message(Date createdAt, String messageDetail, boolean messageType, Conversation conversation, User user) {
 		this.createdAt = createdAt;
 		this.messageDetail = messageDetail;
+		this.messageType = messageType;
+		this.conversation = conversation;
+		this.user = user;
 	}
-
-	public Message(Long id, Date createdAt, String messageDetail) {
+	public Message(Long id, Date createdAt, String messageDetail, boolean messageType, Conversation conversation,
+			User user) {
 		this.id = id;
 		this.createdAt = createdAt;
 		this.messageDetail = messageDetail;
+		this.messageType = messageType;
+		this.conversation = conversation;
+		this.user = user;
 	}
 	// --------------------------------------
 
@@ -99,14 +104,6 @@ public class Message {
 		this.messageDetail = messageDetail;
 	}
 
-	public boolean isMessgaeType() {
-		return messgaeType;
-	}
-
-	public void setMessgaeType(boolean messgaeType) {
-		this.messgaeType = messgaeType;
-	}
-
 	public Conversation getConversation() {
 		return conversation;
 	}
@@ -123,4 +120,10 @@ public class Message {
 		this.user = user;
 	}
 	// --------------------------------------
+	public boolean isMessageType() {
+		return messageType;
+	}
+	public void setMessageType(boolean messageType) {
+		this.messageType = messageType;
+	}
 }

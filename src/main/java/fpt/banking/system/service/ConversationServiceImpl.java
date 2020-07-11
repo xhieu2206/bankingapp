@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fpt.banking.system.dao.ConversationDAO;
 import fpt.banking.system.dao.MessageDAO;
 import fpt.banking.system.model.Conversation;
+import fpt.banking.system.model.User;
 import fpt.banking.system.response.ConversationForUserResponse;
 
 @Service
@@ -37,6 +38,27 @@ public class ConversationServiceImpl implements ConversationService {
 			results.add(conversationForUserResponse);
 		}
 		return results;
+	}
+
+	@Override
+	@Transactional
+	public Conversation findConversationById(long conversationId) {
+		return conversationDAO.findConversationById(conversationId);
+	}
+
+	@Override
+	@Transactional
+	public void setReadConservationFromUser(long conversationId) {
+		conversationDAO.setReadConversationFromUser(conversationId);
+	}
+
+	@Override
+	@Transactional
+	public long saveConversation(String title, User questioner, String message) {
+		long conversationId = conversationDAO.saveConversation(title, questioner);
+		Conversation conversation = conversationDAO.findConversationById(conversationId);
+		messageDAO.saveMessage(conversation, questioner, message);
+		return conversationId;
 	}
 
 }
