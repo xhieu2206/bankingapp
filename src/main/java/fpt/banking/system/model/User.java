@@ -141,6 +141,39 @@ public class User implements Serializable {
 				CascadeType.DETACH})
 	@JsonIgnore
 	private List<Cheque> withdrawCheques;
+
+	@OneToMany(
+			fetch = FetchType.LAZY,
+			mappedBy = "questioner",
+			cascade = {
+				CascadeType.PERSIST,
+				CascadeType.MERGE,
+				CascadeType.REFRESH,
+				CascadeType.DETACH})
+	@JsonIgnore
+	private List<Conversation> questions;
+
+	@OneToMany(
+			fetch = FetchType.LAZY,
+			mappedBy = "respondent",
+			cascade = {
+				CascadeType.PERSIST,
+				CascadeType.MERGE,
+				CascadeType.REFRESH,
+				CascadeType.DETACH})
+	@JsonIgnore
+	private List<Conversation> responses;
+
+	@OneToMany(
+			fetch = FetchType.LAZY,
+			mappedBy = "user",
+			cascade = {
+				CascadeType.PERSIST,
+				CascadeType.MERGE,
+				CascadeType.REFRESH,
+				CascadeType.DETACH})
+	@JsonIgnore
+	private List<Message> messages;
 	// ---------------------------------------
 	
 	// Constructor 
@@ -374,6 +407,38 @@ public class User implements Serializable {
 
 	public void setNotifications(List<Notification> notifications) {
 		this.notifications = notifications;
+	}
+
+	public List<Cheque> getWithdrawCheques() {
+		return withdrawCheques;
+	}
+
+	public void setWithdrawCheques(List<Cheque> withdrawCheques) {
+		this.withdrawCheques = withdrawCheques;
+	}
+
+	public List<Conversation> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<Conversation> questions) {
+		this.questions = questions;
+	}
+
+	public List<Conversation> getResponses() {
+		return responses;
+	}
+
+	public void setResponses(List<Conversation> responses) {
+		this.responses = responses;
+	}
+
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
 	}
 
 	@Override

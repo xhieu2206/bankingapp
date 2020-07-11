@@ -372,14 +372,17 @@ create table `loan_profile_queue`(
 DROP TABLE IF EXISTS `conversation`;
 CREATE TABLE `conversation` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
+    `title` text not null,
     `questioner_id` int(11) not null,
     `respondent_id` int(11),
     `created_at` datetime not null,
-   
+    `read_from_questioner` boolean,
+    `read_from_respondent` boolean,
+
     constraint `FK_CONVERSATION_QUESTIONER_ID` foreign key (`questioner_id`)
     references `user` (`id`)
     ON DELETE NO ACTION ON UPDATE NO ACTION,
-   
+
     constraint `FK_CONVERSATION_RESPONDENT_ID` foreign key (`respondent_id`)
     references `user` (`id`)
     ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -394,7 +397,8 @@ CREATE TABLE `message` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `conversation_id` int(11) NOT NULL,
     `user_id` int(11) NOT NULL,
-    `message` text not null,
+    `message_detail` text not null,
+    `message_type` boolean,
     `created_at` datetime not null,
    
     constraint `FK_MESSAGE_CONVERSATION_ID` foreign key (`conversation_id`)
@@ -877,3 +881,25 @@ values
 (150000000, 'Test Description', true, false, false, '', '2', '2020-06-28', 5, 58, 12, 1, 'EMPLOYEE MOT', 14),
 (20000000, 'Test Description', true, false, false, '', '3', '2020-06-28', 2, 59, 12, 1, 'EMPLOYEE MOT', 14),
 (80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 60, 12, 1, 'EMPLOYEE MOT', 14);
+
+-- INSERT FOR CONVERSATION ------------
+insert into `conversation` (created_at, title, read_from_questioner, read_from_respondent, questioner_id) values
+('2020-07-11', 'Title 1', true, false, 1),
+('2020-07-11', 'Title 2', true, false, 1),
+('2020-07-11', 'Title 3', true, false, 1),
+('2020-07-11', 'Title 4', true, false, 2),
+('2020-07-11', 'Title 5', true, false, 2),
+('2020-07-11', 'Title 6', true, false, 2),
+('2020-07-11', 'Title 7', true, false, 3),
+('2020-07-11', 'Title 8', true, false, 3);
+
+insert into `message` (created_at, message_detail, message_type, conversation_id, user_id) values
+('2020-07-11', 'Simple Question 1?', 0, 1, 1),
+-- ('2020-07-12', 'Describe situation', 0, 1, 1),
+('2020-07-11', 'Simple Question 2?', 0, 2, 1),
+('2020-07-11', 'Simple Question 3?', 0, 3, 1),
+('2020-07-11', 'Simple Question 4?', 0, 4, 2),
+('2020-07-11', 'Simple Question 5?', 0, 5, 2),
+('2020-07-11', 'Simple Question 6?', 0, 6, 2),
+('2020-07-11', 'Simple Question 7?', 0, 7, 3),
+('2020-07-11', 'Simple Question 8?', 0, 8, 4);
