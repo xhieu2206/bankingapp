@@ -157,7 +157,7 @@ DROP TABLE IF EXISTS `transaction`;
 create table `transaction` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
     `account_id` int(11) not null,
-    `transaction_type_id` int(11) not null default 1,
+    `transaction_type_id` int(6) not null default 1,
     `amount` decimal not null,
     `amount_after_transaction` decimal not null,
     `description` text not null,
