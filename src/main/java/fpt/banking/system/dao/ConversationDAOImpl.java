@@ -138,4 +138,12 @@ public class ConversationDAOImpl implements ConversationDAO {
 		List<BigInteger> total = q.list();
 		return total.get(0).longValue();
 	}
+
+	@Override
+	public void setEmployeeForConservation(long conservationId, User employee) {
+		Session session = entityManager.unwrap(Session.class);
+		Conversation conservation = session.get(Conversation.class, conservationId);
+		conservation.setRespondent(employee);
+		session.save(conservation);
+	}
 }

@@ -26,4 +26,6 @@ public interface ConversationDAO {
 	public long getTotalUnreadConversationFromUser(long userId);
 
 	public long getTotalUnreadConversationFromEmployee(long employeeId);
+
+	public void setEmployeeForConservation(long conservationId, User employee);
 }

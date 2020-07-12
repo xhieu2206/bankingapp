@@ -107,4 +107,10 @@ public class ConversationServiceImpl implements ConversationService {
 	public long getTotalUnreadConversationFromEmployee(long employeeId) {
 		return conversationDAO.getTotalUnreadConversationFromEmployee(employeeId);
 	}
+
+	@Override
+	@Transactional
+	public void setEmployeeForConversation(long conservationId, User employee) {
+		conversationDAO.setEmployeeForConservation(conservationId, employee);
+	}
 }

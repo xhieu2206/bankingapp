@@ -28,4 +28,6 @@ public interface ConversationService {
 	public long getTotalUnreadConversationFromUser(long userId);
 
 	public long getTotalUnreadConversationFromEmployee(long employeeId);
+
+	public void setEmployeeForConversation(long conservationId, User employee);
 }
