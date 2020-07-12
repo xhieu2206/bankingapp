@@ -12,6 +12,7 @@ import fpt.banking.system.dao.MessageDAO;
 import fpt.banking.system.model.Conversation;
 import fpt.banking.system.model.User;
 import fpt.banking.system.response.ConversationForUserResponse;
+import fpt.banking.system.response.ConversationForEmployeeResponse;
 
 @Service
 public class ConversationServiceImpl implements ConversationService {
@@ -33,9 +34,25 @@ public class ConversationServiceImpl implements ConversationService {
 			conversationForUserResponse.setTitle(conversation.getTitle());
 			conversationForUserResponse.setRead(conversation.isReadFromQuestioner());
 			conversationForUserResponse.setLastMessage(messageDAO.getLatestMessageOfAConversation(conversation.getId()).getMessageDetail());
-			System.out.println(conversationForUserResponse.getLastMessage());
 			conversationForUserResponse.setLastMessageAt(messageDAO.getLatestMessageOfAConversation(conversation.getId()).getCreatedAt());
 			results.add(conversationForUserResponse);
+		}
+		return results;
+	}
+
+	@Override
+	@Transactional
+	public List<ConversationForEmployeeResponse> getConversationsForEmployee(long employeeId) {
+		List<ConversationForEmployeeResponse> results = new ArrayList<ConversationForEmployeeResponse>();
+		List<Conversation> conversations = conversationDAO.getConversationsForEmployee(employeeId);
+		for (Conversation conversation : conversations) {
+			ConversationForEmployeeResponse conversationForEmployeeResponse = new ConversationForEmployeeResponse();
+			conversationForEmployeeResponse.setConversationId(conversation.getId());
+			conversationForEmployeeResponse.setTitle(conversation.getTitle());
+			conversationForEmployeeResponse.setRead(conversation.isReadFromRespondent());
+			conversationForEmployeeResponse.setLastMessage(messageDAO.getLatestMessageOfAConversation(conversation.getId()).getMessageDetail());
+			conversationForEmployeeResponse.setLastMessageAt(messageDAO.getLatestMessageOfAConversation(conversation.getId()).getCreatedAt());
+			results.add(conversationForEmployeeResponse);
 		}
 		return results;
 	}

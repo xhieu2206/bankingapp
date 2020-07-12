@@ -9,6 +9,8 @@ public interface ConversationDAO {
 
 	public List<Conversation> getConversationsForUser(long userId);
 
+	public List<Conversation> getConversationsForEmployee(long employeeId);
+
 	public Conversation findConversationById(long conversationId);
 
 	public void setReadConversationFromUser(long conversationId);

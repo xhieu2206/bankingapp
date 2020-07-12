@@ -33,9 +33,26 @@ public class ConversationDAOImpl implements ConversationDAO {
 		Session session = entityManager.unwrap(Session.class);
 		String sql = "SELECT * FROM conversation " +
 					 "WHERE questioner_id = :userId " +
-					 "ORDER BY id DESC";
+					 "ORDER BY read_from_respondent ASC, id DESC";
 		NativeQuery<Conversation> query = session.createNativeQuery(sql, Conversation.class);
 		query.setParameter("userId", userId);
+		List<Conversation> results;
+		try {
+			results = query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		} 
+		return results;
+	}
+
+	@Override
+	public List<Conversation> getConversationsForEmployee(long employeeId) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT * FROM conversation " +
+				 	 "WHERE respondent_id = :employeeId " +
+				     "ORDER BY read_from_respondent ASC, id DESC";
+		NativeQuery<Conversation> query = session.createNativeQuery(sql, Conversation.class);
+		query.setParameter("employeeId", employeeId);
 		List<Conversation> results;
 		try {
 			results = query.getResultList();

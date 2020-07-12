@@ -1,5 +1,7 @@
 package fpt.banking.system.admin.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fpt.banking.system.model.User;
+import fpt.banking.system.response.ConversationForEmployeeResponse;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.ConversationService;
@@ -39,5 +42,13 @@ public class AdminConversationController {
 				String.valueOf(totalUnread),
 				System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+	}
+
+	@GetMapping("/current/employee/conversations")
+	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
+	public List<ConversationForEmployeeResponse> getConversationsForEmployee(
+			@AuthenticationPrincipal UserPrincipal currentEmployee) {
+		User employee = userService.getUser(currentEmployee.getId());
+		return conversationService.getConversationsForEmployee(employee.getId());
 	}
 }

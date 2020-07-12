@@ -5,10 +5,13 @@ import java.util.List;
 import fpt.banking.system.model.Conversation;
 import fpt.banking.system.model.User;
 import fpt.banking.system.response.ConversationForUserResponse;
+import fpt.banking.system.response.ConversationForEmployeeResponse;
 
 public interface ConversationService {
 
 	public List<ConversationForUserResponse> getConversationsForUser(long userId);
+
+	public List<ConversationForEmployeeResponse> getConversationsForEmployee(long employeeId);
 
 	public Conversation findConversationById(long conversationId);
 
