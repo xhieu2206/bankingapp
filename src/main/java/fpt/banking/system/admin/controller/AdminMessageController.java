@@ -19,6 +19,7 @@ import fpt.banking.system.exception.ErrorResponse;
 import fpt.banking.system.exception.NotFoundException;
 import fpt.banking.system.model.Conversation;
 import fpt.banking.system.model.Message;
+import fpt.banking.system.model.Role;
 import fpt.banking.system.model.User;
 import fpt.banking.system.payload.MessageRequestPayload;
 import fpt.banking.system.response.SuccessfulResponse;
@@ -42,14 +43,18 @@ public class AdminMessageController {
 	@GetMapping("/current/conversations/{conversationId}/messages")
 	@PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
 	public List<Message> readConversation(
-			@AuthenticationPrincipal UserPrincipal currentEmployee,
+			@AuthenticationPrincipal UserPrincipal currentAdmin,
 			@PathVariable long conversationId) {
 		Conversation conversation = conversationService.findConversationById(conversationId);
-		User employee = userService.getUser(currentEmployee.getId());
+		User admin = userService.getUser(currentAdmin.getId());
+		String role = "";
+		for (Role r: admin.getRoles()) {
+			role = r.getName();
+		}
 		if (conversation == null) {
 			throw new NotFoundException("This conversation doesn't existed");
 		}
-		if (conversation.getRespondent() != null && conversation.getRespondent().getId() != employee.getId()) {
+		if (conversation.getRespondent() != null && conversation.getRespondent().getId() != admin.getId() && role.equals("ROLE_EMPLOYEE")) {
 			throw new AuthorizedException("You don't have permission to access this resource");
 		}
 		conversationService.setReadConservationFromEmployee(conversationId);
