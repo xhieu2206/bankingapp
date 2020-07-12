@@ -12,6 +12,8 @@ import fpt.banking.system.dao.MessageDAO;
 import fpt.banking.system.model.Conversation;
 import fpt.banking.system.model.User;
 import fpt.banking.system.response.ConversationForUserResponse;
+import fpt.banking.system.response.ConversationsResponse;
+import fpt.banking.system.response.ConversationForEmployee;
 import fpt.banking.system.response.ConversationForEmployeeResponse;
 
 @Service
@@ -112,5 +114,31 @@ public class ConversationServiceImpl implements ConversationService {
 	@Transactional
 	public void setEmployeeForConversation(long conservationId, User employee) {
 		conversationDAO.setEmployeeForConservation(conservationId, employee);
+	}
+
+	@Override
+	@Transactional
+	public ConversationsResponse getNoResponseConversations(long page) {
+		ConversationsResponse result = new ConversationsResponse();
+		result.setPageNumber(page);
+		result.setTotalCount(conversationDAO.getTotalNoResponseConversations());
+		long totalPage = (long) Math.ceil(result.getTotalCount() / 5);
+		if (result.getTotalCount() % 5 > 0) {
+			totalPage ++;
+		}
+		result.setTotalPage(totalPage);
+		List<ConversationForEmployee> items = new ArrayList<ConversationForEmployee>();
+		List<Conversation> conversations = conversationDAO.getNoResponseConversations(page);
+		for (Conversation conversation : conversations) {
+			ConversationForEmployee cons = new ConversationForEmployee();
+			cons.setId(conversation.getId());
+			cons.setMessage(messageDAO.getLatestMessageOfAConversation(conversation.getId()).getMessageDetail());
+			cons.setQuestionerName(conversation.getQuestioner().getFullname());
+			cons.setTitle(conversation.getTitle());
+			items.add(cons);
+		}
+		result.setItems(items);
+		result.setPageSize(result.getItems().size());
+		return result;
 	}
 }

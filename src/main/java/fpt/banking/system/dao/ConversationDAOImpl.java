@@ -146,4 +146,30 @@ public class ConversationDAOImpl implements ConversationDAO {
 		conservation.setRespondent(employee);
 		session.save(conservation);
 	}
+
+	@Override
+	public List<Conversation> getNoResponseConversations(long page) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT * FROM conversation " +
+					 "WHERE respondent_id IS NULL " +
+					 "ORDER BY id DESC";
+		NativeQuery<Conversation> q = session.createNativeQuery(sql, Conversation.class).setFirstResult((int) ((page - 1) * 5)).setMaxResults(5);
+		List<Conversation> results;
+		try {
+			results = q.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		} 
+		return results;
+	}
+
+	@Override
+	public long getTotalNoResponseConversations() {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT COUNT(*) FROM conversation " +
+				 	  "WHERE respondent_id IS NULL";
+		NativeQuery q = session.createNativeQuery(sql);
+		List<BigInteger> total = q.list();
+		return total.get(0).longValue();
+	}
 }

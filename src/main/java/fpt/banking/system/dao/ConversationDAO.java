@@ -28,4 +28,8 @@ public interface ConversationDAO {
 	public long getTotalUnreadConversationFromEmployee(long employeeId);
 
 	public void setEmployeeForConservation(long conservationId, User employee);
+
+	public List<Conversation> getNoResponseConversations(long page);
+
+	public long getTotalNoResponseConversations();
 }

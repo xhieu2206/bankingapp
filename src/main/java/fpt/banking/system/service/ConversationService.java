@@ -5,6 +5,7 @@ import java.util.List;
 import fpt.banking.system.model.Conversation;
 import fpt.banking.system.model.User;
 import fpt.banking.system.response.ConversationForUserResponse;
+import fpt.banking.system.response.ConversationsResponse;
 import fpt.banking.system.response.ConversationForEmployeeResponse;
 
 public interface ConversationService {
@@ -30,4 +31,6 @@ public interface ConversationService {
 	public long getTotalUnreadConversationFromEmployee(long employeeId);
 
 	public void setEmployeeForConversation(long conservationId, User employee);
+
+	public ConversationsResponse getNoResponseConversations(long page);
 }

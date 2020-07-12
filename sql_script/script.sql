@@ -884,31 +884,54 @@ values
 
 -- INSERT FOR CONVERSATION ------------
 insert into `conversation` (created_at, title, read_from_questioner, read_from_respondent, questioner_id, respondent_id) values
-('2020-07-11', 'Title 1', true, true, 1, 14),
-('2020-07-11', 'Title 2', false, true, 1, 14),
-('2020-07-11', 'Title 3', true, true, 1, 14),
-('2020-07-11', 'Title 4', false, true, 2, 14),
-('2020-07-11', 'Title 5', true, true, 2, 14),
-('2020-07-11', 'Title 6', false, true, 2, 14),
-('2020-07-11', 'Title 7', true, true, 3, 14),
-('2020-07-11', 'Title 8', false, true, 3, 14);
+('2020-07-11', 'Risk Management on Decisions Making?', true, true, 1, 14), -- 1
+('2020-07-11', 'Foreign currency or the national currency?', false, true, 1, 14), -- 2
+('2020-07-11', 'Management systems?', true, true, 1, 14), -- 3
+('2020-07-11', 'Federal Reserve Bank?', false, true, 2, 14), -- 4
+('2020-07-11', 'Good source about safety and soundness of bank system?', true, true, 2, 14), -- 5
+('2020-07-11', 'Deposit?', false, true, 2, 14), -- 6
+('2020-07-11', 'Big Data?', true, true, 3, 14), -- 7
+('2020-07-11', 'Efficiency of banks?', false, true, 3, 14); -- 8
+
+insert into `conversation` (created_at, title, read_from_questioner, read_from_respondent, questioner_id) values
+('2020-07-11', 'Locked creadential?', true, false, 1), -- 9
+('2020-07-11', 'Locked account?', true, false, 1), -- 10
+('2020-07-11', 'Create new credential?', true, false, 1), -- 11
+('2020-07-11', 'Transfer money?', true, false, 1), -- 12
+('2020-07-11', 'Create new cheque?', true, false, 2), -- 13
+('2020-07-11', 'Create loan profile?', true, false, 2), -- 14
+('2020-07-11', 'Deposit money?', true, false, 2), -- 15
+('2020-07-11', 'Withdraw Money?', true, false, 3), -- 16
+('2020-07-11', 'Pin Code?', true, false, 3), -- 17
+('2020-07-11', 'Password?', true, false, 3); -- 18
 
 insert into `message` (created_at, message_detail, message_type, conversation_id, user_id) values
-('2020-07-11', 'Simple Question 1?', 0, 1, 1),
-('2020-07-12', 'Describe situation', 0, 1, 1),
-('2020-07-11', 'Simple Question 2?', 0, 2, 1),
-('2020-07-11', 'Simple Question 3?', 0, 3, 1),
-('2020-07-11', 'Simple Question 4?', 0, 4, 2),
-('2020-07-11', 'Simple Question 5?', 0, 5, 2),
-('2020-07-11', 'Simple Question 6?', 0, 6, 2),
-('2020-07-11', 'Simple Question 7?', 0, 7, 3),
-('2020-07-11', 'Simple Question 8?', 0, 8, 4),
+('2020-07-11', 'Risk Management on Decisions Making?', 0, 1, 1),
+('2020-07-12', 'Are you there?', 0, 1, 1),
+('2020-07-11', 'Management systems?', 0, 2, 1),
+('2020-07-11', 'Federal Reserve Bank?', 0, 3, 1),
+('2020-07-11', 'Good source about safety and soundness of bank system?', 0, 4, 2),
+('2020-07-11', 'Deposit?', 0, 5, 2),
+('2020-07-11', 'Big Data?', 0, 6, 2),
+('2020-07-11', 'Investment banks??', 0, 7, 3),
+('2020-07-11', 'Efficiency of banks?', 0, 8, 3),
 
-('2020-07-11', 'Simple Answer 1', 1, 1, 14),
-('2020-07-11', 'Simple Answer 2', 1, 2, 14),
-('2020-07-11', 'Simple Answer 3', 1, 3, 14),
-('2020-07-11', 'Simple Answer 4', 1, 4, 14),
-('2020-07-11', 'Simple Answer 5', 1, 5, 14),
-('2020-07-11', 'Simple Answer 6', 1, 6, 14),
-('2020-07-11', 'Simple Answer 7', 1, 7, 14),
-('2020-07-11', 'Simple Answer 8', 1, 8, 14);
+('2020-07-11', 'How could my credential to be locked?', 0, 9, 1),
+('2020-07-11', 'How could my account to be locked?', 0, 10, 1),
+('2020-07-11', 'How can I create a new credential', 0, 11, 1),
+('2020-07-11', 'How can I transfer money?', 0, 12, 1),
+('2020-07-11', 'How can I create a new cheque?', 0, 13, 2),
+('2020-07-11', 'How can I create a new loan profile?', 0, 14, 2),
+('2020-07-11', 'How can I deposit money?', 0, 15, 2),
+('2020-07-11', 'How can I withdraw money?', 0, 16, 3),
+('2020-07-11', 'Where could I find my pin code of my account?', 0, 17, 3),
+('2020-07-11', 'How can I change my password?', 0, 18, 3),
+
+('2020-07-11', 'By means of a fine "Risk Management System" it is possible to allocate the available resources to treat and deal with risks according to the severities of the risks', 1, 1, 14),
+('2020-07-11', 'There is no unifying principle in this matter.', 1, 2, 14),
+('2020-07-11', 'Improvement of credit risk management systems can currently be significantly determined, among others, by the implementation of new information technologies for banking.', 1, 3, 14),
+('2020-07-11', 'In principle, YES, but it should be specified precisely the framework for a possible anti-crisis launch and implementation of the policy of active state intervention.', 1, 4, 14),
+('2020-07-11', 'Try looking up the Reports on the Bank of International Settlements Website (https://www.bis.org/)', 1, 5, 14),
+('2020-07-11', 'In the situation of classic deposit and loan banking, the banks equity translates into the banks ability to engage in active operations', 1, 6, 14),
+('2020-07-11', 'Large companies, corporations and financial institutions, including banks, are technologically and financially prepared to develop applications for analyzing large data', 1, 7, 14),
+('2020-07-11', 'You may have a look at this paper: The interbank network across the global financial crisis: Evidence from Italy', 1, 8, 14);

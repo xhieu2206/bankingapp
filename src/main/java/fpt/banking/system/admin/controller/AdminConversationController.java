@@ -1,6 +1,7 @@
 package fpt.banking.system.admin.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,10 +10,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fpt.banking.system.model.User;
 import fpt.banking.system.response.ConversationForEmployeeResponse;
+import fpt.banking.system.response.ConversationsResponse;
 import fpt.banking.system.response.SuccessfulResponse;
 import fpt.banking.system.security.UserPrincipal;
 import fpt.banking.system.service.ConversationService;
@@ -50,5 +53,17 @@ public class AdminConversationController {
 			@AuthenticationPrincipal UserPrincipal currentEmployee) {
 		User employee = userService.getUser(currentEmployee.getId());
 		return conversationService.getConversationsForEmployee(employee.getId());
+	}
+
+	@GetMapping("/no-response-conversations")
+	@PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
+	public ConversationsResponse getNoResponseConversations(
+			@RequestParam("page") Optional<Long> page,
+			@AuthenticationPrincipal UserPrincipal currentAdmin) {
+		long pageNumber = 1;
+		if (page.isPresent()) {
+			pageNumber = page.get();
+		}
+		return conversationService.getNoResponseConversations(pageNumber);
 	}
 }
