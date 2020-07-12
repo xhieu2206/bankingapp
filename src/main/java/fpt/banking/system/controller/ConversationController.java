@@ -70,4 +70,17 @@ public class ConversationController {
 				System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 	}
+
+	@GetMapping("/current/conversations/total-unread")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<?> getTotalUnreadConversation(
+			@AuthenticationPrincipal UserPrincipal currentUser) {
+		User user = userService.getUser(currentUser.getId());
+		long totalUnread = conversationService.getTotalUnreadConversationFromUser(user.getId());
+		SuccessfulResponse res = new SuccessfulResponse(
+				HttpStatus.OK.value(),
+				String.valueOf(totalUnread),
+				System.currentTimeMillis());
+		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
+	}
 }

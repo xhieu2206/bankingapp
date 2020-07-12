@@ -61,4 +61,17 @@ public class ConversationServiceImpl implements ConversationService {
 		return conversationId;
 	}
 
+	@Override
+	@Transactional
+	public long getTotalUnreadConversationFromUser(long userId) {
+		return conversationDAO.getTotalUnreadConversationFromUser(userId);
+	}
+
+	@Override
+	@Transactional
+	public long getTotalUnreadConversationFromEmployee(long employeeId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

@@ -20,4 +20,8 @@ public interface ConversationDAO {
 	public void setUnreadConversationFromEmployee(long conversationId);
 
 	public long saveConversation(String title, User questioner);
+
+	public long getTotalUnreadConversationFromUser(long userId);
+
+	public long getTotalUnreadConversationFromEmployee(long employeeId);
 }

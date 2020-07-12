@@ -1,5 +1,6 @@
 package fpt.banking.system.dao;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -95,5 +96,29 @@ public class ConversationDAOImpl implements ConversationDAO {
 		conversation.setReadFromRespondent(false);
 		session.save(conversation);
 		return conversation.getId();
+	}
+
+	@Override
+	public long getTotalUnreadConversationFromUser(long userId) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT COUNT(*) FROM conversation " +
+					 "WHERE questioner_id = :userId " +
+					 "AND read_from_questioner = 0";
+		NativeQuery q = session.createNativeQuery(sql);
+		q.setParameter("userId", userId);
+		List<BigInteger> total = q.list();
+		return total.get(0).longValue();
+	}
+
+	@Override
+	public long getTotalUnreadConversationFromEmployee(long employeeId) {
+		Session session = entityManager.unwrap(Session.class);
+		String sql = "SELECT COUNT(*) FROM conversation " +
+				 "WHERE respondent_id = :employeeId " +
+				 "AND read_from_respondent = 0";
+		NativeQuery q = session.createNativeQuery(sql);
+		q.setParameter("employeeId", employeeId);
+		List<BigInteger> total = q.list();
+		return total.get(0).longValue();
 	}
 }
