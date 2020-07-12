@@ -114,8 +114,8 @@ public class ConversationDAOImpl implements ConversationDAO {
 	public long getTotalUnreadConversationFromEmployee(long employeeId) {
 		Session session = entityManager.unwrap(Session.class);
 		String sql = "SELECT COUNT(*) FROM conversation " +
-				 "WHERE respondent_id = :employeeId " +
-				 "AND read_from_respondent = 0";
+				 	 "WHERE respondent_id = :employeeId " +
+				 	 "AND read_from_respondent = 0";
 		NativeQuery q = session.createNativeQuery(sql);
 		q.setParameter("employeeId", employeeId);
 		List<BigInteger> total = q.list();

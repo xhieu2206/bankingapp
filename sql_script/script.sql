@@ -233,7 +233,7 @@ create table `cheque`(
   `account_id` int(11) NOT NULL,
   `reciever_fullname` varchar(255) not null,
   `reciever_id_card_number` varchar(50) not null,
-  `transaction_amount` decimal not null,
+  `transaction_amount` BIGINT not null,
   `status` bool default 1,
   `canceled` bool not null,
   `created_at` datetime not null,
@@ -883,15 +883,15 @@ values
 (80000000, 'Test Description', true, true, false, '', '4', '2020-06-28', 6, 60, 12, 1, 'EMPLOYEE MOT', 14);
 
 -- INSERT FOR CONVERSATION ------------
-insert into `conversation` (created_at, title, read_from_questioner, read_from_respondent, questioner_id) values
-('2020-07-11', 'Title 1', true, true, 1),
-('2020-07-11', 'Title 2', false, true, 1),
-('2020-07-11', 'Title 3', true, true, 1),
-('2020-07-11', 'Title 4', false, true, 2),
-('2020-07-11', 'Title 5', true, true, 2),
-('2020-07-11', 'Title 6', false, true, 2),
-('2020-07-11', 'Title 7', true, true, 3),
-('2020-07-11', 'Title 8', false, true, 3);
+insert into `conversation` (created_at, title, read_from_questioner, read_from_respondent, questioner_id, respondent_id) values
+('2020-07-11', 'Title 1', true, true, 1, 14),
+('2020-07-11', 'Title 2', false, true, 1, 14),
+('2020-07-11', 'Title 3', true, true, 1, 14),
+('2020-07-11', 'Title 4', false, true, 2, 14),
+('2020-07-11', 'Title 5', true, true, 2, 14),
+('2020-07-11', 'Title 6', false, true, 2, 14),
+('2020-07-11', 'Title 7', true, true, 3, 14),
+('2020-07-11', 'Title 8', false, true, 3, 14);
 
 insert into `message` (created_at, message_detail, message_type, conversation_id, user_id) values
 ('2020-07-11', 'Simple Question 1?', 0, 1, 1),
