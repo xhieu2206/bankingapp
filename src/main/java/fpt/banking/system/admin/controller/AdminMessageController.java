@@ -49,9 +49,7 @@ public class AdminMessageController {
 		if (conversation == null) {
 			throw new NotFoundException("This conversation doesn't existed");
 		}
-		System.out.println(conversation.getRespondent().getId());
-		System.out.println(employee.getId());
-		if (conversation.getRespondent().getId() != employee.getId()) {
+		if (conversation.getRespondent() != null && conversation.getRespondent().getId() != employee.getId()) {
 			throw new AuthorizedException("You don't have permission to access this resource");
 		}
 		conversationService.setReadConservationFromEmployee(conversationId);
