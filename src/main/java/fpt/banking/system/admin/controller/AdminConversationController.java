@@ -66,4 +66,17 @@ public class AdminConversationController {
 		}
 		return conversationService.getNoResponseConversations(pageNumber);
 	}
+
+	@GetMapping("/responsed-conversations")
+	@PreAuthorize("hasAnyRole('ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
+	public ConversationsResponse getResponsedConversations(
+			@RequestParam("page") Optional<Long> page,
+			@AuthenticationPrincipal UserPrincipal currentAdmin) {
+		long pageNumber = 1;
+		if (page.isPresent()) {
+			pageNumber = page.get();
+		}
+		return conversationService.getResponsedConversations(pageNumber);
+	}
+
 }

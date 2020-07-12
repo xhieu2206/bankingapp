@@ -32,4 +32,8 @@ public interface ConversationDAO {
 	public List<Conversation> getNoResponseConversations(long page);
 
 	public long getTotalNoResponseConversations();
+
+	public List<Conversation> getResponsedConversations(long page);
+
+	public long getTotalResponsedConversations();
 }

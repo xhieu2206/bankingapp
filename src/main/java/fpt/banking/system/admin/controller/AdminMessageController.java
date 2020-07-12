@@ -40,7 +40,7 @@ public class AdminMessageController {
 	private UserService userService;
 
 	@GetMapping("/current/conversations/{conversationId}/messages")
-	@PreAuthorize("hasRole('ROLE_EMPLOYEE')")
+	@PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_TRANSACTIONMANAGER', 'ROLE_BRANCHMANAGER', 'ROLE_BANKMANAGER')")
 	public List<Message> readConversation(
 			@AuthenticationPrincipal UserPrincipal currentEmployee,
 			@PathVariable long conversationId) {

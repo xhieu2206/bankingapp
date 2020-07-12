@@ -33,4 +33,6 @@ public interface ConversationService {
 	public void setEmployeeForConversation(long conservationId, User employee);
 
 	public ConversationsResponse getNoResponseConversations(long page);
+
+	public ConversationsResponse getResponsedConversations(long page);
 }

@@ -141,4 +141,31 @@ public class ConversationServiceImpl implements ConversationService {
 		result.setPageSize(result.getItems().size());
 		return result;
 	}
+
+	@Override
+	@Transactional
+	public ConversationsResponse getResponsedConversations(long page) {
+		ConversationsResponse result = new ConversationsResponse();
+		result.setPageNumber(page);
+		result.setTotalCount(conversationDAO.getTotalResponsedConversations());
+		long totalPage = (long) Math.ceil(result.getTotalCount() / 5);
+		if (result.getTotalCount() % 5 > 0) {
+			totalPage ++;
+		}
+		result.setTotalPage(totalPage);
+		List<ConversationForEmployee> items = new ArrayList<ConversationForEmployee>();
+		List<Conversation> conversations = conversationDAO.getResponsedConversations(page);
+		for (Conversation conversation : conversations) {
+			ConversationForEmployee cons = new ConversationForEmployee();
+			cons.setId(conversation.getId());
+			cons.setMessage(messageDAO.getLatestMessageOfAConversation(conversation.getId()).getMessageDetail());
+			cons.setQuestionerName(conversation.getQuestioner().getFullname());
+			cons.setTitle(conversation.getTitle());
+			cons.setRespondentName(conversation.getRespondent().getFullname());
+			items.add(cons);
+		}
+		result.setItems(items);
+		result.setPageSize(result.getItems().size());
+		return result;
+	}
 }
