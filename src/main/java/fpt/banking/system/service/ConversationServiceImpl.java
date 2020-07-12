@@ -54,6 +54,24 @@ public class ConversationServiceImpl implements ConversationService {
 
 	@Override
 	@Transactional
+	public void setUnreadConservationFromUser(long conversationId) {
+		conversationDAO.setUnreadConversationFromUser(conversationId);
+	}
+
+	@Override
+	@Transactional
+	public void setReadConservationFromEmployee(long conversationId) {
+		conversationDAO.setReadConversationFromEmployee(conversationId);
+	}
+
+	@Override
+	@Transactional
+	public void setUnreadConservationFromEmployee(long conversationId) {
+		conversationDAO.setUnreadConversationFromEmployee(conversationId);
+	}
+
+	@Override
+	@Transactional
 	public long saveConversation(String title, User questioner, String message) {
 		long conversationId = conversationDAO.saveConversation(title, questioner);
 		Conversation conversation = conversationDAO.findConversationById(conversationId);
@@ -70,8 +88,6 @@ public class ConversationServiceImpl implements ConversationService {
 	@Override
 	@Transactional
 	public long getTotalUnreadConversationFromEmployee(long employeeId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return conversationDAO.getTotalUnreadConversationFromEmployee(employeeId);
 	}
-
 }

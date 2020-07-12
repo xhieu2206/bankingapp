@@ -14,6 +14,12 @@ public interface ConversationService {
 
 	public void setReadConservationFromUser(long conversationId);
 
+	public void setUnreadConservationFromUser(long conversationId);
+
+	public void setReadConservationFromEmployee(long conversationId);
+
+	public void setUnreadConservationFromEmployee(long conversationId);
+
 	public long saveConversation(String title, User questioner, String message);
 
 	public long getTotalUnreadConversationFromUser(long userId);
