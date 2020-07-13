@@ -372,13 +372,16 @@ public class AdminUserLoanController {
 			throw new AuthorizedException("You don't have this permission");
 		}
 		int pageNumber = 1;
-		String statusLoanProfile = "";
+		String statusLoanProfile = "ALL";
 		if (page.isPresent()) {
 			pageNumber = page.get();
 		}
 		if (status.isPresent()) {
 			statusLoanProfile = String.valueOf(status.get());
 		}
+		System.out.println(transactionOfficeId);
+		System.out.println(pageNumber);
+		System.out.println(statusLoanProfile);
 		return loanService.getLoanProfilesOfTransactionOffice(transactionOfficeId, pageNumber, statusLoanProfile);
 	}
 	
