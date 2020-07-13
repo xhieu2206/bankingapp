@@ -147,7 +147,7 @@ public class LoanServiceImpl implements LoanService {
 	@Override
 	@Transactional
 	public long approvedLoanProfileByBranchManager(long loanProfileId) {
-		return loanProfileDAO.approvedLoanProfileByTransactionManager(loanProfileId);
+		return loanProfileDAO.approvedLoanProfileByBranchManager(loanProfileId);
 	}
 
 	@Override

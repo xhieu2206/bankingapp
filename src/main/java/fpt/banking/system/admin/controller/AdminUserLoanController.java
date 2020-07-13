@@ -379,9 +379,6 @@ public class AdminUserLoanController {
 		if (status.isPresent()) {
 			statusLoanProfile = String.valueOf(status.get());
 		}
-		System.out.println(transactionOfficeId);
-		System.out.println(pageNumber);
-		System.out.println(statusLoanProfile);
 		return loanService.getLoanProfilesOfTransactionOffice(transactionOfficeId, pageNumber, statusLoanProfile);
 	}
 	
