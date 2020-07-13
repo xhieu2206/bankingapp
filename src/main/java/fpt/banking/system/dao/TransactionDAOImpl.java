@@ -135,6 +135,9 @@ public class TransactionDAOImpl implements TransactionDAO {
 	public List<Transaction> getTransactionsWithTimeFileter(long accountId, int page, int year, int month) {
 		Session session = entityManager.unwrap(Session.class);
 		String sql = "";
+//		System.out.println(year);
+//		System.out.println(month);
+		System.out.println(page);
 		if (month == 0) {
 			sql = "SELECT * FROM transaction " +
 	              "WHERE account_id = :accountId " +

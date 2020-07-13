@@ -64,7 +64,7 @@ public class TransactionServiceImpl implements TransactionService {
 			totalPage ++;
 		}
 		transactionsResponse.setTotalPage(totalPage);
-		transactionsResponse.setItems(transactionDAO.getTransactionsWithTimeFileter(accountId, totalPage, year, month));
+		transactionsResponse.setItems(transactionDAO.getTransactionsWithTimeFileter(accountId, page, year, month));
 		transactionsResponse.setPageSize(transactionsResponse.getItems().size());
 		return transactionsResponse;
 	}
