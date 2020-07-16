@@ -94,12 +94,16 @@ public class AdminUserLoanController {
 			}
 		}
 		if (hasAccount == false) {
-			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This account doesn't belong to this user or this account has been locked",
+			ErrorResponse error = new ErrorResponse(
+					HttpStatus.NOT_ACCEPTABLE.value(),
+					"This account doesn't belong to this user or this account has been locked",
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		if (accountService.getAccount(payload.getAccountId()).getLoanProfile() != null) {
-			ErrorResponse error = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "This account have been used for another loan profile, please choose another account",
+			ErrorResponse error = new ErrorResponse(
+					HttpStatus.NOT_ACCEPTABLE.value(),
+					"This account have been used for another loan profile, please choose another account",
     				System.currentTimeMillis());
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
@@ -116,13 +120,13 @@ public class AdminUserLoanController {
 				System.currentTimeMillis());
 
 		notificationService.saveNotification(
-				"You have create a new loan profile, please contact your admin for more info or checking in our banking application",
+				"Ban da tao thanh cong mot khoan vay, vui long kiem tra chi tiet tai danh sach cac khoan vay cua ban, vui long den phong giao dich ban da dang ky de xac nhan khoan vay cua minh",
 				userService.getUser(userId));
 
 		try {
 			SendEmail.sendEmail(
 					userService.getUser(userId).getEmail(),
-					"You have create a new loan profile, please contact your admin for more info or checking in our banking application");
+					"Ban da tao thanh cong mot khoan vay, vui long kiem tra chi tiet tai danh sach cac khoan vay cua ban, vui long den phong giao dich ban da dang ky de xac nhan khoan vay cua minh");
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}
@@ -330,15 +334,15 @@ public class AdminUserLoanController {
 			loanService.approvedLoanProfileByBranchManager(loanProfile.getId());
 			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "APPROVED BY BRANCH MANAGER", System.currentTimeMillis());
 			notificationService.saveNotification(
-					"Your loan profile has been approved." +
-					" Please check account with account number " + loanProfile.getAccount().getAccountNumber() +
-					" for more detail", loanProfile.getUser());
+					"Khoan vay cua ban da duoc phe duyet." +
+					" Kiem tra tai khoan voi so tai khoan " + loanProfile.getAccount().getAccountNumber() +
+					" de biet them chi tiet", loanProfile.getUser());
 
 			try {
 				SendEmail.sendEmail(
 						loanProfile.getUser().getEmail(),
-						"Your loan profile has been approved." +
-						" Please check account with account number " + loanProfile.getAccount().getAccountNumber() + " for more detail");
+						"Khoan vay cua ban da duoc phe duyet." +
+						" Kiem tra tai khoan voi so tai khoan " + loanProfile.getAccount().getAccountNumber() + " de biet them chi tiet");
 			} catch (IOException e) {
 				System.out.println("Couldn't send email");
 			}
@@ -348,7 +352,7 @@ public class AdminUserLoanController {
 					loanProfile.getAmount(),
 					loanProfile.getAccount().getAmount() + loanProfile.getAmount(),
 					4, 
-					"You has got " + loanProfile.getAmount() + " from your approved loaning");
+					"Ban da nhan dc " + loanProfile.getAmount() + "VND tu khoan vay duoc phe duyet");
 			accountService.changeAmount(loanProfile.getAccount().getId(), loanProfile.getAmount() + loanProfile.getAccount().getAmount());
 			return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);
 		}
@@ -415,14 +419,14 @@ public class AdminUserLoanController {
 			loanService.rejectLoanProffile(loanProfile.getId(), payload.getRejectedReason());
 			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "REJECTED BY TRANSACTION MANAGER", System.currentTimeMillis());
 			notificationService.saveNotification(
-					"Your loan profile has been rejected." +
-					" Please check your loan profile for more information", loanProfile.getUser());
+					"Khoan vay cua ban khong duoc phe duyet." +
+					" Kiem tra lai cac khoan vay cua ban de biet them chi tiet", loanProfile.getUser());
 
 			try {
 				SendEmail.sendEmail(
 						loanProfile.getUser().getEmail(),
-						"Your loan profile has been rejected." +
-						" Please check your loan profile for more information");
+						"Khoan vay cua ban khong duoc phe duyet." +
+						" Kiem tra lai cac khoan vay cua ban de biet them chi tiet");
 			} catch (IOException e) {
 				System.out.println("Couldn't send email");
 			}
@@ -438,14 +442,14 @@ public class AdminUserLoanController {
 			SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "REJECTED", System.currentTimeMillis());
 
 			notificationService.saveNotification(
-					"Your loan profile has been rejected." +
-					" Please check your loan profile for more information", loanProfile.getUser());
+					"Khoan vay cua ban khong duoc phe duyet." +
+					" Kiem tra lai cac khoan vay cua ban de biet them chi tiet", loanProfile.getUser());
 
 			try {
 				SendEmail.sendEmail(
 						loanProfile.getUser().getEmail(),
-						"Your loan profile has been rejected." +
-						" Please check your loan profile for more information");
+						"Khoan vay cua ban khong duoc phe duyet." +
+						" Kiem tra lai cac khoan vay cua ban de biet them chi tiet");
 			} catch (IOException e) {
 				System.out.println("Couldn't send email");
 			}

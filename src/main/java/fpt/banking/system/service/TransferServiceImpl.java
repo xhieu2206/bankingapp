@@ -55,7 +55,6 @@ public class TransferServiceImpl implements TransferService {
 		String otpCode = RandomGenerator.generateOTP();
 		String phone = accountDAO.getAccount(transferAccountId).getUser().getPhone();
 		String email = accountDAO.getAccount(transferAccountId).getUser().getEmail();
-//		SendSmsWithLib.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
 		try {
 			SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
 		} catch (Exception e) {
@@ -66,7 +65,15 @@ public class TransferServiceImpl implements TransferService {
 				System.out.println("Could not send email");
 			}
 		}
-		String id = transactionQueueInternalDAO.saveTransactionQueueInternal(MD5.getMd5(otpCode), transferAccountId, receiverAccountId, amount, new Date(timestamp.getTime()), description);
+
+		String id = transactionQueueInternalDAO.saveTransactionQueueInternal(
+				MD5.getMd5(otpCode),
+				transferAccountId,
+				receiverAccountId,
+				amount,
+				new Date(timestamp.getTime()),
+				description);
+
 		return id;
 	}
 

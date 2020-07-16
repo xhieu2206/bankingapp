@@ -54,7 +54,6 @@ public class TransactionController {
 			if (month.isPresent()) {
 				monthFilter = month.get();
 			}
-			System.out.println(pageNumber);
 			return transactionService.getTransactionWithTimeFilter(accountId, pageNumber, yearFilter, monthFilter);
 		}
 	}

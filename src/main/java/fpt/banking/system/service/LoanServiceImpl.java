@@ -111,7 +111,6 @@ public class LoanServiceImpl implements LoanService {
 		String otpCode = RandomGenerator.generateOTP();
 		String phone = loanProfileDAO.findById(loanProfileId).getUser().getPhone();
 		String email = loanProfileDAO.findById(loanProfileId).getUser().getEmail();
-//		SendSmsWithLib.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
 		try {
 			SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "OTP: " + otpCode);
 		} catch (Exception e) {

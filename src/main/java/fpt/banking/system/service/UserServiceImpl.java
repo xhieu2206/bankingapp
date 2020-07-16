@@ -114,20 +114,20 @@ public class UserServiceImpl implements UserService {
 		String password = RandomGenerator.generatePassword();
 		String pinCode = RandomGenerator.generatePinCode();
 		long userId = userDAO.saveUser(username, email, passwordEncoder.encode(password), fullName, birthday, address, gender, idCardNumber, phone, membership, image);
-//		SendSmsWithLib.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "You have created a credential in our banking app with username: " + username + " and password is: " + password
-//				+ ", please login into our application to see your new account detail and card detail");
+
 		try {
-			SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), "You have created a credential in our banking app with username: " + username + " and password is: " + password
-					+ ", pin code of your new account is " + pinCode
-					+ ", please login into our application to see your new account detail and card detail");
+			SendSms.sendSms(MobilePhoneUtil.convertPhone(phone, "+84"), 
+					"Ban da tao thanh cong tai khoan voi ten tai khoan la: " + username + " va mat khau: " + password
+					+ ", PIN code cho tai khoan cua ban la " + pinCode
+					+ ", dang nhap vao tai khoan voi ten dang nhap va mat khau tren de xem chi tiet ve tai khoan cua ban");
 		} catch (Exception e) {
 			System.out.println("Phone was not verified");
 			try {
 				SendEmail.sendEmail(
 						email,
-						"You have created a credential in our banking app with username: " + username + " and password is: " + password
-						+ ", pin code of your new account is " + pinCode
-						+ ", please login into our application to see your new account detail and card detail");
+						"Ban da tao thanh cong tai khoan voi ten tai khoan la: " + username + " va mat khau: " + password
+						+ ", PIN code cho tai khoan cua ban la " + pinCode
+						+ ", dang nhap vao tai khoan voi ten dang nhap va mat khau tren de xem chi tiet ve tai khoan cua ban");
 			} catch (IOException e1) {
 				System.out.println("Could not send email");
 			}

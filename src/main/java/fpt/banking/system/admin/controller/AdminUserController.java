@@ -123,13 +123,13 @@ public class AdminUserController {
 				payload.getImage().trim());
 
 		notificationService.saveNotification(
-				"You have created a credential in our banking app",
+				"Ban da tao mot tai khoan thanh cong tai FPT Banking System",
 				accountService.getAccount(accountId).getUser());
 
 		try {
 			SendEmail.sendEmail(
 					accountService.getAccount(accountId).getUser().getEmail(),
-					"You have created a credential in our banking app");
+					"Ban da tao mot tai khoan thanh cong tai FPT Banking System");
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}
@@ -167,13 +167,13 @@ public class AdminUserController {
 		userService.unlockAnUser(user.getId());
 
 		notificationService.saveNotification(
-				"Your account is unlock now"
+				"Tai khoan cua ban da duoc mo khoa thanh cong"
 				, user);
 
 		try {
 			SendEmail.sendEmail(
 					user.getEmail(),
-					"Your account is unlock now");
+					"Tai khoan cua ban da duoc mo khoa thanh cong");
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}

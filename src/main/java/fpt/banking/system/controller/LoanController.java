@@ -99,13 +99,13 @@ public class LoanController {
 				transactionOffice);
 
 		notificationService.saveNotification(
-				"You have create a new loan profile, please contact your admin for more info or checking in our banking application",
+				"Ban da tao thanh cong mot khoan vay, kiem tra lai ho so vay tien cua ban de biet them chi tiet",
 				user);
 
 		try {
 			SendEmail.sendEmail(
 					user.getEmail(),
-					"You have create a new loan profile, please contact your admin for more info or checking in our banking application");
+					"Ban da tao thanh cong mot khoan vay, kiem tra lai ho so vay tien cua ban de biet them chi tiet");
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}

@@ -88,13 +88,13 @@ public class AdminConfirmLoanProfileController {
 
 		User user = loanService.findLoanProfileById(payload.getLoanProfileId()).getUser();
 		notificationService.saveNotification(
-				"Your Loan profile has been confirmed",
+				"Khoan vay cua ban da duoc xac nhan",
 				user);
 
 		try {
 			SendEmail.sendEmail(
 					user.getEmail(),
-					"Your Loan profile has been confirmed by " + employee.getFullname() + " at " + employee.getTransactionOffice().getName());
+					"Khoan vay cua ban da duoc xac nhan boi nhan vien " + employee.getFullname() + " tai phong giao dich " + employee.getTransactionOffice().getName());
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}

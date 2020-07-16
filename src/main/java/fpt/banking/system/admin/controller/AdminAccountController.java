@@ -122,16 +122,16 @@ public class AdminAccountController {
 				payload.getAmount(), 
 				account.getAmount() + payload.getAmount(), 
 				5,
-				"Deposit " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName());
+				"Gui " + payload.getAmount() +"VND tu phong giao dich " + employee.getTransactionOffice().getName());
 
 		notificationService.saveNotification(
-				"Deposit " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName(),
+				"Gui " + payload.getAmount() +"VND tu phong giao dich " + employee.getTransactionOffice().getName(),
 				user);
 		
 		try {
 			SendEmail.sendEmail(
 					user.getEmail(),
-					"Deposit " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName());
+					"Gui " + payload.getAmount() +"VND tu phong giao dich " + employee.getTransactionOffice().getName());
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}
@@ -176,17 +176,17 @@ public class AdminAccountController {
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		notificationService.saveNotification(
-				"Withdraw " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName(), 
+				"Rut " + payload.getAmount() +"VND tu phong giao dich " + employee.getTransactionOffice().getName(), 
 				user);
 		try {
 			SendEmail.sendEmail(
 					user.getEmail(),
-					"Withdraw " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName());
+					"Rut " + payload.getAmount() +"VND tu phong giao dich " + employee.getTransactionOffice().getName());
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}
 
-		transactionService.saveTransaction(account.getId(), amount * -1, account.getAmount() - amount, 6, "Withdraw " + payload.getAmount() +"VND from transaction office " + employee.getTransactionOffice().getName());
+		transactionService.saveTransaction(account.getId(), amount * -1, account.getAmount() - amount, 6, "Rut " + payload.getAmount() +"VND tu phong giao dich " + employee.getTransactionOffice().getName());
 		accountService.changeAmount(account.getId(), account.getAmount() - amount);
 		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Withdraw successfully", System.currentTimeMillis());
 		return new ResponseEntity<SuccessfulResponse>(res, HttpStatus.OK);

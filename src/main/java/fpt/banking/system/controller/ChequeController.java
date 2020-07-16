@@ -86,18 +86,18 @@ public class ChequeController {
 				payload.getTransactionAmount());
 
 		notificationService.saveNotification(
-				"You have created a cheque for " +
-				payload.getRecieverFullname() + " with id card number is " +
-				payload.getRecieverIdCardNumber() + ", amount is " +
-				payload.getTransactionAmount(), account.getUser());
+				"Ban vua tao mot sec cho " +
+				payload.getRecieverFullname() + " voi CMT/So ho chieu " +
+				payload.getRecieverIdCardNumber() + ", voi so tien " +
+				payload.getTransactionAmount() + "VND", account.getUser());
 
 		try {
 			SendEmail.sendEmail(
 					account.getUser().getEmail(),
-					"You have created a cheque for " +
-					payload.getRecieverFullname() + " with id card number is " +
-					payload.getRecieverIdCardNumber() + ", amount is " +
-					payload.getTransactionAmount());
+					"Ban vua tao mot sec cho " +
+					payload.getRecieverFullname() + " voi CMT/So ho chieu " +
+					payload.getRecieverIdCardNumber() + ", voi so tien " +
+					payload.getTransactionAmount() + "VND");
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}
@@ -136,15 +136,13 @@ public class ChequeController {
 		}
 		chequeService.cancelCheque(chequeId);
 
-		notificationService.saveNotification("Your cheque for " + cheque.getRecieverFullname() + ", amount " + cheque.getTransactionAmount() + " VND has been canceled by"
-				+ " yourself",
+		notificationService.saveNotification("Ban da huy sec cho " + cheque.getRecieverFullname() + ", voi so tien " + cheque.getTransactionAmount() + " VND",
 				cheque.getAccount().getUser());
 
 		try {
 			SendEmail.sendEmail(
 					cheque.getAccount().getUser().getEmail(),
-					"Your cheque for " + cheque.getRecieverFullname() + ", amount " + cheque.getTransactionAmount() + " VND has been canceled by"
-					+ " yourself");
+					"Ban da huy sec cho " + cheque.getRecieverFullname() + ", voi so tien " + cheque.getTransactionAmount() + " VND");
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}
@@ -196,13 +194,13 @@ public class ChequeController {
 				payload.getTransactionAmount());
 
 		notificationService.saveNotification(
-				"You have updated your cheque", 
+				"Ban da sua sec cua minh thanh cong", 
 				user);
 
 		try {
 			SendEmail.sendEmail(
 					user.getEmail(),
-					"You have updated your cheque");
+					"Ban da sua sec cua minh thanh cong");
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}

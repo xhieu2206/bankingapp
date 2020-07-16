@@ -79,13 +79,13 @@ public class AccountController {
 		accountService.lockAccount(payload.getAccountId());
 
 		notificationService.saveNotification(
-				"You have lock your account with number " + accountService.getAccount(payload.getAccountId()).getAccountNumber(), 
+				"Ban da khoa tai khoan ngan hang cua minh tai FPT Banking voi so tai khoan la " + accountService.getAccount(payload.getAccountId()).getAccountNumber(), 
 				user);
 
 		try {
 			SendEmail.sendEmail(
 					user.getEmail(),
-					"You have lock your account with number " + accountService.getAccount(payload.getAccountId()).getAccountNumber());
+					"Ban da khoa tai khoan ngan hang cua minh tai FPT Banking voi so tai khoan la " + accountService.getAccount(payload.getAccountId()).getAccountNumber());
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}

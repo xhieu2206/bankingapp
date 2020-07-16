@@ -90,23 +90,23 @@ public class TransferController {
 		User transferUser = accountService.getAccount(accountId).getUser();
 		User revieverUser = accountService.findByAccountNumber(transferInternalPayloadByAccountNumber.getAccountNumber()).getUser();
 		notificationService.saveNotification(
-				"You have transfered " + transferInternalPayloadByAccountNumber.getAmount().toString() + " to account with account number is " +
+				"Ban da chuyen khoan " + transferInternalPayloadByAccountNumber.getAmount().toString() + "VND den tai khoan voi so tai khoan la " +
 				transferInternalPayloadByAccountNumber.getAccountNumber(), transferUser);
 		try {
 			SendEmail.sendEmail(
 					transferUser.getEmail(),
-					"You have transfered " + transferInternalPayloadByAccountNumber.getAmount().toString() + " to account with account number is " +
+					"Ban da chuyen khoan " + transferInternalPayloadByAccountNumber.getAmount().toString() + "VND den tai khoan voi so tai khoan la " +
 					transferInternalPayloadByAccountNumber.getAccountNumber());
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}
 		notificationService.saveNotification(
-				"You have revieved " + transferInternalPayloadByAccountNumber.getAmount().toString() + " from account with account number is " +
+				"Ban da nhan duoc " + transferInternalPayloadByAccountNumber.getAmount().toString() + "VND tu tai khoan voi so tai khoan la " +
 				accountService.getAccount(accountId).getAccountNumber(), revieverUser);
 		try {
 			SendEmail.sendEmail(
 					revieverUser.getEmail(),
-					"You have revieved " + transferInternalPayloadByAccountNumber.getAmount().toString() + " from account with account number is " +
+					"Ban da nhan duoc " + transferInternalPayloadByAccountNumber.getAmount().toString() + "VND tu tai khoan voi so tai khoan la " +
 					accountService.getAccount(accountId).getAccountNumber());
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
@@ -158,25 +158,25 @@ public class TransferController {
 		User transferUser = accountService.getAccount(accountId).getUser();
 		User revieverUser = accountService.findByCardNumber(transferInternalPayloadByCardNumber.getCardNumber()).getUser();
 		notificationService.saveNotification(
-				"You have transfered " + transferInternalPayloadByCardNumber.getAmount().toString() + " to account with card number is " +
+				"Ban da chuyen khoan " + transferInternalPayloadByCardNumber.getAmount().toString() + "VND den tai khoan voi so tai khoan la " +
 						transferInternalPayloadByCardNumber.getCardNumber(), transferUser);
 		try {
 			SendEmail.sendEmail(
 					transferUser.getEmail(),
-					"You have transfered " + transferInternalPayloadByCardNumber.getAmount().toString() + " to account with card number is " +
+					"Ban da chuyen khoan " + transferInternalPayloadByCardNumber.getAmount().toString() + "VND den tai khoan voi so tai khoan la " +
 					transferInternalPayloadByCardNumber.getCardNumber());
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}
 
 		notificationService.saveNotification(
-				"You have revieved " + transferInternalPayloadByCardNumber.getAmount().toString() + " from account with card number is " +
+				"Ban da nhan duoc " + transferInternalPayloadByCardNumber.getAmount().toString() + "VND tu tai khoan voi so tai khoan la " +
 				accountService.getAccount(accountId).getAccountNumber(), revieverUser);
 
 		try {
 			SendEmail.sendEmail(
 					revieverUser.getEmail(),
-					"You have revieved " + transferInternalPayloadByCardNumber.getAmount().toString() + " from account with card number is " +
+					"Ban da nhan duoc " + transferInternalPayloadByCardNumber.getAmount().toString() + "VND tu tai khoan voi so tai khoan la " +
 					accountService.getAccount(accountId).getAccountNumber());
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");

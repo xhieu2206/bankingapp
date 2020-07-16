@@ -69,26 +69,26 @@ public class ConfirmTransferController {
 		transferService.deleteTransactionQueueInternal(confirmTransferPayload.getTransactionQueueId());
 
 		notificationService.saveNotification(
-				"You have transfered " + transactionQueueInternal.getAmount() + " to account with card number is " +
+				"Ban da chuyen " + transactionQueueInternal.getAmount() + "VND den tai khoan voi so tai khoan la " +
 				accountService.getAccount(transactionQueueInternal.getReceiverAccountId()).getAccountNumber(), transferUser);
 
 		try {
 			SendEmail.sendEmail(
 					transferUser.getEmail(),
-					"You have transfered " + transactionQueueInternal.getAmount() + " to account with card number is " +
+					"Ban da chuyen " + transactionQueueInternal.getAmount() + "VND den tai khoan voi so tai khoan la " +
 					accountService.getAccount(transactionQueueInternal.getReceiverAccountId()).getAccountNumber());
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}
 
 		notificationService.saveNotification(
-				"You have revieved " + transactionQueueInternal.getAmount() + " from account with card number is " +
+				"Ban da nhan dc " + transactionQueueInternal.getAmount() + "VND tu tai khoan voi so tai khoan la " +
 				accountService.getAccount(transactionQueueInternal.getTransferAccountId()).getAccountNumber(), reveiverUser);
 
 		try {
 			SendEmail.sendEmail(
 					reveiverUser.getEmail(),
-					"You have revieved " + transactionQueueInternal.getAmount() + " from account with card number is " +
+					"Ban da nhan dc " + transactionQueueInternal.getAmount() + "VND tu tai khoan voi so tai khoan la " +
 					accountService.getAccount(transactionQueueInternal.getTransferAccountId()).getAccountNumber());
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");

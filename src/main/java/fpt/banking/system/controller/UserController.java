@@ -83,14 +83,19 @@ public class UserController {
     		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_ACCEPTABLE);
 		}
 		userService.changePassword(user.getId(), payload.getPassword());
-		SuccessfulResponse res = new SuccessfulResponse(HttpStatus.OK.value(), "Change password successfully", System.currentTimeMillis());
+		SuccessfulResponse res = new SuccessfulResponse(
+				HttpStatus.OK.value(),
+				"Change password successfully",
+				System.currentTimeMillis());
+
 		notificationService.saveNotification(
-				"You have change your password"
+				"Ban da thay doi mat khau thanh cong"
 				, userService.getUser(user.getId()));
+
 		try {
 			SendEmail.sendEmail(
 					userService.getUser(user.getId()).getEmail(),
-					"You have change your password");
+					"Ban da thay doi mat khau thanh cong");
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}
@@ -145,17 +150,20 @@ public class UserController {
 				payload.getIdCardNumber().trim(),
 				payload.getPhone().trim(),
 				payload.getImage().trim());
+
 		SuccessfulResponse res = new SuccessfulResponse(
 				HttpStatus.OK.value(),
 				"Updated profile successfully",
 				System.currentTimeMillis());
+
 		notificationService.saveNotification(
-				"You have updated your profile successfully",
+				"Ban da thay doi ho so cua minh thanh cong",
 				user);
+
 		try {
 			SendEmail.sendEmail(
 					user.getEmail(),
-					"You have updated your profile successfully");
+					"Ban da thay doi ho so cua minh thanh cong");
 		} catch (IOException e) {
 			System.out.println("Couldn't send email");
 		}

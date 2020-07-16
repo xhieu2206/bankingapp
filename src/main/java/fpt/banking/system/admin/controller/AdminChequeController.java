@@ -91,20 +91,20 @@ public class AdminChequeController {
 					-1 * (cheque.getTransactionAmount() + fees),
 					account.getAmount() - fees - cheque.getTransactionAmount(), 
 					7, 
-					cheque.getRecieverFullname() + " has withdrawed a cheque from your account");
+					cheque.getRecieverFullname() + " da rut mot sec tu tai khoan cua ban");
 
 			accountService.changeAmount(
 					account.getId(),
 					account.getAmount() - fees - cheque.getTransactionAmount());
 
 			notificationService.saveNotification(
-					cheque.getRecieverFullname() + " has withdrawed a cheque from your account with number is " + account.getAccountNumber(),
+					cheque.getRecieverFullname() + " da rut mot sec tu tai khoan cua ban voi so tai khoan la " + account.getAccountNumber(),
 					user);
 			
 			try {
 				SendEmail.sendEmail(
 						user.getEmail(),
-						cheque.getRecieverFullname() + " has withdrawed a cheque from your account with number is " + account.getAccountNumber());
+						cheque.getRecieverFullname() + " da rut mot sec tu tai khoan cua ban voi so tai khoan la " + account.getAccountNumber());
 			} catch (IOException e) {
 				System.out.println("Couldn't send email");
 			}
