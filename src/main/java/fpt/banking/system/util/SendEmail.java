@@ -13,13 +13,13 @@ import com.sendgrid.helpers.mail.objects.Email;
 public class SendEmail {
 
 	public static void sendEmail(String emailTo, String contentEmail) throws IOException {
-		Email from = new Email("xhieu94@gmail.com");
+		Email from = new Email("hieunxd00758@fpt.edu.vn");
 		Email to = new Email(emailTo);
 		String subject = "FPT BANKING SYSTEM";
 		Content content = new Content("text/plain", contentEmail);
 		Mail mail = new Mail(from, subject, to, content);
 		
-		SendGrid sg = new SendGrid(StringUtils.reverseString("Qlcg3dnq6f1JWFSYe4ld1VBz_kpJBBb7d08qR4AG54Y.wxQi6i6b9BpmaRLQ92BzdZ.GS"));
+		SendGrid sg = new SendGrid(StringUtils.reverseString("c6oR8lwgDe3QmWMRAZUSkJqyeG0fquM45Df6JJ6fTO3.A8Lf2UTLanymuRKxaHizcq.GS"));
 		Request request = new Request();
 	    try {
 	      request.setMethod(Method.POST);
